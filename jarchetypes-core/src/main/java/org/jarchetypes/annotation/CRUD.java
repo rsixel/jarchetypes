@@ -30,5 +30,6 @@ public @interface CRUD {
 
 	String title();
 	
+	boolean generateAll() default false;
 	
 }

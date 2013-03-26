@@ -16,23 +16,29 @@ package org.jarchetypes.mojo;
  *  limitations under the License.
  */
 
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javassist.bytecode.stackmap.TypeData.ClassName;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.classworlds.ClassRealm;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.scanner.ArchetypesScanner;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
@@ -59,22 +65,51 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 	/**
 	 * @parameter default-value="${project.dependencies}
 	 */
-	private Set<Dependency> dependencies;
+	private List<Dependency> dependencies;
 
 	public void execute() throws MojoExecutionException {
 
 		Set<URL> urls = getDependenciesURLs();
+		
+		URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[0]),
+				getClassLoader());
+
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
-				.addUrls(urls).setScanners(new TypeAnnotationsScanner(),
-						new SubTypesScanner()));
+				.addUrls(urls)
+				.setScanners(new TypeAnnotationsScanner(),
+						new SubTypesScanner()).addClassLoader(loader));
 
-		Set<Class<?>> archetypes = reflections
-				.getTypesAnnotatedWith(CRUD.class);
-		
-		for(Class<?> archetype : archetypes){
-			ArchetypesScanner.scan(archetype);
+
+		Set<String> subTypesOf = reflections.getStore().getSubTypesOf(
+				ArchetypesScanner.class.getName());
+
+		for (String subType : subTypesOf) {
+
+			try {
+				Class.forName(subType, true, loader);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+
+		Set<String> archetypes = reflections.getStore().getTypesAnnotatedWith(
+				CRUD.class.getName());
+
+		for (String archetype : archetypes) {
+
+			try {
+				ArchetypesScanner.scan(Class.forName(archetype, true, loader),outputDirectory.getAbsolutePath());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private ClassLoader getClassLoader() {
+		return Thread.currentThread().getContextClassLoader();
 	}
 
 	private Set<URL> getDependenciesURLs() {
@@ -82,7 +117,7 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 
 		for (Dependency dependency : dependencies) {
 			try {
-				urls.add(new URL("file://"
+				urls.add(new URL("file:///"
 						+ findDependecyArtifactPath(dependency)));
 			} catch (MalformedURLException e) {
 				e.printStackTrace();

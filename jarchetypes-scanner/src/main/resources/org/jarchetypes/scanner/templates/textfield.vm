@@ -1,0 +1,8 @@
+<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="$id" value="$label :" /> 
+		</td> 
+		<td><p:inputText id="$id" value="$field" />
+		</td>
+	<tr>
+</table>
