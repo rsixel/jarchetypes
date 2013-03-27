@@ -1,0 +1,3 @@
+default.configuration=jarchetypes-test-ejb
+eclipse.preferences.version=1
+hibernate3.enabled=true

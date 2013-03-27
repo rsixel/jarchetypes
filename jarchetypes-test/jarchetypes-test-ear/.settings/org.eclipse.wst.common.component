@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="jarchetypes-test">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
+        <dependent-module archiveName="jarchetypes-test-web-0.0.1-SNAPSHOT.war" deploy-path="/" handle="module:/resource/jarchetypes-test-web/jarchetypes-test-web">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jarchetypes-test-ejb-0.0.1-SNAPSHOT.jar" deploy-path="/" handle="module:/resource/jarchetypes-test-ejb/jarchetypes-test-ejb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jarchetypes-core-0.0.1-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/jarchetypes-core/jarchetypes-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
