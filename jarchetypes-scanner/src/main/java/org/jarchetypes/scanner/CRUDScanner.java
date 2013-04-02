@@ -18,12 +18,12 @@ package org.jarchetypes.scanner;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.apache.velocity.VelocityContext;
 import org.jarchetypes.annotation.CRUD;
-import org.jarchetypes.annotation.TextField;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.widget.WidgetDescriptor;
 
@@ -37,16 +37,13 @@ public class CRUDScanner extends ArchetypesScanner {
 	}
 
 	@Override
-	protected void doScan(Class<?> archetype, String outputPath,
+	protected void doScan(Class<?> archetype, Member member,String outputPath,
 			VelocityContext context) {
 		CRUD crud = archetype.getAnnotation(CRUD.class);
-		
 		
 		context.put("title", crud.title());
 		
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
-
-		
 		
 		for(Method method:archetype.getMethods()){
 			boolean found = false;
@@ -58,7 +55,7 @@ public class CRUDScanner extends ArchetypesScanner {
 			}
 			
 			if(!found && crud.generateAll()){
-				scanByType(method.getReturnType(),archetype,outputPath,context);
+				scanByType(method,archetype,outputPath,context);
 			}
 		}
 

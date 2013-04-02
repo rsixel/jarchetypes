@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +48,7 @@ public abstract class ArchetypesScanner {
 					.isAnnotationPresent(Archetype.class)) {
 				
 				VelocityContext context = new VelocityContext();
-				scanners.get(annotation.annotationType()).doScan(archetype,
+				scanners.get(annotation.annotationType()).doScan(archetype,null,
 						outputPath,context);
 			}
 		}
@@ -54,7 +57,7 @@ public abstract class ArchetypesScanner {
 	public void scan(Annotation annotation, Class<?> archetype,
 			String outputPath, VelocityContext context) {
 
-		scanners.get(annotation.annotationType()).doScan(archetype, outputPath,context);
+		scanners.get(annotation.annotationType()).doScan(archetype,null, outputPath,context);
 
 	}
 
@@ -66,7 +69,7 @@ public abstract class ArchetypesScanner {
 
 	private Object properties;
 
-	protected abstract void doScan(Class<?> archetype, String outputPath,
+	protected abstract void doScan(Class<?> archetype,Member member, String outputPath,
 			VelocityContext context);
 
 	/**
@@ -113,10 +116,26 @@ public abstract class ArchetypesScanner {
 		defaultScanner.put(class1, scanner);
 	}
 
-	protected void scanByType(Class<?> returnType, Class<?> archetype,
+	protected void scanByType(Member member, Class<?> archetype,
 			String outputPath, VelocityContext context) {
-		defaultScanner.get(returnType).doScan(archetype, outputPath,context);
+		
+		ArchetypesScanner scanner = defaultScanner.get(getType(member));
+		if(scanner!=null)
+			scanner.doScan(archetype,member, outputPath,context);
 
+	}
+
+	protected Class<?> getType(Member member) {
+		
+		Class<?> result = null;
+		
+		if(member instanceof Method){
+			result = ((Method) member).getReturnType();
+		} else{
+			result = ((Field)member).getType();
+		}
+			
+		return result ;
 	}
 
 }

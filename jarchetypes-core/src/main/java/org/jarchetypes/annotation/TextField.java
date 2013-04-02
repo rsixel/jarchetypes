@@ -13,4 +13,6 @@ import org.jarchetypes.annotation.meta.Widget;
 @Target({ElementType.METHOD,ElementType.FIELD})
 public @interface TextField {
 
+	String title() default "";
+
 }
