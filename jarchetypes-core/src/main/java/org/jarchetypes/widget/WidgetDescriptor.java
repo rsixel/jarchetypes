@@ -2,6 +2,7 @@ package org.jarchetypes.widget;
 
 public class WidgetDescriptor {
 
+	private String beanName;
 	private String templateName;
 	private String title;
 	private String fieldName;
@@ -31,6 +32,14 @@ public class WidgetDescriptor {
 
 	public String getFieldName() {
 		return fieldName;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public void setBeanName(String beanName) {
+		this.beanName = beanName;
 	}
 	
 	
