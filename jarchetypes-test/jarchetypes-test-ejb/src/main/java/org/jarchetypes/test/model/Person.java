@@ -43,6 +43,8 @@ public class Person implements Serializable {
    @Digits(fraction = 0, integer = 12)
    @Column(name = "phone_number")
    private String phoneNumber;
+   
+   private String nickname;
 
    public Long getId() {
       return id;
@@ -75,4 +77,12 @@ public class Person implements Serializable {
    public void setPhoneNumber(String phoneNumber) {
       this.phoneNumber = phoneNumber;
    }
+
+public String getNickname() {
+	return nickname;
+}
+
+public void setNickname(String nickname) {
+	this.nickname = nickname;
+}
 }

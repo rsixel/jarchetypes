@@ -62,6 +62,14 @@
 			<artifactId>jarchetypes-scanner</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<!-- Importa as bibliotecas bo PRIMEFACES... -->
+		<dependency>
+			<groupId>org.primefaces</groupId>
+			<artifactId>primefaces</artifactId>
+			<version>3.4</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
@@ -72,6 +80,9 @@
 				<version>0.0.1-SNAPSHOT</version>
 				<executions>
 					<execution>
+						<configuration>
+							<outputDirectory>../jarchetypes-test-web/src/main/webapp</outputDirectory>
+						</configuration>
 						<goals>
 							<goal>generate</goal>
 						</goals>

@@ -28,7 +28,7 @@ import org.jarchetypes.annotation.meta.Archetype;
 @Archetype
 public @interface CRUD {
 
-	String title();
+	String title() default "";
 	
 	boolean generateAll() default false;
 	
