@@ -4,5 +4,5 @@
 		</td> 
 		<td><p:inputText id="${widget.getFieldName()}" value="#{${widget.getBeanName()}.${widget.getFieldName()}}" />
 		</td>
-	<tr>
+	</tr>
 </table>

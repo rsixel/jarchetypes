@@ -51,22 +51,7 @@ public class TextFieldScanner extends ArchetypesScanner {
 		return name.substring(0,1).toLowerCase()+name.substring(1);
 	}
 
-	private String getFieldName(Member member) {
-		if (member instanceof Field) {
-			return ((Field) member).getName();
-		} else {
-			String name = ((Method) member).getName();
-
-			if (name.startsWith("get")
-					|| name.startsWith("set")
-					|| name.substring(3, 4).equals(
-							name.substring(3, 4).toUpperCase())) {
-				name = name.substring(3, 4).toLowerCase() + name.substring(4);
-			}
-			return name;
-		}
-	}
-
+	
 	private Annotation getAnnotation(
 			Class<? extends Annotation> annotationType, Member member) {
 		if (member instanceof Field) {

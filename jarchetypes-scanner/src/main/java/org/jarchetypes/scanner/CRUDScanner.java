@@ -54,7 +54,7 @@ public class CRUDScanner extends ArchetypesScanner {
 				}
 			}
 			
-			if(!found && crud.generateAll()){
+			if(!found && crud.generateAll() && isGetter(method)){
 				scanByType(method,archetype,outputPath,context);
 			}
 		}

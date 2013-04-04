@@ -46,10 +46,12 @@ public abstract class ArchetypesScanner {
 		for (Annotation annotation : archetype.getAnnotations()) {
 			if (annotation.annotationType()
 					.isAnnotationPresent(Archetype.class)) {
-				
+
 				VelocityContext context = new VelocityContext();
-				scanners.get(annotation.annotationType()).doScan(archetype,null,
-						outputPath,context);
+				ArchetypesScanner scanner = scanners.get(annotation
+						.annotationType());
+				if (scanner != null)
+					scanner.doScan(archetype, null, outputPath, context);
 			}
 		}
 	}
@@ -57,7 +59,8 @@ public abstract class ArchetypesScanner {
 	public void scan(Annotation annotation, Class<?> archetype,
 			String outputPath, VelocityContext context) {
 
-		scanners.get(annotation.annotationType()).doScan(archetype,null, outputPath,context);
+		scanners.get(annotation.annotationType()).doScan(archetype, null,
+				outputPath, context);
 
 	}
 
@@ -69,8 +72,8 @@ public abstract class ArchetypesScanner {
 
 	private Object properties;
 
-	protected abstract void doScan(Class<?> archetype,Member member, String outputPath,
-			VelocityContext context);
+	protected abstract void doScan(Class<?> archetype, Member member,
+			String outputPath, VelocityContext context);
 
 	/**
 	 * http://stackoverflow.com/questions/2931516/loading-velocity-template-
@@ -112,30 +115,63 @@ public abstract class ArchetypesScanner {
 	}
 
 	protected static void registerDefaultType(Class<String> class1,
-			TextFieldScanner scanner) {
+			ArchetypesScanner scanner) {
 		defaultScanner.put(class1, scanner);
 	}
 
 	protected void scanByType(Member member, Class<?> archetype,
 			String outputPath, VelocityContext context) {
-		
+
 		ArchetypesScanner scanner = defaultScanner.get(getType(member));
-		if(scanner!=null)
-			scanner.doScan(archetype,member, outputPath,context);
+		if (scanner != null)
+			scanner.doScan(archetype, member, outputPath, context);
 
 	}
 
 	protected Class<?> getType(Member member) {
-		
+
 		Class<?> result = null;
-		
-		if(member instanceof Method){
+
+		if (member instanceof Method) {
 			result = ((Method) member).getReturnType();
-		} else{
-			result = ((Field)member).getType();
+		} else {
+			result = ((Field) member).getType();
 		}
-			
-		return result ;
+
+		return result;
+	}
+
+	protected String getFieldName(Member member) {
+		if (member instanceof Field) {
+			return ((Field) member).getName();
+		} else {
+			String name = ((Method) member).getName();
+
+			if (isGetter(name) || isSetter(name)) {
+				name = name.substring(3, 4).toLowerCase() + name.substring(4);
+			}
+			return name;
+		}
+	}
+
+	protected boolean isGetter(String name) {
+		return name.startsWith("get")
+				|| name.substring(3, 4).equals(
+						name.substring(3, 4).toUpperCase());
+	}
+
+	protected boolean isSetter(String name) {
+		return name.startsWith("set")
+				&& name.substring(3, 4).equals(
+						name.substring(3, 4).toUpperCase());
+	}
+
+	protected boolean isGetter(Method method) {
+		return isGetter(method.getName());
+	}
+
+	protected boolean isSetter(Method method) {
+		return isSetter(method.getName());
 	}
 
 }
