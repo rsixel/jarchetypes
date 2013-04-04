@@ -57,6 +57,11 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>org.jarchetypes</groupId>
+			<artifactId>jarchetypes-scanner</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

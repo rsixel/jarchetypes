@@ -104,10 +104,8 @@ public abstract class ArchetypesScanner {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
 				outputFilename + ".xhtml"), false));
 
-		if (!ve.evaluate(context, writer, templatePath, reader)) {
-			throw new Exception("Failed to convert the template into html.");
-		}
-
+		System.out.println("Writing "+outputFilename + ".xhtml");
+		
 		template.merge(context, writer);
 
 		writer.flush();
@@ -156,7 +154,7 @@ public abstract class ArchetypesScanner {
 
 	protected boolean isGetter(String name) {
 		return name.startsWith("get")
-				|| name.substring(3, 4).equals(
+				&& name.substring(3, 4).equals(
 						name.substring(3, 4).toUpperCase());
 	}
 
