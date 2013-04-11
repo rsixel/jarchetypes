@@ -1,0 +1,71 @@
+package mar.casnav.sipem.managedbean;
+
+import java.util.ArrayList;
+
+import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+//import mar.casnav.sipem.seguranca.ApenasLogado;
+
+@Named
+@SessionScoped
+//@ApenasLogado
+public class RecadastramentoSearchBean  implements java.io.Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8855337185728781183L;
+
+	@Inject
+	private PessoaDAO dao;
+	
+	@Inject
+	private PessoaService pessoaService;
+
+	private Pessoa pessoa = new Pessoa();
+	
+	private String tipoConsulta;
+	
+	private String valorConsulta;
+		
+	private ArrayList<Pessoa> listaPessoas  = new ArrayList<Pessoa>();
+	
+	//private String tipoAtendimento;
+	private String user;
+	
+	#foreach( $widget in $filters )
+		{$widget.getFieldName()};			
+	#end
+
+	public RecadastramentoConsultaBean() {
+		super();
+	}
+	
+	
+	
+	
+	public void search(){
+		try {
+			this.setListaPessoas((ArrayList<Pessoa>) $pessoaService.findAllPerson(this.getValorConsulta(), this.getTipoConsulta()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+				
+	}
+	
+	
+	#foreach( $widget in $filters )
+	public String get{$widget.getFieldName()}() {
+		return {$widget.getFieldName()};
+	}
+
+	public void set{$widget.getFieldName()}(String {$widget.getFieldName()}) {
+		this.{$widget.getFieldName()} = {$widget.getFieldName()};
+	}
+	#end
+	
+	
+	
+}

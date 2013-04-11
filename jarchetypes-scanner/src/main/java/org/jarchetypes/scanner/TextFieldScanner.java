@@ -7,7 +7,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.velocity.VelocityContext;
+import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.TextField;
+import org.jarchetypes.widget.FilterDescriptor;
 import org.jarchetypes.widget.WidgetDescriptor;
 
 public class TextFieldScanner extends ArchetypesScanner {
@@ -29,26 +31,24 @@ public class TextFieldScanner extends ArchetypesScanner {
 		TextField annotation = (TextField) getAnnotation(TextField.class,
 				member);
 
-		String name  = uncaptalize(getFieldName(member));
+		String name = ScannerUtil.uncaptalize(ScannerUtil.getFieldName(member));
 		descriptor.setTemplateName(TEMPLATE_NAME);
-		descriptor.setTitle(annotation != null ? annotation.title() : captalize(name) );
+		descriptor.setTitle(annotation != null ? annotation.title() : ScannerUtil.captalize(name) );
 		descriptor.setFieldName(name);
-		descriptor.setBeanName(uncaptalize(archetype.getSimpleName()));
+		descriptor.setBeanName(ScannerUtil.uncaptalize(archetype.getSimpleName()));
+		
+		
+		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
+		filterDescriptor.setBeanName(ScannerUtil.uncaptalize(archetype.getSimpleName())+"SearchBean");
 		
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		
+		if(getAnnotation(Filter.class, member)!=null)
+			((List<FilterDescriptor>) context.get("filters")).add(filterDescriptor);
 
 		// TODO Auto-generated method stub
 
-	}
-
-	private String captalize(String name) {
-		
-		return name.substring(0,1).toUpperCase()+name.substring(1);
-	}
-	
-	private String uncaptalize(String name) {
-		return name.substring(0,1).toLowerCase()+name.substring(1);
 	}
 
 	

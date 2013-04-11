@@ -25,12 +25,15 @@ import java.util.ArrayList;
 import org.apache.velocity.VelocityContext;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
+import org.jarchetypes.widget.FilterDescriptor;
 import org.jarchetypes.widget.WidgetDescriptor;
 
 public class CRUDScanner extends ArchetypesScanner {
 
 
 	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/crud.vm";
+	private static final String SEARCH_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/search.vm";
+	
 
 	static {
 		register(CRUD.class, new CRUDScanner());
@@ -44,17 +47,18 @@ public class CRUDScanner extends ArchetypesScanner {
 		context.put("title", crud.title());
 		
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
+		context.put("filters", new ArrayList<FilterDescriptor>());
 		
 		for(Method method:archetype.getMethods()){
 			boolean found = false;
 			for(Annotation annotation: method.getAnnotations()){
 				if(annotation.annotationType().isAnnotationPresent(Widget.class)){
-					scan(annotation,archetype,outputPath,context);
+					scan(annotation,archetype,method,outputPath,context);
 					found = true;
 				}
 			}
 			
-			if(!found && crud.generateAll() && isGetter(method)){
+			if(!found && crud.generateAll() && ScannerUtil.isGetter(method)){
 				scanByType(method,archetype,outputPath,context);
 			}
 		}
@@ -63,6 +67,9 @@ public class CRUDScanner extends ArchetypesScanner {
 		try {
 			generate(TEMPLATE_NAME, outputPath
 					+ File.separator + archetype.getSimpleName(), context);
+			
+			generate(SEARCH_TEMPLATE_NAME, outputPath
+					+ File.separator + archetype.getSimpleName()+"Search", context);			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

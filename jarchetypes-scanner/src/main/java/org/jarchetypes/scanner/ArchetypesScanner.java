@@ -56,10 +56,10 @@ public abstract class ArchetypesScanner {
 		}
 	}
 
-	public void scan(Annotation annotation, Class<?> archetype,
+	public void scan(Annotation annotation, Class<?> archetype,Member member,
 			String outputPath, VelocityContext context) {
 
-		scanners.get(annotation.annotationType()).doScan(archetype, null,
+		scanners.get(annotation.annotationType()).doScan(archetype,member,
 				outputPath, context);
 
 	}
@@ -139,37 +139,8 @@ public abstract class ArchetypesScanner {
 		return result;
 	}
 
-	protected String getFieldName(Member member) {
-		if (member instanceof Field) {
-			return ((Field) member).getName();
-		} else {
-			String name = ((Method) member).getName();
 
-			if (isGetter(name) || isSetter(name)) {
-				name = name.substring(3, 4).toLowerCase() + name.substring(4);
-			}
-			return name;
-		}
-	}
 
-	protected boolean isGetter(String name) {
-		return name.startsWith("get")
-				&& name.substring(3, 4).equals(
-						name.substring(3, 4).toUpperCase());
-	}
 
-	protected boolean isSetter(String name) {
-		return name.startsWith("set")
-				&& name.substring(3, 4).equals(
-						name.substring(3, 4).toUpperCase());
-	}
-
-	protected boolean isGetter(Method method) {
-		return isGetter(method.getName());
-	}
-
-	protected boolean isSetter(Method method) {
-		return isSetter(method.getName());
-	}
 
 }
