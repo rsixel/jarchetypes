@@ -1,71 +1,61 @@
-package mar.casnav.sipem.managedbean;
+package ${targetPackage};
 
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.HashMap;
+import org.jarchetypes.service.search.GenericSearchBean;
+import $beanPathName;
 
-//import mar.casnav.sipem.seguranca.ApenasLogado;
 
 @Named
 @SessionScoped
-//@ApenasLogado
-public class RecadastramentoSearchBean  implements java.io.Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8855337185728781183L;
-
-	@Inject
-	private PessoaDAO dao;
+public class ${beanName}SearchBean  extends GenericSearchBean<${beanName}> {
 	
-	@Inject
-	private PessoaService pessoaService;
-
-	private Pessoa pessoa = new Pessoa();
 	
-	private String tipoConsulta;
-	
-	private String valorConsulta;
-		
-	private ArrayList<Pessoa> listaPessoas  = new ArrayList<Pessoa>();
-	
-	//private String tipoAtendimento;
-	private String user;
 	
 	#foreach( $widget in $filters )
-		{$widget.getFieldName()};			
+	$widget.getFieldType() $widget.getFieldName();			
 	#end
-
-	public RecadastramentoConsultaBean() {
+	
+	
+	public ${beanName}SearchBean() {
 		super();
 	}
 	
 	
-	
-	
-	public void search(){
+	public List<${beanName}>  search(){
+		List<${beanName}> list = new ArrayList<${beanName}>();
+		
+		HashMap<String,Object> parameters = new HashMap<String,Object>(); 
+		
+		#foreach( $widget in $filters )
+			parameters.put("$widget.getFieldName()",$widget.getFieldName());			
+		#end
+		
+		
 		try {
-			this.setListaPessoas((ArrayList<Pessoa>) $pessoaService.findAllPerson(this.getValorConsulta(), this.getTipoConsulta()));
+			list = search(${beanName}.class,parameters);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-				
+		
+		return list;
+			
 	}
 	
 	
 	#foreach( $widget in $filters )
-	public String get{$widget.getFieldName()}() {
-		return {$widget.getFieldName()};
+	public String get$ScannerUtil.captalize($widget.getFieldName())() {
+		return $widget.getFieldName();
 	}
 
-	public void set{$widget.getFieldName()}(String {$widget.getFieldName()}) {
-		this.{$widget.getFieldName()} = {$widget.getFieldName()};
+	public void set$ScannerUtil.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
+		this.$widget.getFieldName() = $widget.getFieldName();
 	}
 	#end
-	
-	
-	
+		
 }

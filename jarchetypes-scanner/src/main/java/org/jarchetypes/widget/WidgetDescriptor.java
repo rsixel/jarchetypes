@@ -6,6 +6,11 @@ public class WidgetDescriptor {
 	private String templateName;
 	private String title;
 	private String fieldName;
+	private String fieldType;
+
+	public String getFieldType() {
+		return fieldType;
+	}
 
 	public String getTitle() {
 		return title;
@@ -40,6 +45,10 @@ public class WidgetDescriptor {
 
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
+	}
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
 	}
 	
 	

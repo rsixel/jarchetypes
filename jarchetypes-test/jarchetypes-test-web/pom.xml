@@ -59,6 +59,12 @@
 
 		<dependency>
 			<groupId>org.jarchetypes</groupId>
+			<artifactId>jarchetypes-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.jarchetypes</groupId>
 			<artifactId>jarchetypes-scanner</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -69,11 +75,21 @@
 			<artifactId>primefaces</artifactId>
 			<version>3.4</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>src/main/java/**/*.java</include>
+						<include>src/generated/java/**/*.java</include>
+					</includes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.jarchetypes</groupId>
 				<artifactId>jarchetypes-plugin</artifactId>
@@ -82,6 +98,8 @@
 					<execution>
 						<configuration>
 							<outputDirectory>../jarchetypes-test-web/src/main/webapp</outputDirectory>
+							<sourceDirectory>../jarchetypes-test-web/src/main/generated/java</sourceDirectory>
+							<targetPackage>org.jarchetypes.services</targetPackage>
 						</configuration>
 						<goals>
 							<goal>generate</goal>

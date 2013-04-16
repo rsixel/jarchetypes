@@ -23,7 +23,7 @@ public class TextFieldScanner extends ArchetypesScanner {
 	}
 
 	@Override
-	protected void doScan(Class<?> archetype, Member member, String outputPath,
+	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
 
 		WidgetDescriptor descriptor = new WidgetDescriptor();
@@ -33,25 +33,28 @@ public class TextFieldScanner extends ArchetypesScanner {
 
 		String name = ScannerUtil.uncaptalize(ScannerUtil.getFieldName(member));
 		descriptor.setTemplateName(TEMPLATE_NAME);
-		descriptor.setTitle(annotation != null ? annotation.title() : ScannerUtil.captalize(name) );
+		descriptor.setTitle(annotation != null ? annotation.title()
+				: ScannerUtil.captalize(name));
 		descriptor.setFieldName(name);
-		descriptor.setBeanName(ScannerUtil.uncaptalize(archetype.getSimpleName()));
+		descriptor.setBeanName(ScannerUtil.uncaptalize(archetype
+				.getSimpleName()));
 		
-		
+		descriptor.setFieldType(member instanceof Method ? ((Method)member).getReturnType().getName(): ((Field)member).getType().getName());
+
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
-		filterDescriptor.setBeanName(ScannerUtil.uncaptalize(archetype.getSimpleName())+"SearchBean");
-		
+		filterDescriptor.setBeanName(ScannerUtil.uncaptalize(archetype
+				.getSimpleName()) + "SearchBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
-		
-		if(getAnnotation(Filter.class, member)!=null)
-			((List<FilterDescriptor>) context.get("filters")).add(filterDescriptor);
+
+		if (getAnnotation(Filter.class, member) != null)
+			((List<FilterDescriptor>) context.get("filters"))
+					.add(filterDescriptor);
 
 		// TODO Auto-generated method stub
 
 	}
 
-	
 	private Annotation getAnnotation(
 			Class<? extends Annotation> annotationType, Member member) {
 		if (member instanceof Field) {

@@ -32,6 +32,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.apache.velocity.VelocityContext;
 import org.codehaus.classworlds.ClassRealm;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.scanner.ArchetypesScanner;
@@ -67,19 +68,31 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 	 */
 	private List<Dependency> dependencies;
 
+	/**
+	 * Location of the generated source.
+	 * @parameter default-value="${sourceDirectory}
+	 * @required
+	 */
+	private File sourceDirectory;
+	
+	/**
+	 * Location of the generated source.
+	 * @parameter default-value="${targetPackage}
+	 * @required
+	 */
+	private String targetPackage;
+
 	public void execute() throws MojoExecutionException {
 
 		Set<URL> urls = getDependenciesURLs();
-		
+
 		URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[0]),
 				getClassLoader());
-
 
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 				.addUrls(urls)
 				.setScanners(new TypeAnnotationsScanner(),
 						new SubTypesScanner()).addClassLoader(loader));
-
 
 		Set<String> subTypesOf = reflections.getStore().getSubTypesOf(
 				ArchetypesScanner.class.getName());
@@ -97,10 +110,17 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 		Set<String> archetypes = reflections.getStore().getTypesAnnotatedWith(
 				CRUD.class.getName());
 
+		VelocityContext context = new VelocityContext();
+
+		context.put("outputPath", outputDirectory.getAbsolutePath());
+		context.put("sourceDirectory", sourceDirectory.getAbsolutePath());
+		context.put("targetPackage", targetPackage);
+
 		for (String archetype : archetypes) {
 
 			try {
-				ArchetypesScanner.scan(Class.forName(archetype, true, loader),outputDirectory.getAbsolutePath());
+				ArchetypesScanner.scan(Class.forName(archetype, true, loader),
+						context);
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +131,7 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 	private ClassLoader getClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
-
+ 
 	private Set<URL> getDependenciesURLs() {
 		Set<URL> urls = new HashSet<URL>();
 

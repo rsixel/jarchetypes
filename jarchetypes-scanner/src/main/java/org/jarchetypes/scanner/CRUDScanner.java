@@ -30,52 +30,63 @@ import org.jarchetypes.widget.WidgetDescriptor;
 
 public class CRUDScanner extends ArchetypesScanner {
 
-
 	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/crud.vm";
 	private static final String SEARCH_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/search.vm";
-	
+	private static final String SEARCH_BEAN_NAME = "org/jarchetypes/scanner/templates/searchbean.vm";
 
 	static {
 		register(CRUD.class, new CRUDScanner());
 	}
 
 	@Override
-	protected void doScan(Class<?> archetype, Member member,String outputPath,
+	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
 		CRUD crud = archetype.getAnnotation(CRUD.class);
-		
+
 		context.put("title", crud.title());
-		
+		context.put("beanName", archetype.getSimpleName());
+		context.put("beanPathName", archetype.getName());
+
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
 		context.put("filters", new ArrayList<FilterDescriptor>());
 		
-		for(Method method:archetype.getMethods()){
+		context.put("ScannerUtil", ScannerUtil.class);
+
+		for (Method method : archetype.getMethods()) {
 			boolean found = false;
-			for(Annotation annotation: method.getAnnotations()){
-				if(annotation.annotationType().isAnnotationPresent(Widget.class)){
-					scan(annotation,archetype,method,outputPath,context);
+			for (Annotation annotation : method.getAnnotations()) {
+				if (annotation.annotationType().isAnnotationPresent(
+						Widget.class)) {
+					scan(annotation, archetype, method, context);
 					found = true;
 				}
 			}
-			
-			if(!found && crud.generateAll() && ScannerUtil.isGetter(method)){
-				scanByType(method,archetype,outputPath,context);
+
+			if (!found && crud.generateAll() && ScannerUtil.isGetter(method)) {
+				scanByType(method, archetype, context);
 			}
 		}
 
-
 		try {
-			generate(TEMPLATE_NAME, outputPath
-					+ File.separator + archetype.getSimpleName(), context);
-			
-			generate(SEARCH_TEMPLATE_NAME, outputPath
-					+ File.separator + archetype.getSimpleName()+"Search", context);			
+			String outputPath = (String) context.get("outputPath");
+			String sourceDirectory = (String) context.get("sourceDirectory");
+
+			String targetPackagePath = ((String) context.get("targetPackage"))
+					.replace(".", File.separator);
+
+			generate(TEMPLATE_NAME, outputPath, archetype.getSimpleName(),
+					".xhtml", context);
+
+			generate(SEARCH_TEMPLATE_NAME, outputPath,
+					archetype.getSimpleName() + "Search", ".xhtml", context);
+
+			generate(SEARCH_BEAN_NAME, sourceDirectory + File.separator
+					+ targetPackagePath, archetype.getSimpleName()
+					+ "SearchBean", ".java", context);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-	
-
 }

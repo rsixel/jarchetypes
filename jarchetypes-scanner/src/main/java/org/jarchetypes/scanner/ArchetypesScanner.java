@@ -42,25 +42,24 @@ public abstract class ArchetypesScanner {
 
 	private static Map<Class<?>, ArchetypesScanner> defaultScanner = new HashMap<Class<?>, ArchetypesScanner>();
 
-	public static void scan(Class<?> archetype, String outputPath) {
+	public static void scan(Class<?> archetype, VelocityContext context) {
 		for (Annotation annotation : archetype.getAnnotations()) {
 			if (annotation.annotationType()
 					.isAnnotationPresent(Archetype.class)) {
 
-				VelocityContext context = new VelocityContext();
 				ArchetypesScanner scanner = scanners.get(annotation
 						.annotationType());
 				if (scanner != null)
-					scanner.doScan(archetype, null, outputPath, context);
+					scanner.doScan(archetype, null, context);
 			}
 		}
 	}
 
-	public void scan(Annotation annotation, Class<?> archetype,Member member,
-			String outputPath, VelocityContext context) {
+	public void scan(Annotation annotation, Class<?> archetype, Member member,
+			VelocityContext context) {
 
-		scanners.get(annotation.annotationType()).doScan(archetype,member,
-				outputPath, context);
+		scanners.get(annotation.annotationType()).doScan(archetype, member,
+				context);
 
 	}
 
@@ -73,7 +72,7 @@ public abstract class ArchetypesScanner {
 	private Object properties;
 
 	protected abstract void doScan(Class<?> archetype, Member member,
-			String outputPath, VelocityContext context);
+			VelocityContext context);
 
 	/**
 	 * http://stackoverflow.com/questions/2931516/loading-velocity-template-
@@ -82,8 +81,15 @@ public abstract class ArchetypesScanner {
 	 * @param outputFilename
 	 * @throws Exception
 	 */
-	public void generate(String templatePath, String outputFilename,
+	public void generate(String templatePath, String outputDirectory, String outputFilename, String extension,
 			VelocityContext context) throws Exception {
+		
+		File directory = new File(outputDirectory);
+		
+		if(!directory.exists()){
+			directory.mkdirs();
+		}
+		
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class",
@@ -102,10 +108,10 @@ public abstract class ArchetypesScanner {
 		Template template = ve.getTemplate(templatePath, "UTF-8");
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-				outputFilename + ".xhtml"), false));
+				outputDirectory + File.separator+ outputFilename + extension), false));
 
-		System.out.println("Writing "+outputFilename + ".xhtml");
-		
+		System.out.println("Writing " + outputDirectory + File.separator+ outputFilename + extension);
+
 		template.merge(context, writer);
 
 		writer.flush();
@@ -118,11 +124,11 @@ public abstract class ArchetypesScanner {
 	}
 
 	protected void scanByType(Member member, Class<?> archetype,
-			String outputPath, VelocityContext context) {
+			VelocityContext context) {
 
 		ArchetypesScanner scanner = defaultScanner.get(getType(member));
 		if (scanner != null)
-			scanner.doScan(archetype, member, outputPath, context);
+			scanner.doScan(archetype, member, context);
 
 	}
 
@@ -138,9 +144,5 @@ public abstract class ArchetypesScanner {
 
 		return result;
 	}
-
-
-
-
 
 }
