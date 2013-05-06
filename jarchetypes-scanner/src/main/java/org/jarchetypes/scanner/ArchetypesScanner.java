@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.velocity.Template;
@@ -35,6 +36,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jarchetypes.annotation.meta.Archetype;
+import org.jarchetypes.widget.ArchetypeDescriptor;
 
 public abstract class ArchetypesScanner {
 
@@ -81,15 +83,16 @@ public abstract class ArchetypesScanner {
 	 * @param outputFilename
 	 * @throws Exception
 	 */
-	public void generate(String templatePath, String outputDirectory, String outputFilename, String extension,
-			VelocityContext context) throws Exception {
-		
+	public static void generate(String templatePath, String outputDirectory,
+			String outputFilename, String extension, VelocityContext context)
+			throws Exception {
+
 		File directory = new File(outputDirectory);
-		
-		if(!directory.exists()){
+
+		if (!directory.exists()) {
 			directory.mkdirs();
 		}
-		
+
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class",
@@ -97,7 +100,7 @@ public abstract class ArchetypesScanner {
 
 		ve.init();
 
-		InputStream input = this.getClass().getClassLoader()
+		InputStream input = ArchetypesScanner.class.getClassLoader()
 				.getResourceAsStream(templatePath);
 		if (input == null) {
 			throw new IOException("Template file doesn't exist");
@@ -108,9 +111,11 @@ public abstract class ArchetypesScanner {
 		Template template = ve.getTemplate(templatePath, "UTF-8");
 
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-				outputDirectory + File.separator+ outputFilename + extension), false));
+				outputDirectory + File.separator + outputFilename + extension),
+				false));
 
-		System.out.println("Writing " + outputDirectory + File.separator+ outputFilename + extension);
+		System.out.println("Writing " + outputDirectory + File.separator
+				+ outputFilename + extension);
 
 		template.merge(context, writer);
 
@@ -145,4 +150,18 @@ public abstract class ArchetypesScanner {
 		return result;
 	}
 
+	protected void addArchetypeDescriptor(Class<?> archetype, Annotation annotation,
+			VelocityContext context) {
+		List<ArchetypeDescriptor> archetypesDescriptors = (List<ArchetypeDescriptor>) context.get("archetypesDescriptors");
+		
+		try {
+			Method method = annotation.getClass().getMethod("category");
+			Object value = method.invoke(annotation);
+			archetypesDescriptors.add(new ArchetypeDescriptor(archetype.getName(),(String)value));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+	}
 }

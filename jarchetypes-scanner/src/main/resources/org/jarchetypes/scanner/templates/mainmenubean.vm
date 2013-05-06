@@ -1,0 +1,37 @@
+package ${targetPackage};
+
+import java.io.Serializable;
+import java.util.HashMap;
+
+import javax.faces.bean.ApplicationScoped;
+import javax.inject.Named;
+
+import org.jarchetypes.widget.ArchetypeDescriptor;
+
+
+#foreach( $archetype in $archetypesDescriptors )
+import $archetype.getArchetypeType();			
+#end
+
+
+@Named
+@ApplicationScoped
+public class MainMenuBuilder implements Serializable {
+	
+	private HashMap<String,ArchetypeDescriptor> archetypes = new HashMap<>();
+	
+	public MainMenuBuilder(){
+		super();
+		
+		init();
+	}
+	
+	protected void init(){
+	
+		#foreach( $archetype in $archetypesDescriptors )
+		archetypes.put("$archetype.getArchetypeType()",new ArchetypeDescriptor("$archetype.getArchetypeType()","$archetype.getCategory()"));			
+		#end
+	}	
+		
+		
+}

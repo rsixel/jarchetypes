@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +37,7 @@ import org.apache.velocity.VelocityContext;
 import org.codehaus.classworlds.ClassRealm;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.scanner.ArchetypesScanner;
+import org.jarchetypes.widget.ArchetypeDescriptor;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -50,6 +52,9 @@ import org.reflections.util.ConfigurationBuilder;
  * @phase process-sources
  */
 public class JArchetypesPluginMojo extends AbstractMojo {
+	
+	private static final String MAIN_MENU_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/mainmenubean.vm";
+	
 	/**
 	 * Location of the file.
 	 * 
@@ -107,14 +112,20 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 			}
 		}
 
+		// TODO: Needs to use meta annotation @Archetype to search other archetypes
 		Set<String> archetypes = reflections.getStore().getTypesAnnotatedWith(
 				CRUD.class.getName());
-
+		
 		VelocityContext context = new VelocityContext();
 
 		context.put("outputPath", outputDirectory.getAbsolutePath());
 		context.put("sourceDirectory", sourceDirectory.getAbsolutePath());
 		context.put("targetPackage", targetPackage);
+		
+		List<ArchetypeDescriptor> archetypesDescriptors = new ArrayList<>();
+		
+		context.put("archetypes", archetypesDescriptors );
+		context.put("archetypesDescriptors", archetypesDescriptors );
 
 		for (String archetype : archetypes) {
 
@@ -126,6 +137,27 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 				e.printStackTrace();
 			}
 		}
+		
+		afterScan(context);
+	}
+
+	private void afterScan(VelocityContext context) {
+		try {
+			String outputPath = (String) context.get("outputPath");
+			String sourceDirectory = (String) context.get("sourceDirectory");
+
+			String targetPackagePath = ((String) context.get("targetPackage"))
+					.replace(".", File.separator);
+
+
+			ArchetypesScanner.generate(MAIN_MENU_TEMPLATE_NAME, sourceDirectory + File.separator
+					+ targetPackagePath, "MainMenuBuilder", ".java", context);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	private ClassLoader getClassLoader() {
