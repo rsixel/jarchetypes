@@ -1,5 +1,8 @@
 package org.jarchetypes.widget;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WidgetDescriptor {
 
 	private String beanName;
@@ -7,6 +10,8 @@ public class WidgetDescriptor {
 	private String title;
 	private String fieldName;
 	private String fieldType;
+
+	private Map<String, String> attributes = new HashMap<String, String>();
 
 	public String getFieldType() {
 		return fieldType;
@@ -22,17 +27,17 @@ public class WidgetDescriptor {
 
 	public void setTemplateName(String templateName) {
 		this.templateName = templateName;
-		
+
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-		
+
 	}
 
 	public void setFieldName(String fieldName) {
 		this.fieldName = fieldName;
-		
+
 	}
 
 	public String getFieldName() {
@@ -50,7 +55,13 @@ public class WidgetDescriptor {
 	public void setFieldType(String fieldType) {
 		this.fieldType = fieldType;
 	}
-	
-	
+
+	public String getAttribute(String attributeName) {
+		return attributes.get(attributeName);
+	}
+
+	public void setAttribute(String attributeName, String value) {
+		attributes.put(attributeName, value);
+	}
 
 }

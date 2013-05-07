@@ -51,6 +51,9 @@ public class CRUDScanner extends ArchetypesScanner {
 		context.put("filters", new ArrayList<FilterDescriptor>());
 		
 		context.put("ScannerUtil", ScannerUtil.class);
+		
+		context.put("searchBean", ScannerUtil.uncaptalize(archetype
+				.getSimpleName()) + "SearchBean");
 
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
@@ -59,6 +62,7 @@ public class CRUDScanner extends ArchetypesScanner {
 						Widget.class)) {
 					scan(annotation, archetype, method, context);
 					found = true;
+					break;
 				}
 			}
 

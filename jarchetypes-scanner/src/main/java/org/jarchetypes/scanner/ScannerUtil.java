@@ -29,7 +29,6 @@ public class ScannerUtil {
 		return isSetter(method.getName());
 	}
 
-	
 	public static String getFieldName(Member member) {
 		if (member instanceof Field) {
 			return ((Field) member).getName();
@@ -38,23 +37,39 @@ public class ScannerUtil {
 
 			if (ScannerUtil.isGetter(name) || ScannerUtil.isSetter(name)) {
 				int delta = 0;
-				if(ScannerUtil.isGetter(name) && name.startsWith("is")){
-					delta=-1;
+				if (ScannerUtil.isGetter(name) && name.startsWith("is")) {
+					delta = -1;
 				}
-				name = name.substring(3+delta, 4+delta).toLowerCase() + name.substring(4+delta);
+				name = name.substring(3 + delta, 4 + delta).toLowerCase()
+						+ name.substring(4 + delta);
 			}
 			return name;
 		}
 	}
-	
 
 	public static String captalize(String name) {
-		
-		return name.substring(0,1).toUpperCase()+name.substring(1);
+
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
 	}
-	
+
 	public static String uncaptalize(String name) {
-		return name.substring(0,1).toLowerCase()+name.substring(1);
+		return name.substring(0, 1).toLowerCase() + name.substring(1);
+	}
+
+	public static Field getField(Class<?> cls, String fieldName) {
+		Class<?> c = cls;
+
+		while (! c.equals(Object.class)) {
+			for (Field field : cls.getDeclaredFields()) {
+				if (field.getName().equals(fieldName)) {
+					return field;
+				}
+			}
+			
+			c = c.getSuperclass();
+		}
+		
+		return null;
 	}
 
 }

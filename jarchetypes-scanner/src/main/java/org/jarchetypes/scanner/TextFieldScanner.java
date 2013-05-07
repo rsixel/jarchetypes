@@ -6,6 +6,9 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.collections.functors.NotNullPredicate;
 import org.apache.velocity.VelocityContext;
 import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.TextField;
@@ -38,8 +41,10 @@ public class TextFieldScanner extends ArchetypesScanner {
 		descriptor.setFieldName(name);
 		descriptor.setBeanName(ScannerUtil.uncaptalize(archetype
 				.getSimpleName()));
-		
-		descriptor.setFieldType(member instanceof Method ? ((Method)member).getReturnType().getName(): ((Field)member).getType().getName());
+
+		descriptor.setFieldType(member instanceof Method ? ((Method) member)
+				.getReturnType().getName() : ((Field) member).getType()
+				.getName());
 
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
 		filterDescriptor.setBeanName(ScannerUtil.uncaptalize(archetype
@@ -47,11 +52,36 @@ public class TextFieldScanner extends ArchetypesScanner {
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 
+		scanForRequired(archetype, member, descriptor);
+
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))
 					.add(filterDescriptor);
 
 		// TODO Auto-generated method stub
+
+	}
+
+	private void scanForRequired(Class<?> archetype, Member member,
+			WidgetDescriptor descriptor) {
+
+		boolean required = false;
+		try {
+			boolean isMethodAndHasNotNullAnnotation = member instanceof Method
+					&& (((Method) member).isAnnotationPresent(NotNull.class));
+			
+			boolean isGetterAndFieldHasNotNullAnnotation = member instanceof Method
+					&& ScannerUtil.isGetter(member.getName()) && ScannerUtil.getField(archetype,ScannerUtil.getFieldName(member))
+					.isAnnotationPresent(NotNull.class);
+			
+			required = isMethodAndHasNotNullAnnotation
+					|| isGetterAndFieldHasNotNullAnnotation;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		descriptor.setAttribute("required", required + "");
 
 	}
 
