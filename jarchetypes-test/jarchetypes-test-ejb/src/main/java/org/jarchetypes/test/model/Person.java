@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.Filter;
-import org.jarchetypes.annotation.TextField;
+import org.jarchetypes.annotation.InputText;
 
 @Entity
 @CRUD(title = "Person", generateAll = true)
@@ -53,7 +53,7 @@ public class Person implements Serializable {
 		this.id = id;
 	}
 
-	@TextField(title = "Nome")
+	@InputText(title = "Nome")
 	@Filter 
 	public String getName() {
 		return name;
@@ -71,7 +71,7 @@ public class Person implements Serializable {
 		this.email = email;
 	}
 
-	@TextField(title = "Telefone")
+	@InputText(title = "Telefone")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}

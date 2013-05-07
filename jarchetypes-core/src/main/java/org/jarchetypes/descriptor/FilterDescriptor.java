@@ -1,8 +1,8 @@
-package org.jarchetypes.widget;
+package org.jarchetypes.descriptor;
 
 import java.lang.reflect.Method;
 
-import org.jarchetypes.scanner.ScannerUtil;
+import org.archetypes.common.ArchetypesUtils;
 
 public class FilterDescriptor extends WidgetDescriptor {
 
@@ -14,10 +14,10 @@ public class FilterDescriptor extends WidgetDescriptor {
 	protected void assignFrom(Object from) {
 		
 		for(Method m:from.getClass().getMethods()){
-			if(ScannerUtil.isGetter(m)){
-				String name = ScannerUtil.getFieldName(m);
+			if(ArchetypesUtils.isGetter(m)){
+				String name = ArchetypesUtils.getFieldName(m);
 				try {
-					Method setter = getClass().getMethod("set"+ScannerUtil.captalize(name),m.getReturnType());
+					Method setter = getClass().getMethod("set"+ArchetypesUtils.captalize(name),m.getReturnType());
 					
 					setter.invoke(this, m.invoke(from));
 				} catch (Exception e) {

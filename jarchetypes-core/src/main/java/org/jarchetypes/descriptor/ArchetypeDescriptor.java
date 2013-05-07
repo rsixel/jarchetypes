@@ -1,14 +1,19 @@
-package org.jarchetypes.widget;
+package org.jarchetypes.descriptor;
 
 public class ArchetypeDescriptor {
 
 	private String archetypeType;
 	private String category;
+	private String title;
 
-	public ArchetypeDescriptor(String archetypeType, String category) {
+	
+
+	public ArchetypeDescriptor(String archetypeType, String category,
+			String title) {
 		super();
 		this.archetypeType = archetypeType;
 		this.category = category;
+		this.title = title;
 	}
 
 	public String getArchetypeType() {
@@ -25,6 +30,14 @@ public class ArchetypeDescriptor {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

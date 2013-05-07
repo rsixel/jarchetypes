@@ -36,7 +36,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.jarchetypes.annotation.meta.Archetype;
-import org.jarchetypes.widget.ArchetypeDescriptor;
+import org.jarchetypes.descriptor.ArchetypeDescriptor;
 
 public abstract class ArchetypesScanner {
 
@@ -150,18 +150,31 @@ public abstract class ArchetypesScanner {
 		return result;
 	}
 
-	protected void addArchetypeDescriptor(Class<?> archetype, Annotation annotation,
-			VelocityContext context) {
-		List<ArchetypeDescriptor> archetypesDescriptors = (List<ArchetypeDescriptor>) context.get("archetypesDescriptors");
-		
+	protected void addArchetypeDescriptor(Class<?> archetype,
+			Annotation annotation, VelocityContext context) {
+		List<ArchetypeDescriptor> archetypesDescriptors = (List<ArchetypeDescriptor>) context
+				.get("archetypesDescriptors");
+
 		try {
 			Method method = annotation.getClass().getMethod("category");
-			Object value = method.invoke(annotation);
-			archetypesDescriptors.add(new ArchetypeDescriptor(archetype.getName(),(String)value));
+			String category = (String) method.invoke(annotation);
+
+			String title = archetype.getSimpleName();
+
+			try {
+				method = annotation.getClass().getMethod("title");
+				Object aux = method.invoke(annotation);
+				title = (String) (aux == null || aux.equals("") ? title : aux);
+			} catch (NoSuchMethodException nsme) {
+
+			}
+
+			archetypesDescriptors.add(new ArchetypeDescriptor(archetype
+					.getName(), category, title));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 	}
 }

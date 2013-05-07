@@ -11,7 +11,7 @@ import org.jarchetypes.annotation.meta.Widget;
 @Widget
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD,ElementType.FIELD})
-public @interface TextField {
+public @interface InputText {
 
 	String title() default "";
 

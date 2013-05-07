@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>JArchetypes Example</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<h:outputStylesheet name="css/screen.css" />
+</h:head>
+<h:body>
+
+	<h:form id="form">
+
+		<p:growl id="messages" autoUpdate="true" />
+
+		<p:panelMenu style="width:200px" model="#{mainMenu.menuModel}">
+		</p:panelMenu>
+
+	</h:form>
+
+
+</h:body>
+</html>

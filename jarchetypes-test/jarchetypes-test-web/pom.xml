@@ -62,7 +62,7 @@
 			<artifactId>jarchetypes-core</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jarchetypes</groupId>
 			<artifactId>jarchetypes-scanner</artifactId>
@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>3.4</version>
+			<version>3.5</version>
 		</dependency>
 
 	</dependencies>
@@ -84,6 +84,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
 					<includes>
 						<include>src/main/java/**/*.java</include>
 						<include>src/generated/java/**/*.java</include>
@@ -118,7 +120,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

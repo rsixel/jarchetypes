@@ -10,18 +10,19 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.collections.functors.NotNullPredicate;
 import org.apache.velocity.VelocityContext;
+import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.Filter;
-import org.jarchetypes.annotation.TextField;
-import org.jarchetypes.widget.FilterDescriptor;
-import org.jarchetypes.widget.WidgetDescriptor;
+import org.jarchetypes.annotation.InputText;
+import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.WidgetDescriptor;
 
-public class TextFieldScanner extends ArchetypesScanner {
+public class InputTextScanner extends ArchetypesScanner {
 
-	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/textfield.vm";
+	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/inputtext.vm";
 
 	static {
-		TextFieldScanner scanner = new TextFieldScanner();
-		register(TextField.class, scanner);
+		InputTextScanner scanner = new InputTextScanner();
+		register(InputText.class, scanner);
 		registerDefaultType(String.class, scanner);
 	}
 
@@ -31,15 +32,15 @@ public class TextFieldScanner extends ArchetypesScanner {
 
 		WidgetDescriptor descriptor = new WidgetDescriptor();
 
-		TextField annotation = (TextField) getAnnotation(TextField.class,
+		InputText annotation = (InputText) getAnnotation(InputText.class,
 				member);
 
-		String name = ScannerUtil.uncaptalize(ScannerUtil.getFieldName(member));
+		String name = ArchetypesUtils.uncaptalize(ArchetypesUtils.getFieldName(member));
 		descriptor.setTemplateName(TEMPLATE_NAME);
 		descriptor.setTitle(annotation != null ? annotation.title()
-				: ScannerUtil.captalize(name));
+				: ArchetypesUtils.captalize(name));
 		descriptor.setFieldName(name);
-		descriptor.setBeanName(ScannerUtil.uncaptalize(archetype
+		descriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()));
 
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
@@ -47,7 +48,7 @@ public class TextFieldScanner extends ArchetypesScanner {
 				.getName());
 
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
-		filterDescriptor.setBeanName(ScannerUtil.uncaptalize(archetype
+		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
@@ -71,7 +72,7 @@ public class TextFieldScanner extends ArchetypesScanner {
 					&& (((Method) member).isAnnotationPresent(NotNull.class));
 			
 			boolean isGetterAndFieldHasNotNullAnnotation = member instanceof Method
-					&& ScannerUtil.isGetter(member.getName()) && ScannerUtil.getField(archetype,ScannerUtil.getFieldName(member))
+					&& ArchetypesUtils.isGetter(member.getName()) && ArchetypesUtils.getField(archetype,ArchetypesUtils.getFieldName(member))
 					.isAnnotationPresent(NotNull.class);
 			
 			required = isMethodAndHasNotNullAnnotation

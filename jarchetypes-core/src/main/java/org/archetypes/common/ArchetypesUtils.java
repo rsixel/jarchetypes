@@ -1,10 +1,10 @@
-package org.jarchetypes.scanner;
+package org.archetypes.common;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
-public class ScannerUtil {
+public class ArchetypesUtils {
 
 	public static boolean isGetter(String name) {
 		return name.startsWith("get")
@@ -35,9 +35,9 @@ public class ScannerUtil {
 		} else {
 			String name = ((Method) member).getName();
 
-			if (ScannerUtil.isGetter(name) || ScannerUtil.isSetter(name)) {
+			if (ArchetypesUtils.isGetter(name) || ArchetypesUtils.isSetter(name)) {
 				int delta = 0;
-				if (ScannerUtil.isGetter(name) && name.startsWith("is")) {
+				if (ArchetypesUtils.isGetter(name) && name.startsWith("is")) {
 					delta = -1;
 				}
 				name = name.substring(3 + delta, 4 + delta).toLowerCase()

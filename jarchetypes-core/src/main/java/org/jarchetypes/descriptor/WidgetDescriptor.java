@@ -1,4 +1,4 @@
-package org.jarchetypes.widget;
+package org.jarchetypes.descriptor;
 
 import java.util.HashMap;
 import java.util.Map;

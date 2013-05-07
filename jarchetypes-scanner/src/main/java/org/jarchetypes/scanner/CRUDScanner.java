@@ -23,10 +23,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.apache.velocity.VelocityContext;
+import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
-import org.jarchetypes.widget.FilterDescriptor;
-import org.jarchetypes.widget.WidgetDescriptor;
+import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.WidgetDescriptor;
 
 public class CRUDScanner extends ArchetypesScanner {
 
@@ -54,9 +55,9 @@ public class CRUDScanner extends ArchetypesScanner {
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
 		context.put("filters", new ArrayList<FilterDescriptor>());
 		
-		context.put("ScannerUtil", ScannerUtil.class);
+		context.put("ArchetypesUtils", ArchetypesUtils.class);
 		
-		context.put("searchBean", ScannerUtil.uncaptalize(archetype
+		context.put("searchBean", ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
 		for (Method method : archetype.getMethods()) {
@@ -70,7 +71,7 @@ public class CRUDScanner extends ArchetypesScanner {
 				}
 			}
 
-			if (!found && crud.generateAll() && ScannerUtil.isGetter(method)) {
+			if (!found && crud.generateAll() && ArchetypesUtils.isGetter(method)) {
 				scanByType(method, archetype, context);
 			}
 		}
