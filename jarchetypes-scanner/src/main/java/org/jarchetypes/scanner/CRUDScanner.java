@@ -41,7 +41,11 @@ public class CRUDScanner extends ArchetypesScanner {
 	@Override
 	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
+		
 		CRUD crud = archetype.getAnnotation(CRUD.class);
+		
+		addArchetypeDescriptor(archetype,crud,context);
+		
 
 		context.put("title", crud.title());
 		context.put("beanName", archetype.getSimpleName());
