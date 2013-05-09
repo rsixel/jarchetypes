@@ -6,7 +6,11 @@ import java.util.HashMap;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Named;
 
-import org.jarchetypes.widget.ArchetypeDescriptor;
+import org.jarchetypes.descriptor.ArchetypeDescriptor;
+import org.jarchetypes.service.BaseMainMenuBuilder;
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Produces;
+import org.primefaces.model.MenuModel;
 
 
 #foreach( $archetype in $archetypesDescriptors )
@@ -17,21 +21,27 @@ import $archetype.getArchetypeType();
 @Named
 @ApplicationScoped
 public class MainMenuBuilder extends BaseMainMenuBuilder implements Serializable {
-	
-	private HashMap<String,ArchetypeDescriptor> archetypes = new HashMap<>();
-	
+		
 	public MainMenuBuilder(){
 		super();
 		
-		init();
 	}
 	
-	protected void init(){
+	static {
 	
 		#foreach( $archetype in $archetypesDescriptors )
-		archetypes.put("$archetype.getArchetypeType()",new ArchetypeDescriptor("$archetype.getArchetypeType()","$archetype.getCategory()","$archetype.getTitle()"));			
+		archetypes.put("$archetype.getArchetypeType()",new ArchetypeDescriptor("$archetype.getArchetypeType()","$archetype.getCategory()","$archetype.getTitle()","$archetype.getPath()"));			
 		#end
 	}	
+	
+	public MenuModel getMenuModel() {
+		return menuModel;
+	}
+
+	@PostConstruct
+	public void build(){
+		buildMenuModel();
+	}
 		
 		
 }

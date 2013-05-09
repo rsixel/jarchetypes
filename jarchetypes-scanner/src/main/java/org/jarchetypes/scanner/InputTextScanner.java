@@ -19,6 +19,7 @@ import org.jarchetypes.descriptor.WidgetDescriptor;
 public class InputTextScanner extends ArchetypesScanner {
 
 	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/inputtext.vm";
+	private static final String FILTER_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/inputtextfilter.vm";
 
 	static {
 		InputTextScanner scanner = new InputTextScanner();
@@ -52,6 +53,7 @@ public class InputTextScanner extends ArchetypesScanner {
 				.getSimpleName()) + "SearchBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		filterDescriptor.setTemplateName(FILTER_TEMPLATE_NAME);
 
 		scanForRequired(archetype, member, descriptor);
 

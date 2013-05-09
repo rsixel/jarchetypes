@@ -49,11 +49,11 @@ public class ${beanName}SearchBean  extends GenericSearchBean<${beanName}> {
 	
 	
 	#foreach( $widget in $filters )
-	public String get$ScannerUtil.captalize($widget.getFieldName())() {
+	public String get$ArchetypesUtils.captalize($widget.getFieldName())() {
 		return $widget.getFieldName();
 	}
 
-	public void set$ScannerUtil.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
+	public void set$ArchetypesUtils.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
 		this.$widget.getFieldName() = $widget.getFieldName();
 	}
 	#end

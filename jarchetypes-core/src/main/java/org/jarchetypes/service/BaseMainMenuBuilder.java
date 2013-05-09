@@ -2,8 +2,6 @@ package org.jarchetypes.service;
 
 import java.util.HashMap;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Produces;
 import javax.faces.component.UIComponentBase;
 
 import org.jarchetypes.descriptor.ArchetypeDescriptor;
@@ -12,19 +10,14 @@ import org.primefaces.component.submenu.Submenu;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
 
+
 public class BaseMainMenuBuilder {
 
 	protected MenuModel menuModel = new DefaultMenuModel();
-	protected HashMap<String, ArchetypeDescriptor> archetypes = new HashMap<>();
+	protected static HashMap<String, ArchetypeDescriptor> archetypes = new HashMap<>();
 
 	protected HashMap<String, UIComponentBase> menuItems = new HashMap<>();
 
-	@Produces
-	public MenuModel getMenuModel() {
-		return menuModel;
-	}
-
-	@PostConstruct
 	protected void buildMenuModel() {
 
 		for (String archetype : archetypes.keySet()) {
@@ -33,7 +26,7 @@ public class BaseMainMenuBuilder {
 			String path = descriptor.getCategory() + "."
 					+ descriptor.getTitle();
 
-			String[] levels = archetype.split("\\.");
+			String[] levels = path.split("\\.");
 
 			int l = 0;
 
@@ -43,8 +36,10 @@ public class BaseMainMenuBuilder {
 			UIComponentBase menuItem = null;
 
 			for (String level : levels) {
-
-				curPath = curPath + sep + level;
+				
+				String label=level.equals("") && l==0?"Menu":level;
+				
+				curPath = curPath + sep + label;
 				sep = ".";
 
 				parent = menuItem;
@@ -52,16 +47,17 @@ public class BaseMainMenuBuilder {
 
 				if (menuItem == null) {
 
-					if (l == levels.length) {
+					if (l == levels.length-1) {
 						MenuItem item = new MenuItem();
 
 						item.setValue(descriptor.getTitle());
+						item.setOutcome(descriptor.getPath());
 
 						menuItem = item;
 					} else {
 						Submenu submenu = new Submenu();
 
-						submenu.setLabel(descriptor.getTitle());
+						submenu.setLabel(label);
 						menuItem = submenu;
 					}
 
