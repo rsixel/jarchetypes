@@ -1,4 +1,4 @@
-package org.jarchetypes.services;
+package org.jarchetypes.service;
 
 import java.util.HashMap;
 
