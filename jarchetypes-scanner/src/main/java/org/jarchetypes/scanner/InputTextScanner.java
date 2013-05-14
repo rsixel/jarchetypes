@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import org.apache.commons.collections.functors.NotNullPredicate;
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.Filter;
@@ -26,6 +26,7 @@ public class InputTextScanner extends ArchetypesScanner {
 		registerDefaultType(String.class, scanner);
 	}
 
+
 	@Override
 	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
@@ -35,7 +36,8 @@ public class InputTextScanner extends ArchetypesScanner {
 		InputText annotation = (InputText) getAnnotation(InputText.class,
 				member);
 
-		String name = ArchetypesUtils.uncaptalize(ArchetypesUtils.getFieldName(member));
+		String name = ArchetypesUtils.uncaptalize(ArchetypesUtils
+				.getFieldName(member));
 		descriptor.setTemplateName(TEMPLATE_NAME);
 		descriptor.setTitle(annotation != null ? annotation.title()
 				: ArchetypesUtils.captalize(name));
@@ -55,6 +57,8 @@ public class InputTextScanner extends ArchetypesScanner {
 
 		scanForRequired(archetype, member, descriptor);
 
+		scanForMaxlength(archetype, member, descriptor);
+
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))
 					.add(filterDescriptor);
@@ -63,18 +67,20 @@ public class InputTextScanner extends ArchetypesScanner {
 
 	}
 
-	private void scanForRequired(Class<?> archetype, Member member,
+	public void scanForRequired(Class<?> archetype, Member member,
 			WidgetDescriptor descriptor) {
 
 		boolean required = false;
 		try {
 			boolean isMethodAndHasNotNullAnnotation = member instanceof Method
 					&& (((Method) member).isAnnotationPresent(NotNull.class));
-			
+
 			boolean isGetterAndFieldHasNotNullAnnotation = member instanceof Method
-					&& ArchetypesUtils.isGetter(member.getName()) && ArchetypesUtils.getField(archetype,ArchetypesUtils.getFieldName(member))
-					.isAnnotationPresent(NotNull.class);
-			
+					&& ArchetypesUtils.isGetter(member.getName())
+					&& ArchetypesUtils.getField(archetype,
+							ArchetypesUtils.getFieldName(member))
+							.isAnnotationPresent(NotNull.class);
+
 			required = isMethodAndHasNotNullAnnotation
 					|| isGetterAndFieldHasNotNullAnnotation;
 		} catch (Exception e) {
@@ -86,14 +92,51 @@ public class InputTextScanner extends ArchetypesScanner {
 
 	}
 
-	private Annotation getAnnotation(
+	public void scanForMaxlength(Class<?> archetype, Member member,
+			WidgetDescriptor descriptor) {
+
+		boolean isPresent = false;
+
+		String maxlength = Integer.toString(Integer.MAX_VALUE);
+		
+		Size size = (Size) getAnnotation(Size.class,
+				member);
+
+		
+		try {
+			
+			boolean isMethodAndHasNotNullAnnotation = member instanceof Method
+					&& (((Method) member).isAnnotationPresent(Size.class));
+
+			boolean isGetterAndFieldHasNotNullAnnotation = member instanceof Method
+					&& ArchetypesUtils.isGetter(member.getName())
+					&& ArchetypesUtils.getField(archetype,
+							ArchetypesUtils.getFieldName(member))
+							.isAnnotationPresent(Size.class);
+		
+			isPresent = isMethodAndHasNotNullAnnotation
+					|| isGetterAndFieldHasNotNullAnnotation;
+			
+			
+			if (isPresent == true) {
+				maxlength = Integer.toString(size != null ? size.max() : 22);
+			}else {
+				maxlength = Integer.toString(7);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		descriptor.setAttribute("max", maxlength);
+	}
+
+	public Annotation getAnnotation(
 			Class<? extends Annotation> annotationType, Member member) {
 		if (member instanceof Field) {
 			return ((Field) member).getAnnotation(annotationType);
 		} else {
 			return ((Method) member).getAnnotation(annotationType);
 		}
-
 	}
-
 }

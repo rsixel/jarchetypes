@@ -1,0 +1,61 @@
+ 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/templates/crudbar.xhtml">
+	
+	<ui:define name="content">
+		<p:panel header="#{msg['sistema.subTitulo_6']}">
+			<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
+			    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="name" value="Nome" /> 
+		</td> 
+		<td>
+				
+			<p:inputText id="name" value="#{person.name}"
+		  	required="true"  maxlength="22" 		  	/>
+			
+		</td>
+	</tr>
+</table>			    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="email" value="Email" /> 
+		</td> 
+		<td>
+				
+			<p:inputText id="email" value="#{person.email}"
+		  	required="true"  maxlength="7" 		  	/>
+			
+		</td>
+	</tr>
+</table>			    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="phoneNumber" value="Telefone" /> 
+		</td> 
+		<td>
+				
+			<p:inputMask id="phoneNumber" value="#{person.phoneNumber}"
+		  	required="true"  maxlength="7" 		  	  mask="(99)9999-9999?9" 		  	/>
+			
+		</td>
+	</tr>
+</table>			    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="nickname" value="Nickname" /> 
+		</td> 
+		<td>
+				
+			<p:inputText id="nickname" value="#{person.nickname}"
+		  	required="false"  maxlength="7" 		  	/>
+			
+		</td>
+	</tr>
+</table>					</p:panel>
+	</ui:define>
+</ui:composition>

@@ -15,6 +15,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.Filter;
+import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
 
 @Entity
@@ -38,8 +39,8 @@ public class Person implements Serializable {
 	private String email;
 
 	@NotNull
-	@Size(min = 10, max = 12)
-	@Digits(fraction = 0, integer = 12)
+//	@Size(min = 10, max = 12)
+//	@Digits(fraction = 0, integer = 12)
 	@Column(name = "phone_number")
 	private String phoneNumber;
 
@@ -71,7 +72,7 @@ public class Person implements Serializable {
 		this.email = email;
 	}
 
-	@InputText(title = "Telefone")
+	@InputMask(title="Telefone", mask="(99)9999-9999?9")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
