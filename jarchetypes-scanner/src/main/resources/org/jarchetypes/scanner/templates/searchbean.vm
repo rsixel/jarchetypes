@@ -3,7 +3,9 @@ package ${targetPackage};
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashMap;
@@ -11,14 +13,15 @@ import org.jarchetypes.service.search.GenericSearchBean;
 import $beanPathName;
 
 
-@Named
-@SessionScoped
+@ManagedBean
+@ViewScoped
 public class ${beanName}SearchBean  extends GenericSearchBean<${beanName}> {
 	
+	private List<${beanName}> list = new ArrayList<${beanName}>();
 	
 	
 	#foreach( $widget in $filters )
-	$widget.getFieldType() $widget.getFieldName();			
+	private $widget.getFieldType() $widget.getFieldName();			
 	#end
 	
 	
@@ -27,13 +30,12 @@ public class ${beanName}SearchBean  extends GenericSearchBean<${beanName}> {
 	}
 	
 	
-	public List<${beanName}>  search(){
-		List<${beanName}> list = new ArrayList<${beanName}>();
+	public void search(){
 		
 		HashMap<String,Object> parameters = new HashMap<String,Object>(); 
 		
 		#foreach( $widget in $filters )
-			parameters.put("$widget.getFieldName()",$widget.getFieldName());			
+		parameters.put("$widget.getFieldName()",$widget.getFieldName());			
 		#end
 		
 		
@@ -43,6 +45,11 @@ public class ${beanName}SearchBean  extends GenericSearchBean<${beanName}> {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	public List<${beanName}>  getList(){
+				
 		return list;
 			
 	}

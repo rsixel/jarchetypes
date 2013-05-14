@@ -24,23 +24,29 @@
 	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
-	
+	<h:form>
 		<p:panel header="Archetypes" style="margin-top: 10px;">
 	
-				<h:form>
+				
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
 							<p:commandButton type="button" value="Limpar busca"
 								icon="ui-icon-trash" />
+								
+							<p:commandButton value="Adicionar $title" ajax="false"
+								action="$beanName?faces-redirect=true"
+								icon="ui-icon-add" />
+								
 						</p:toolbarGroup>
 		
 		
-						<p:toolbarGroup align="right">
-							<p:commandButton type="button" value="localizar"
-							actionListener="#{${searchBean}.search()}"
-								icon="ui-icon-search" />
-		
+
+								
+						<p:toolbarGroup align="right">								
+							<p:commandButton id="cbSearch" value="consultar"
+									styleClass="btRed" update="searchResult"
+									actionListener="#{${searchBean}.search}" 	icon="ui-icon-search" />						
 		
 						</p:toolbarGroup>
 		
@@ -54,7 +60,31 @@
 						#end
 					</p:panel>
 		
-				</h:form>
+			
+				<div style="margin-top: 50px; margin-bottom: 10px;">
+					<p:dataTable id="searchResult" var="resultItem"
+						emptyMessage="Realize a consulta"
+						value="#{${searchBean}.list}"
+						scrollable="true" liveScroll="true" scrollRows="20"
+						scrollHeight="300" style="width:950px;">
+
+						<p:column width="400" style="text-align: center;">
+							<f:facet name="header">  
+               				 Nome  
+            				</f:facet>
+							<h:outputText value="#{resultItem.nomeCpessoa}" />
+						</p:column>
+						<p:column width="50" style="text-align: center;">
+							<p:commandButton id="selectButton" icon="ui-icon-search"
+								title="editar" action="recadastramento?faces-redirect=true"
+								immediate="true">
+								<f:setPropertyActionListener
+									target="#{recadastramentoConsultaBean.pessoa}" value="#{resultItem}"></f:setPropertyActionListener>
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</div>
 			</p:panel>
+	</h:form>
 	</ui:define>
 </ui:composition>
