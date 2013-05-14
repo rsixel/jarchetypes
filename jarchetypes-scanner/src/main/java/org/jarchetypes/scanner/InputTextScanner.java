@@ -50,7 +50,7 @@ public class InputTextScanner extends ArchetypesScanner {
 
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
 		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
-				.getSimpleName()) + "SearchBean");
+				.getSimpleName()) + "CRUDBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 		filterDescriptor.setTemplateName(FILTER_TEMPLATE_NAME);

@@ -27,27 +27,11 @@
 		<p:panel header="$title" style="margin-top: 10px;">
 			<p:toolbar>
 				<p:toolbarGroup align="left">
-					<p:commandButton type="button" value="New" icon="ui-icon-document" />
-	
-					<p:commandButton type="button" value="Open"
-						icon="ui-icon-folder-open" />
-	
-					<p:separator />
-	
-					<p:commandButton type="button" title="Save" icon="ui-icon-disk" />
-					<p:commandButton type="button" title="Delete" icon="ui-icon-trash" />
-					<p:commandButton type="button" title="Print" icon="ui-icon-print" />
+					<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" icon="ui-icon-disk" />
+					<p:commandButton title="Delete" icon="ui-icon-trash" />
+					<p:commandButton title="Print" icon="ui-icon-print" />
 				</p:toolbarGroup>
 	
-				<p:toolbarGroup align="right">
-					<p:menuButton value="Options">
-						<p:menuitem value="Home" url="http://www.primefaces.org" />
-						<p:menuitem value="ShowCase"
-							url="http://www.primefaces.org/showcase" />
-						<p:menuitem value="TouchFaces"
-							url="http://www.primefaces.org/showcase/touch" />
-					</p:menuButton>
-				</p:toolbarGroup>
 			</p:toolbar>
 	
 			

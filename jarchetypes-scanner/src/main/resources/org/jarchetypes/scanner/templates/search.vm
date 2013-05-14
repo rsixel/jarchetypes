@@ -24,7 +24,6 @@
 	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
-	<h:form>
 		<p:panel header="Archetypes" style="margin-top: 10px;">
 	
 				
@@ -46,7 +45,7 @@
 						<p:toolbarGroup align="right">								
 							<p:commandButton id="cbSearch" value="consultar"
 									styleClass="btRed" update="searchResult"
-									actionListener="#{${searchBean}.search}" 	icon="ui-icon-search" />						
+									actionListener="#{${CRUDBean}.search}" 	icon="ui-icon-search" />						
 		
 						</p:toolbarGroup>
 		
@@ -64,7 +63,7 @@
 				<div style="margin-top: 50px; margin-bottom: 10px;">
 					<p:dataTable id="searchResult" var="resultItem"
 						emptyMessage="Realize a consulta"
-						value="#{${searchBean}.list}"
+						value="#{${CRUDBean}.list}"
 						scrollable="true" liveScroll="true" scrollRows="20"
 						scrollHeight="300" style="width:950px;">
 
@@ -85,6 +84,5 @@
 					</p:dataTable>
 				</div>
 			</p:panel>
-	</h:form>
 	</ui:define>
 </ui:composition>
