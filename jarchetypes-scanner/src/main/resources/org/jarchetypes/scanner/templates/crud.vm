@@ -21,14 +21,28 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:s="http://jboss.org/seam/faces"
-	template="/templates/crudbar.xhtml">
+	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
-		<p:panel header="#{msg['sistema.subTitulo_6']}">
-			<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
-			#foreach( $widget in $widgets )
-    			#parse( $widget.getTemplateName() )
-			#end
+		<p:panel header="$title" style="margin-top: 10px;">
+			<p:toolbar>
+				<p:toolbarGroup align="left">
+					<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" icon="ui-icon-disk" />
+					<p:commandButton title="Delete" icon="ui-icon-trash" />
+					<p:commandButton title="Print" icon="ui-icon-print" />
+				</p:toolbarGroup>
+	
+			</p:toolbar>
+	
+			
+		
+			<p:panel header="#{msg['sistema.subTitulo_6']}">
+				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
+				#foreach( $widget in $widgets )
+	    			#parse( $widget.getTemplateName() )
+				#end
+			</p:panel>
+		
 		</p:panel>
 	</ui:define>
 </ui:composition>

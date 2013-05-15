@@ -25,23 +25,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javassist.bytecode.stackmap.TypeData.ClassName;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.apache.velocity.VelocityContext;
-import org.codehaus.classworlds.ClassRealm;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.descriptor.ArchetypeDescriptor;
 import org.jarchetypes.scanner.ArchetypesScanner;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
 /**
@@ -49,7 +44,7 @@ import org.reflections.util.ConfigurationBuilder;
  * 
  * @goal generate
  * 
- * @phase process-sources
+ * @phase generate-sources
  */
 public class JArchetypesPluginMojo extends AbstractMojo {
 	

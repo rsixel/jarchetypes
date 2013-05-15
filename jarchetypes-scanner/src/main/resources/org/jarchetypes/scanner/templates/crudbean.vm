@@ -1,0 +1,92 @@
+package ${targetPackage};
+
+import java.util.List;
+import java.util.ArrayList;
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import javax.inject.Inject;
+import javax.enterprise.inject.Produces;
+import javax.inject.Named;
+import java.util.HashMap;
+import org.jarchetypes.service.CRUDService;
+import $beanPathName;
+
+
+@ManagedBean
+@SessionScoped
+public class ${beanName}CRUDBean  implements Serializable {
+
+	@Inject
+	private CRUDService<${beanName}> cRUDService;
+	
+	private List<${beanName}> list = new ArrayList<${beanName}>();
+	
+	#foreach( $widget in $filters )
+	private $widget.getFieldType() $widget.getFieldName();			
+	#end
+	
+	private ${beanName} bean = new ${beanName}();
+	
+	public ${beanName}CRUDBean() {
+		super();
+	}
+	
+	public void search(){
+		
+		HashMap<String,Object> parameters = new HashMap<String,Object>(); 
+		
+		#foreach( $widget in $filters )
+		parameters.put("$widget.getFieldName()",$widget.getFieldName());			
+		#end
+		
+		
+		try {
+			list = cRUDService.search(${beanName}.class,parameters);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public List<${beanName}>  getList(){
+				
+		return list;
+			
+	}
+	
+	
+	#foreach( $widget in $filters )
+	public String get$ArchetypesUtils.captalize($widget.getFieldName())() {
+		return $widget.getFieldName();
+	}
+
+	public void set$ArchetypesUtils.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
+		this.$widget.getFieldName() = $widget.getFieldName();
+	}
+	#end
+	
+	public void save(){
+		try {
+		
+			cRUDService.save(bean);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ${beanName} get${beanName}(){
+		return bean;
+	}
+	
+	
+	public void set${beanName}(${beanName} bean){
+		this.bean = bean;
+	}
+	
+		
+}

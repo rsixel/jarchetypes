@@ -33,7 +33,7 @@ public class CRUDScanner extends ArchetypesScanner {
 
 	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/crud.vm";
 	private static final String SEARCH_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/search.vm";
-	private static final String SEARCH_BEAN_NAME = "org/jarchetypes/scanner/templates/searchbean.vm";
+	private static final String CRUD_BEAN_NAME = "org/jarchetypes/scanner/templates/crudbean.vm";
 
 	static {
 		register(CRUD.class, new CRUDScanner());
@@ -57,8 +57,8 @@ public class CRUDScanner extends ArchetypesScanner {
 		
 		context.put("ArchetypesUtils", ArchetypesUtils.class);
 		
-		context.put("searchBean", ArchetypesUtils.uncaptalize(archetype
-				.getSimpleName()) + "SearchBean");
+		context.put("CRUDBean", ArchetypesUtils.uncaptalize(archetype
+				.getSimpleName()) + "CRUDBean");
 
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
@@ -89,9 +89,9 @@ public class CRUDScanner extends ArchetypesScanner {
 			generate(SEARCH_TEMPLATE_NAME, outputPath,
 					archetype.getSimpleName() + "Search", ".xhtml", context);
 
-			generate(SEARCH_BEAN_NAME, sourceDirectory + File.separator
+			generate(CRUD_BEAN_NAME, sourceDirectory + File.separator
 					+ targetPackagePath, archetype.getSimpleName()
-					+ "SearchBean", ".java", context);
+					+ "CRUDBean", ".java", context);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

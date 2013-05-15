@@ -5,15 +5,15 @@ public class ArchetypeDescriptor {
 	private String archetypeType;
 	private String category;
 	private String title;
-
-	
+	private String path;
 
 	public ArchetypeDescriptor(String archetypeType, String category,
-			String title) {
+			String title, String path) {
 		super();
 		this.archetypeType = archetypeType;
 		this.category = category;
 		this.title = title;
+		this.path = path;
 	}
 
 	public String getArchetypeType() {
@@ -38,6 +38,14 @@ public class ArchetypeDescriptor {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

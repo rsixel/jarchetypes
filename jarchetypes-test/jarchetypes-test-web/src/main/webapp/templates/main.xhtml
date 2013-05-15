@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:loadBundle basename="mensagens.messages" var="msg" />
+	<title><h:outputText value="#{msg['sistema.titulo']}" /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- 	<link rel="stylesheet" media="screen" -->
+<!-- 		href="#{request.contextPath}/css/estilo.css" /> -->
+	<script type="text/javascript">
+		PrimeFaces.locales['pt'] = {
+		                closeText: 'Fechar',
+		                prevText: 'Anterior',
+		                nextText: 'Próximo',
+		                currentText: 'Começo',
+		                monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+		                monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun', 'Jul','Ago','Set','Out','Nov','Des'],
+		                dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+		                dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+		                dayNamesMin: ['D','S','T','Q','Q','S','S'],
+		                weekHeader: 'Semana',
+		                firstDay: 1,
+		                isRTL: false,
+		                showMonthAfterYear: false,
+		                yearSuffix: '',
+		                timeOnlyTitle: 'Só Horas',
+		                timeText: 'Tempo',
+		                hourText: 'Hora',
+		                minuteText: 'Minuto',
+		                secondText: 'Segundo',
+		                currentText: 'Data Atual',
+		                ampm: false,
+		                month: 'Mês',
+		                week: 'Semana',
+		                day: 'Dia',
+		                allDayText : 'Todo Dia'
+		            };
+	</script>
+</h:head>
+<h:body class="oneColElsCtrHdr">
+	<p:ajaxStatus onstart="statusDialog.show();"
+		onsuccess="statusDialog.hide();" />
+
+	<p:dialog modal="true" widgetVar="statusDialog" header="carregando"
+		draggable="false" closable="false" styleClass="process_msg">
+		<p:graphicImage value="/imagens/ajax-loader.gif" />
+	</p:dialog>
+	<h:form id="mainform">
+	
+		<p:layout fullPage="true">  
+	  
+		    <p:layoutUnit position="north" size="100" resizable="true" closable="true" >  
+		        <ui:include src="/templates/includes/header.xhtml" />  
+		    </p:layoutUnit>  
+		  
+		    <p:layoutUnit position="south" size="100" resizable="true" closable="true" >  
+		        <ui:include src="/templates/includes/footer.xhtml" />  
+		    </p:layoutUnit>  
+		  
+		    <p:layoutUnit position="west" size="200" resizable="true" closable="true" >  
+		            <ui:include src="/templates/includes/menu.xhtml" />  
+		    </p:layoutUnit>  
+		  
+		    <p:layoutUnit position="center">  
+		  		<ui:insert name="content" />
+		    </p:layoutUnit>  
+		  
+		</p:layout>  
+	
+	</h:form>
+</h:body>
+</html>
