@@ -45,6 +45,21 @@
 				</table>
 				<table style="margin-bottom: 10px; margin: 0">
 					<tr>
+						<td><h:outputLabel for="phoneNumber" value="Telefone" /></td>
+						<td><p:inputMask id="phoneNumber"
+								value="#{person.phoneNumber}" required="true" maxlength="7"
+								mask="(99)9999-9999?9" /></td>
+					</tr>
+				</table>
+				<p:selectOneMenu id="placeReregistrations"
+					value="#{person.placeReregistrations}"
+					converter="selectOneUsingObjectConverter" required="true">
+					<f:selectItem itemLabel="Selecione" itemValue="" />
+					<f:selectItems var="placeReregistrations"
+						itemLabel="placeReregistrations.name" />
+				</p:selectOneMenu>
+				<table style="margin-bottom: 10px; margin: 0">
+					<tr>
 						<td><h:outputLabel for="nickname" value="Nickname" /></td>
 						<td><p:inputText id="nickname"
 								value="#{personCRUDBean.person.nickname}" required="false"
@@ -58,14 +73,6 @@
 						</td>
 						<td><p:calendar id="dateBirth" value="#{person.dateBirth}"
 								mode="popup" pattern="dd/MM/yyyy" showOn="button" /></td>
-					</tr>
-				</table>
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="phoneNumber" value="Telefone" /></td>
-						<td><p:inputMask id="phoneNumber"
-								value="#{person.phoneNumber}" required="true" maxlength="7"
-								mask="(99)9999-9999?9" /></td>
 					</tr>
 				</table>
 			</p:panel>

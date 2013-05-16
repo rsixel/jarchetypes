@@ -1,18 +1,13 @@
-/**
- * 
- */
 package org.jarchetypes.scanner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
-
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.Calendar;
 import org.jarchetypes.annotation.Filter;
-import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.descriptor.FilterDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 

@@ -1,0 +1,4 @@
+<f:selectItems 
+ value="#{${widget.getBeanName()}.${widget.getFieldName()}}"
+ #if(${widget.getAttribute("var")}!="") var="${widget.getAttribute("var")}" #end
+ #if(${widget.getAttribute("itemLabel")}!="") itemLabel="${widget.getAttribute("itemLabel")}" #end/>	

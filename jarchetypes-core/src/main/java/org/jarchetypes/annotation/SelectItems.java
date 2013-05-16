@@ -14,12 +14,7 @@ import org.jarchetypes.annotation.meta.Widget;
 @Widget
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD,ElementType.FIELD})
-public @interface Calendar {
-	String title() default "";
-	String mode()  default "";
-	String showOn() default "";
-	String pattern() default "";
-	String mindate() default "";
-	String maxdate() default "";
-	String navigator() default "";
+public @interface SelectItems {
+	String var() default "";
+	String itemLabel() default "";
 }

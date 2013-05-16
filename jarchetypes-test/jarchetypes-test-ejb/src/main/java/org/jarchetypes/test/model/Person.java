@@ -1,7 +1,9 @@
 package org.jarchetypes.test.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +20,8 @@ import org.jarchetypes.annotation.Calendar;
 import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
+import org.jarchetypes.annotation.SelectItems;
+import org.jarchetypes.annotation.SelectOneMenu;
 
 @Entity
 @CRUD(title = "Person", generateAll = true)
@@ -50,6 +54,9 @@ public class Person implements Serializable {
 	@Column(name = "dateBirth")
 	private Date dateBirth;
 
+	
+	private List<PlaceReregistration> placeReregistrations;
+	
 	public Long getId() {
 		return id;
 	}
@@ -100,6 +107,23 @@ public class Person implements Serializable {
 
 	public void setDateBirth(Date dateBirth) {
 		this.dateBirth = dateBirth;
+	}
+
+	@SelectOneMenu(selectItems = @SelectItems(var="placeReregistrations", itemLabel="placeReregistrations.name"),converter="selectOneUsingObjectConverter")
+	public List<PlaceReregistration> getPlaceReregistrations() {
+		placeReregistrations = new ArrayList<PlaceReregistration>();
+		for (int i = 0; i < 4; i++) {
+			PlaceReregistration placeReregistration = new PlaceReregistration();
+			placeReregistration.setId(i);
+			placeReregistration.setName("Cabo Frio " + i);
+			placeReregistrations.add(placeReregistration);
+		}
+		return placeReregistrations;
+	}
+
+	public void setPlaceReregistrations(
+			List<PlaceReregistration> placeReregistrations) {
+		this.placeReregistrations = placeReregistrations;
 	}
 	
 }

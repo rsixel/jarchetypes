@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.jarchetypes.annotation.meta.Widget;
 
 /**
@@ -14,12 +13,13 @@ import org.jarchetypes.annotation.meta.Widget;
 @Widget
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD,ElementType.FIELD})
-public @interface Calendar {
+public @interface SelectOneMenu {
 	String title() default "";
-	String mode()  default "";
-	String showOn() default "";
-	String pattern() default "";
-	String mindate() default "";
-	String maxdate() default "";
-	String navigator() default "";
+	String converter() default "";
+	String var() default "";
+	boolean required()  default false;
+	String requiredMessage() default "";
+	String items() default "";
+	String style() default "";
+	SelectItems  selectItems();
 }
