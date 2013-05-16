@@ -10,8 +10,8 @@
 	<f:loadBundle basename="mensagens.messages" var="msg" />
 	<title><h:outputText value="#{msg['sistema.titulo']}" /></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!-- 	<link rel="stylesheet" media="screen" -->
-<!-- 		href="#{request.contextPath}/css/estilo.css" /> -->
+	<!-- 	<link rel="stylesheet" media="screen" -->
+	<!-- 		href="#{request.contextPath}/css/estilo.css" /> -->
 	<script type="text/javascript">
 		PrimeFaces.locales['pt'] = {
 		                closeText: 'Fechar',
@@ -40,6 +40,7 @@
 		                day: 'Dia',
 		                allDayText : 'Todo Dia'
 		            };
+
 	</script>
 </h:head>
 <h:body class="oneColElsCtrHdr">
@@ -50,28 +51,28 @@
 		draggable="false" closable="false" styleClass="process_msg">
 		<p:graphicImage value="/imagens/ajax-loader.gif" />
 	</p:dialog>
-	<h:form id="mainform">
-	
-		<p:layout fullPage="true">  
-	  
-		    <p:layoutUnit position="north" size="100" resizable="true" closable="true" >  
-		        <ui:include src="/templates/includes/header.xhtml" />  
-		    </p:layoutUnit>  
-		  
-		    <p:layoutUnit position="south" size="100" resizable="true" closable="true" >  
-		        <ui:include src="/templates/includes/footer.xhtml" />  
-		    </p:layoutUnit>  
-		  
-		    <p:layoutUnit position="west" size="200" resizable="true" closable="true" >  
-		            <ui:include src="/templates/includes/menu.xhtml" />  
-		    </p:layoutUnit>  
-		  
-		    <p:layoutUnit position="center">  
-		  		<ui:insert name="content" />
-		    </p:layoutUnit>  
-		  
-		</p:layout>  
-	
-	</h:form>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="100" resizable="true"
+				closable="true">
+				<ui:include src="/templates/includes/header.xhtml" />
+			</p:layoutUnit>
+
+			<p:layoutUnit position="south" size="100" resizable="true"
+				closable="true">
+				<ui:include src="/templates/includes/footer.xhtml" />
+			</p:layoutUnit>
+
+			<p:layoutUnit position="west" size="200" resizable="true"
+				closable="true">
+				<ui:include src="/templates/includes/menu.xhtml" />
+			</p:layoutUnit>
+
+			<p:layoutUnit position="center">
+				<ui:insert name="content" />
+			</p:layoutUnit>
+
+		</p:layout>
 </h:body>
 </html>

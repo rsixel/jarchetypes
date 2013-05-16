@@ -24,25 +24,40 @@
 	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
-		<p:panel header="$title" style="margin-top: 10px;">
-			<p:toolbar>
-				<p:toolbarGroup align="left">
-					<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" icon="ui-icon-disk" />
-					<p:commandButton title="Delete" icon="ui-icon-trash" />
-					<p:commandButton title="Print" icon="ui-icon-print" />
-				</p:toolbarGroup>
 	
-			</p:toolbar>
-	
-			
+		<script type="text/javascript">  
+				function handleSave(xhr, status, args) {
+		        if (args.saved) {
+		            okdlg.show();
+		        } else {
+		            okdlg.hide();
+		        }
+		    }
+		</script>
 		
-			<p:panel header="#{msg['sistema.subTitulo_6']}">
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
+			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
+			<p:commandButton value="Ok"
+				action="${beanName}Search?faces-redirect=true" />
+		</p:confirmDialog>
+	
+		<h:form id="mainform">
+			<p:panel header="$title" style="margin-top: 10px;">
+				<p:toolbar>
+					<p:toolbarGroup align="left">
+						<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" 
+						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" />
+						<p:commandButton title="Delete" icon="ui-icon-trash" />
+						<p:commandButton title="Print" icon="ui-icon-print" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				
 				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
 				#foreach( $widget in $widgets )
 	    			#parse( $widget.getTemplateName() )
 				#end
 			</p:panel>
-		
-		</p:panel>
+		</h:form>
 	</ui:define>
+	
 </ui:composition>

@@ -24,9 +24,8 @@
 	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
+	<h:form id="mainform">
 		<p:panel header="Archetypes" style="margin-top: 10px;">
-	
-				
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
@@ -34,7 +33,7 @@
 								icon="ui-icon-trash" />
 								
 							<p:commandButton value="Adicionar $title" ajax="false"
-								action="$beanName?faces-redirect=true"
+								action="#{${CRUDBean}.add}"
 								icon="ui-icon-add" />
 								
 						</p:toolbarGroup>
@@ -84,5 +83,6 @@
 					</p:dataTable>
 				</div>
 			</p:panel>
+		</h:form>
 	</ui:define>
 </ui:composition>
