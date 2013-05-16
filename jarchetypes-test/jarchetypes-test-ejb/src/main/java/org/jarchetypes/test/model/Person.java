@@ -1,12 +1,12 @@
 package org.jarchetypes.test.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jarchetypes.annotation.CRUD;
+import org.jarchetypes.annotation.Calendar;
 import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
@@ -45,6 +46,9 @@ public class Person implements Serializable {
 	private String phoneNumber;
 
 	private String nickname;
+	
+	@Column(name = "dateBirth")
+	private Date dateBirth;
 
 	public Long getId() {
 		return id;
@@ -88,4 +92,14 @@ public class Person implements Serializable {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
+	@Calendar(title="Data Nascimento", pattern="dd/MM/yyyy", mode="popup", showOn="button")
+	public Date getDateBirth() {
+		return dateBirth;
+	}
+
+	public void setDateBirth(Date dateBirth) {
+		this.dateBirth = dateBirth;
+	}
+	
 }

@@ -1,58 +1,80 @@
  
- 
- 
- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Java EE 6 Starter Application</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<h:outputStylesheet name="css/screen.css" />
-</h:head>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/templates/main.xhtml">
+	
+	<ui:define name="content">
+		<p:panel header="Archetypes" style="margin-top: 10px;">
+	
+				
+					<p:toolbar>
+						<p:toolbarGroup align="left">
+		
+							<p:commandButton type="button" value="Limpar busca"
+								icon="ui-icon-trash" />
+								
+							<p:commandButton value="Adicionar Person" ajax="false"
+								action="Person?faces-redirect=true"
+								icon="ui-icon-add" />
+								
+						</p:toolbarGroup>
+		
+		
 
-<h:body>
-	<p:panel header="Archetypes" style="margin-top: 10px;">
-
-		<h:form>
-			<p:toolbar>
-				<p:toolbarGroup align="left">
-
-					<p:commandButton type="button" value="Limpar busca"
-						icon="ui-icon-trash" />
-				</p:toolbarGroup>
-
-
-				<p:toolbarGroup align="right">
-					<p:commandButton type="button" value="localizar"
-					actionListener="#{personSearchBean.search()}"
-						icon="ui-icon-search" />
-
-
-				</p:toolbarGroup>
-
-			</p:toolbar>
-
-
-			<p:panel header="Busca">
-				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
-					    			<table style="margin-bottom: 10px; margin: 0">
+								
+						<p:toolbarGroup align="right">								
+							<p:commandButton id="cbSearch" value="consultar"
+									styleClass="btRed" update="searchResult"
+									actionListener="#{personCRUDBean.search}" 	icon="ui-icon-search" />						
+		
+						</p:toolbarGroup>
+		
+					</p:toolbar>
+		
+		
+					<p:panel header="Busca">
+						<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
+									    			<table style="margin-bottom: 10px; margin: 0">
 	<tr> 
 		<td><h:outputLabel for="name" value="Nome" /> 
 		</td> 
-		<td>
-				
-			<p:inputText id="name" value="#{personSearchBean.name}"
-		  	required="${widget.getAttribute("required")}" 		  	/>
-			
+		<td><p:inputText id="name" value="#{personCRUDBean.personSearchBean.name}"  
+		required="${widget.getAttribute("required")}" 		/>
 		</td>
 	</tr>
-</table>							</p:panel>
 
-		</h:form>
-	</p:panel>
-</h:body>
-</html>
+</table>											</p:panel>
+		
+			
+				<div style="margin-top: 50px; margin-bottom: 10px;">
+					<p:dataTable id="searchResult" var="resultItem"
+						emptyMessage="Realize a consulta"
+						value="#{personCRUDBean.list}"
+						scrollable="true" liveScroll="true" scrollRows="20"
+						scrollHeight="300" style="width:950px;">
+
+						<p:column width="400" style="text-align: center;">
+							<f:facet name="header">  
+               				 Nome  
+            				</f:facet>
+							<h:outputText value="#{resultItem.nomeCpessoa}" />
+						</p:column>
+						<p:column width="50" style="text-align: center;">
+							<p:commandButton id="selectButton" icon="ui-icon-search"
+								title="editar" action="recadastramento?faces-redirect=true"
+								immediate="true">
+								<f:setPropertyActionListener
+									target="#{recadastramentoConsultaBean.pessoa}" value="#{resultItem}"></f:setPropertyActionListener>
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</p:panel>
+	</ui:define>
+</ui:composition>
