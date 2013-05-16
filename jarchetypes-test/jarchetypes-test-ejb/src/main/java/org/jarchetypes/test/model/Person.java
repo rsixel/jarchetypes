@@ -20,7 +20,7 @@ import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
 
 @Entity
-@CRUD(title = "Person", generateAll = true)
+@CRUD(title = "Person", generateAll = true,resultFields={"name","nickname","email","phonenumber"})
 public class Person implements Serializable {
 	/** Default value included to remove warning. Remove or modify at will. **/
 	private static final long serialVersionUID = 1L;
