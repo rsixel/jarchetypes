@@ -25,7 +25,7 @@ public class InputMaskScanner extends InputTextScanner {
 	static {
 		InputMaskScanner scanner = new InputMaskScanner();
 		register(InputMask.class, scanner);
-		//registerDefaultType(String.class, scanner);// define o registro padão
+		//registerDefaultType(String.class, scanner);// define o registro padï¿½o
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class InputMaskScanner extends InputTextScanner {
 
 		scanForRequired(archetype, member, descriptor);
 
-		scanForMaxlength(archetype, member, descriptor);
+		scanForSize(archetype, member, descriptor);
 		
 		scanForMask(archetype, member, descriptor);
 

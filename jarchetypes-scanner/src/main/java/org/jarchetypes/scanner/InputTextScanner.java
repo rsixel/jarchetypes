@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.velocity.VelocityContext;
@@ -19,6 +20,7 @@ import org.jarchetypes.descriptor.WidgetDescriptor;
 public class InputTextScanner extends ArchetypesScanner {
 
 	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/inputtext.vm";
+	private static final String FILTER_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/inputtextfilter.vm";
 
 	static {
 		InputTextScanner scanner = new InputTextScanner();
@@ -50,14 +52,15 @@ public class InputTextScanner extends ArchetypesScanner {
 				.getName());
 
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
-		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
-				.getSimpleName()) + "SearchBean");
+		// filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
+		// .getSimpleName()) + "SearchBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		filterDescriptor.setTemplateName(FILTER_TEMPLATE_NAME);
 
 		scanForRequired(archetype, member, descriptor);
 
-		scanForMaxlength(archetype, member, descriptor);
+		scanForSize(archetype, member, descriptor);
 
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))
@@ -89,11 +92,39 @@ public class InputTextScanner extends ArchetypesScanner {
 
 	}
 
-	public void scanForMaxlength(Class<?> archetype, Member member,
+	public void scanForRegex(Class<?> archetype, Member member,
+			WidgetDescriptor descriptor) {
+
+		Pattern pattern = (Pattern) getAnnotation(Pattern.class, member);
+		String regex = null;
+		try {
+			boolean isMethodAndHasNotNullAnnotation = member instanceof Method
+					&& (((Method) member).isAnnotationPresent(Pattern.class));
+
+			boolean isGetterAndFieldHasNotNullAnnotation = member instanceof Method
+					&& ArchetypesUtils.isGetter(member.getName())
+					&& ArchetypesUtils.getField(archetype,
+							ArchetypesUtils.getFieldName(member))
+							.isAnnotationPresent(Pattern.class);
+
+			if (isMethodAndHasNotNullAnnotation
+					|| isGetterAndFieldHasNotNullAnnotation) {
+				regex = pattern.regexp();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		descriptor.setAttribute("regex", regex);
+
+	}
+
+	public void scanForSize(Class<?> archetype, Member member,
 			WidgetDescriptor descriptor) {
 
 		boolean isPresent = false;
 
+		String minlength = Integer.toString(0);
 		String maxlength = Integer.toString(Integer.MAX_VALUE);
 
 		Size size = (Size) getAnnotation(Size.class, member);
@@ -113,15 +144,20 @@ public class InputTextScanner extends ArchetypesScanner {
 					|| isGetterAndFieldHasNotNullAnnotation;
 
 			if (isPresent == true) {
-				maxlength = Integer.toString(size != null ? size.max() : 22);
+				minlength = size != null && size.min() > 0 ? Integer
+						.toString(size.min()) : null;
+				maxlength = size != null && size.max() < Integer.MAX_VALUE ? Integer
+						.toString(size.max()) : null;
 			} else {
-				maxlength = Integer.toString(7);
+				minlength = null;
+				maxlength = null;
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		descriptor.setAttribute("min", minlength);
 		descriptor.setAttribute("max", maxlength);
 	}
 

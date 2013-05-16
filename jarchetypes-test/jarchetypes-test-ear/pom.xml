@@ -33,11 +33,11 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- Importa as bibliotecas bo PRIMEFACES... -->
-		<dependency>
-			<groupId>org.primefaces</groupId>
-			<artifactId>primefaces</artifactId>
-			<version>3.5</version>
-		</dependency>		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.primefaces</groupId> -->
+<!-- 			<artifactId>primefaces</artifactId> -->
+<!-- 			<version>3.5</version> -->
+<!-- 		</dependency>		 -->
 	</dependencies>
 
 	<build>
