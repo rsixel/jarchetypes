@@ -2,7 +2,7 @@
 	<tr> 
 		<td><h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
 		</td> 
-		<td><p:inputText id="${widget.getFieldName()}" value="#{${widget.getBeanName()}.${widget.getFieldName()}}"  />
+		<td><p:inputText id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"  />
 		</td>
 	</tr>
 </table>

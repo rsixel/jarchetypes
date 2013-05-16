@@ -5,7 +5,12 @@
 		<td><p:inputText id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"  
 		required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
 		/>
+			#if(${widget.getAttribute("regex")}) 
+				<f:validateRegex pattern="${widget.getAttribute("regex")}"/>
+			#end
+			#if(${widget.getAttribute("min")}) 
+				<f:validateLength minimum="${widget.getAttribute("min")}" />
+			#end
 		</td>
 	</tr>
-
 </table>
