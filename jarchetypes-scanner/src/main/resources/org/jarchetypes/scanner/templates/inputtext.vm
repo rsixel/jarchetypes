@@ -2,7 +2,10 @@
 	<tr> 
 		<td><h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
 		</td> 
-		<td><p:inputText id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"  />
+		<td><p:inputText id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"  
+		required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
+		/>
 		</td>
 	</tr>
+
 </table>

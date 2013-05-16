@@ -1,0 +1,14 @@
+<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
+		</td> 
+		<td>
+				
+			<p:inputMask id="${widget.getFieldName()}" value="#{${widget.getBeanName()}.${widget.getFieldName()}}"
+		  	required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
+		  	 #if(${widget.getAttribute("mask")}) mask="${widget.getAttribute("mask")}" #end	
+		  	/>
+			
+		</td>
+	</tr>
+</table>
