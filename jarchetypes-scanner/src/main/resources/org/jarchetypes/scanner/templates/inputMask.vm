@@ -1,14 +1,9 @@
-<table style="margin-bottom: 10px; margin: 0">
-	<tr> 
-		<td><h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
-		</td> 
-		<td>
-				
-			<p:inputMask id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
-		  	required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
-		  	 #if(${widget.getAttribute("mask")}) mask="${widget.getAttribute("mask")}" #end	
-		  	/>
-			
-		</td>
-	</tr>
-</table>
+<h:panelGrid id="${widget.getFieldName()}PanelGrid" columns="3">   
+	<h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
+	<p:inputMask id="${widget.getFieldName()}" value="#{${CRUDBean}.bean.${widget.getFieldName()}}"
+  	required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
+  	 #if(${widget.getAttribute("mask")}) mask="${widget.getAttribute("mask")}" #end>
+  		<p:ajax event="change" /> 		
+  	</p:inputMask>
+	<p:message for="${widget.getFieldName()}"/>
+</h:panelGrid>

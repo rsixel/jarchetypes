@@ -95,12 +95,12 @@ public class ${beanName}CRUDBean  implements Serializable {
 		context.addCallbackParam("saved", saved);
 	}
 	
-	public ${beanName} get${beanName}(){
+	public ${beanName} getBean(){
 		return bean;
 	}
 	
 	
-	public void set${beanName}(${beanName} bean){
+	public void setBean(${beanName} bean){
 		this.bean = bean;
 	}
 	
@@ -110,5 +110,19 @@ public class ${beanName}CRUDBean  implements Serializable {
 		
 		return "$beanName?faces-redirect=true";		
 	}
+	
+	public String cancel() throws Exception{
+		Object id = bean.getClass().getMethod("getId").invoke(bean);
+	
+		if (id == null) {
+			bean = new ${beanName}();
+		} else {
+			bean = cRUDService.find(${beanName}.class,id);
+		}
+			
+		
+		return "${beanName}Search?faces-redirect=true";		
+	}
+	
 		
 }

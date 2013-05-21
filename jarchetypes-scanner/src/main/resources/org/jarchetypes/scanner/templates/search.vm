@@ -25,7 +25,7 @@
 	
 	<ui:define name="content">
 	<h:form id="mainform">
-		<p:panel header="Archetypes" style="margin-top: 10px;">
+		<p:panel header="$title" style="margin-top: 10px;">
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
@@ -34,7 +34,7 @@
 								
 							<p:commandButton value="Adicionar $title" ajax="false"
 								action="#{${CRUDBean}.add}"
-								icon="ui-icon-add" />
+								icon="ui-icon-plus" />
 								
 						</p:toolbarGroup>
 		
@@ -65,21 +65,21 @@
 						value="#{${CRUDBean}.list}"
 						scrollable="true" liveScroll="true" scrollRows="20"
 						scrollHeight="300" style="width:950px;">
-
-						<p:column width="400" style="text-align: center;">
-							<f:facet name="header">  
-               				 Nome  
-            				</f:facet>
-							<h:outputText value="#{resultItem.nomeCpessoa}" />
-						</p:column>
+						
+						#foreach( $column in $searchColumns )
+			    			<p:column headerText="$column.title">
+								<h:outputText value="#{resultItem.$column.fieldName}" />
+							</p:column>		    			
+						#end
+						
 						<p:column width="50" style="text-align: center;">
 							<p:commandButton id="selectButton" icon="ui-icon-search"
-								title="editar" action="recadastramento?faces-redirect=true"
-								immediate="true">
+								title="editar" action="$beanName?faces-redirect=true" immediate="true">
 								<f:setPropertyActionListener
-									target="#{recadastramentoConsultaBean.pessoa}" value="#{resultItem}"></f:setPropertyActionListener>
+									target="#{${CRUDBean}.bean}" value="#{resultItem}"></f:setPropertyActionListener>
 							</p:commandButton>
 						</p:column>
+
 					</p:dataTable>
 				</div>
 			</p:panel>

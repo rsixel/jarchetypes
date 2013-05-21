@@ -33,5 +33,7 @@ public @interface CRUD {
 	boolean generateAll() default false;
 	
 	String category() default "";
+
+	String[] resultFields() default {};
 	
 }

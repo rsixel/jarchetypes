@@ -18,17 +18,27 @@ import javax.persistence.criteria.Root;
 @Named
 public class CRUDService<T> {
 
-   @Inject
-   private Logger log;
+	@Inject
+	private Logger log;
 
-   @PersistenceContext
-   private EntityManager em;
+	@PersistenceContext
+	private EntityManager em;
 
-   public void save(Object bean) throws Exception {
-      log.info("Saving " + bean);
-      em.persist(bean);
-   }
-   
+	public void save(Object bean) throws Exception {
+		log.info("Saving " + bean);
+
+		if (bean.getClass().getMethod("getId").invoke(bean) == null) {
+			em.persist(bean);
+		} else {
+			em.merge(bean);
+		}
+	}
+	
+	public T find(Class<T> c,Object id) throws Exception {
+		return em.find(c, id);
+	}
+
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> search(Class<T> entityClass, Map<String, Object> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -47,7 +57,7 @@ public class CRUDService<T> {
 
 			builder.and(predicate, p);
 		}
-		
+
 		query.where(predicate);
 
 		return em.createQuery(query).getResultList();

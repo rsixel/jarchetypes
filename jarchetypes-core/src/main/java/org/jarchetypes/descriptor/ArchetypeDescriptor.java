@@ -1,6 +1,8 @@
 package org.jarchetypes.descriptor;
 
-public class ArchetypeDescriptor {
+import java.io.Serializable;
+
+public class ArchetypeDescriptor implements Serializable{
 
 	private String archetypeType;
 	private String category;
