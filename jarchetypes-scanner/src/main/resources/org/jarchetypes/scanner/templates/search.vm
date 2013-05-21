@@ -34,7 +34,7 @@
 								
 							<p:commandButton value="Adicionar $title" ajax="false"
 								action="#{${CRUDBean}.add}"
-								icon="ui-icon-add" />
+								icon="ui-icon-plus" />
 								
 						</p:toolbarGroup>
 		

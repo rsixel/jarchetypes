@@ -29,17 +29,17 @@ public class Person implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	@NotNull
+	@NotNull(message="The field name cannot be empty")
 	@Size(min = 1, max = 25)
 	@Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
 	private String name;
 
-	@NotNull
-	@NotEmpty
+	@NotNull(message="The field name cannot be null")
+	@NotEmpty(message="The field name cannot be empty")
 	@Email
 	private String email;
 
-	@NotNull
+	@NotNull(message="The field phone number cannot be null")
 //	@Size(min = 10, max = 12)
 //	@Digits(fraction = 0, integer = 12)
 	@Column(name = "phone_number")
