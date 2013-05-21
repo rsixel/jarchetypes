@@ -1,9 +1,10 @@
 package org.jarchetypes.descriptor;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WidgetDescriptor {
+public class WidgetDescriptor implements Serializable{
 
 	private String beanName;
 	private String templateName;

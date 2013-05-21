@@ -27,6 +27,7 @@ import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
 public class CRUDScanner extends ArchetypesScanner {
@@ -59,6 +60,8 @@ public class CRUDScanner extends ArchetypesScanner {
 		
 		context.put("CRUDBean", ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "CRUDBean");
+		
+		scanSearchColumns(crud,context);
 
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
@@ -97,5 +100,22 @@ public class CRUDScanner extends ArchetypesScanner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void scanSearchColumns(CRUD crud, VelocityContext context) {
+		ArrayList<SearchColumnDescriptor> searchColumns = new ArrayList<SearchColumnDescriptor>();
+		
+		context.put("searchColumns", searchColumns);
+		
+		for(String column:crud.resultFields()){
+			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(column,getColumnTitle(column));
+			
+			searchColumns.add(descriptor);
+		}
+		
+	}
+
+	private String getColumnTitle(String column) {
+		return column;
 	}
 }

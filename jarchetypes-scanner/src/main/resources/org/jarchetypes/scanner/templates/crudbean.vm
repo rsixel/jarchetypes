@@ -93,12 +93,12 @@ public class ${beanName}CRUDBean  implements Serializable {
 		context.addCallbackParam("saved", saved);
 	}
 	
-	public ${beanName} get${beanName}(){
+	public ${beanName} getBean(){
 		return bean;
 	}
 	
 	
-	public void set${beanName}(${beanName} bean){
+	public void setBean(${beanName} bean){
 		this.bean = bean;
 	}
 	

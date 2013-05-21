@@ -4,7 +4,7 @@
 		</td> 
 		<td>
 				
-			<p:inputMask id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
+			<p:inputMask id="${widget.getFieldName()}" value="#{${CRUDBean}.bean.${widget.getFieldName()}}"
 		  	required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
 		  	 #if(${widget.getAttribute("mask")}) mask="${widget.getAttribute("mask")}" #end	
 		  	/>
