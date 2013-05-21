@@ -3,11 +3,11 @@ package org.jarchetypes.scanner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
-import org.jarchetypes.annotation.Calendar;
 import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.SelectOneMenu;
 import org.jarchetypes.descriptor.FilterDescriptor;
@@ -24,7 +24,7 @@ public class SelectOneMenuScanner extends InputTextScanner {
 	static {
 		SelectOneMenuScanner scanner = new SelectOneMenuScanner();
 		register(SelectOneMenu.class, scanner);
-		//registerDefaultType(String.class, scanner);// define o registro padão
+		//registerDefaultType(String.class, scanner);// define o registro padï¿½o
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -41,15 +41,36 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		descriptor.setTemplateName(TEMPLATE_NAME);
 		descriptor.setTitle(annotation != null ? annotation.title()
 				: ArchetypesUtils.captalize(name));
+		
+		
+		ParameterizedType parametezed = (ParameterizedType)(member instanceof Method ? ((Method) member)
+				.getGenericReturnType() : ((Field) member).getGenericType());
+		Class<?> ob = (Class<?>) parametezed.getActualTypeArguments()[0];
+		
+		String nameclass = ob.getName();
+		int len = ob.getSimpleName().length();
+        String out = "";
+        out += ob.getSimpleName().substring( 0, 1 ).toLowerCase();
+        out += ob.getSimpleName().substring( 1,len );
+		descriptor.setFieldName(out);
+		descriptor.setFieldType(nameclass);
+		FilterDescriptor filterDescriptor2 = new FilterDescriptor(descriptor);
+		if (getAnnotation(Filter.class, member) != null)
+			((List<FilterDescriptor>) context.get("filters"))
+					.add(filterDescriptor2);
+		
+		
 		descriptor.setFieldName(name);
+		descriptor.setFieldObject(out);
 		descriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()));
-
+				
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
-				.getReturnType().getName() : ((Field) member).getType()
-				.getName());
-
+				.getGenericReturnType().toString() : ((Field) member).getGenericType().toString());
+		
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
+		
+		
 		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
@@ -65,6 +86,7 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))
 					.add(filterDescriptor);
+		
 	}
 	
 	public void scanForConverter(Class<?> archetype, Member member,
@@ -125,7 +147,7 @@ public class SelectOneMenuScanner extends InputTextScanner {
 			SelectOneMenu selectOneMenu = (SelectOneMenu) getAnnotation(SelectOneMenu.class,
 					member);
 			if(selectOneMenu!=null){
-				descriptor.setAttribute("items", selectOneMenu.items());
+				descriptor.setAttribute("items", selectOneMenu.items()?"true":"false");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -10,9 +10,8 @@
 	template="/templates/main.xhtml">
 	
 	<ui:define name="content">
+	<h:form id="mainform">
 		<p:panel header="Archetypes" style="margin-top: 10px;">
-	
-				
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
@@ -20,7 +19,7 @@
 								icon="ui-icon-trash" />
 								
 							<p:commandButton value="Adicionar Person" ajax="false"
-								action="Person?faces-redirect=true"
+								action="#{personCRUDBean.add}"
 								icon="ui-icon-add" />
 								
 						</p:toolbarGroup>
@@ -44,12 +43,32 @@
 	<tr> 
 		<td><h:outputLabel for="name" value="Nome" /> 
 		</td> 
-		<td><p:inputText id="name" value="#{personCRUDBean.personSearchBean.name}"  
-		required="${widget.getAttribute("required")}" 		/>
+		<td><p:inputText id="name" value="#{personCRUDBean.person.name}"  />
 		</td>
 	</tr>
-
-</table>											</p:panel>
+</table>									    			<p:selectOneMenu id="placeReregistration" value="#{personCRUDBean.${widget.getFieldObject()}}"		  	 
+		  	 
+		  	  converter="${widget.getAttribute("converter")}" 		  	 
+		  	  var="${widget.getAttribute("var")}" 		  	 
+		  	  required="true" 		  	 
+		  	  requiredMessage="${widget.getAttribute("requiredMessage")}" 		  	 
+		  	 		  	 
+		  	  style="${widget.getAttribute("style")}" >
+		  	 
+			<f:selectItem itemLabel="Selecione" itemValue="" />
+			
+			</p:selectOneMenu>		  									    			<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
+		  	 
+		  	  converter="${widget.getAttribute("converter")}" 		  	 
+		  	  var="${widget.getAttribute("var")}" 		  	 
+		  	  required="true" 		  	 
+		  	  requiredMessage="${widget.getAttribute("requiredMessage")}" 		  	 
+		  	 		  	 
+		  	  style="${widget.getAttribute("style")}" >
+		  	 
+			<f:selectItem itemLabel="Selecione" itemValue="" />
+			
+			</p:selectOneMenu>		  											</p:panel>
 		
 			
 				<div style="margin-top: 50px; margin-bottom: 10px;">
@@ -76,5 +95,6 @@
 					</p:dataTable>
 				</div>
 			</p:panel>
+		</h:form>
 	</ui:define>
 </ui:composition>

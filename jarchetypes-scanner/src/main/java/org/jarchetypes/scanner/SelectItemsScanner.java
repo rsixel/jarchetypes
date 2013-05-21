@@ -58,7 +58,7 @@ public class SelectItemsScanner extends SelectOneMenuScanner {
 
 		scanForVar(archetype, member, descriptor);
 
-		scanForMaxlength(archetype, member, descriptor);
+		scanForItemLabel(archetype, member, descriptor);
 
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))

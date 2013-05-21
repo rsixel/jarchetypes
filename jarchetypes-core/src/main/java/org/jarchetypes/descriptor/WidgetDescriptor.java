@@ -10,6 +10,7 @@ public class WidgetDescriptor {
 	private String title;
 	private String fieldName;
 	private String fieldType;
+	private String fieldObject;
 
 	private Map<String, String> attributes = new HashMap<String, String>();
 
@@ -64,4 +65,11 @@ public class WidgetDescriptor {
 		attributes.put(attributeName, value);
 	}
 
+	public String getFieldObject() {
+		return fieldObject;
+	}
+
+	public void setFieldObject(String fieldObject) {
+		this.fieldObject = fieldObject;
+	}
 }

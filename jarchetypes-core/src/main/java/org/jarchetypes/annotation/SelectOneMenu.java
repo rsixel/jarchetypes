@@ -14,12 +14,13 @@ import org.jarchetypes.annotation.meta.Widget;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD,ElementType.FIELD})
 public @interface SelectOneMenu {
+	String value() default "";
 	String title() default "";
 	String converter() default "";
 	String var() default "";
 	boolean required()  default false;
 	String requiredMessage() default "";
-	String items() default "";
+	boolean items() default false;
 	String style() default "";
 	SelectItems  selectItems();
 }

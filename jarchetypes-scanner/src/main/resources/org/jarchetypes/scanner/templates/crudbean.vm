@@ -21,6 +21,8 @@ import $beanPathName;
 @SessionScoped
 public class ${beanName}CRUDBean  implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	private CRUDService<${beanName}> cRUDService;
 	
@@ -29,7 +31,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $filters )
 	private $widget.getFieldType() $widget.getFieldName();			
 	#end
-	
+		
 	private ${beanName} bean = new ${beanName}();
 	
 	private boolean saved = false;
@@ -68,7 +70,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	}
 	
 	#foreach( $widget in $filters )
-	public String get$ArchetypesUtils.captalize($widget.getFieldName())() {
+	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
 		return $widget.getFieldName();
 	}
 

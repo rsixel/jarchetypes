@@ -21,7 +21,6 @@ public class FilterDescriptor extends WidgetDescriptor {
 					
 					setter.invoke(this, m.invoke(from));
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

@@ -4,8 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class PlaceReregistration  implements Serializable  {
@@ -18,6 +21,10 @@ public class PlaceReregistration  implements Serializable  {
 	
 	@Column
 	private String name;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn
+	private Person person;
 
 	public int getId() {
 		return id;
@@ -34,4 +41,13 @@ public class PlaceReregistration  implements Serializable  {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+		
 }

@@ -1,4 +1,4 @@
-package mar.casnav.sipem.converter;
+package org.jarchetypes.converter;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -50,9 +50,10 @@ public class SelectOneUsingObjectConverter implements Converter {
       
     private String getIdByReflection(Object bean){  
         try{  
-            Field idField = bean.getClass().getSuperclass().getDeclaredField("id");  
+        	Field idField = bean.getClass().getDeclaredField("id");  
+           // Field idField = bean.getClass().getSuperclass().getDeclaredField("id");  
             idField.setAccessible(true);  
-            return  (String) idField.get(bean);  
+            return  String.valueOf(idField.get(bean));  
         }catch(Exception ex){  
             throw new RuntimeException("Não foi possível obter a propriedade 'id' do item",ex);  
         }  

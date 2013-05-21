@@ -1,4 +1,4 @@
-
+ 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
@@ -6,77 +6,105 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:s="http://jboss.org/seam/faces" template="/templates/main.xhtml">
-
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/templates/main.xhtml">
+	
 	<ui:define name="content">
-		<p:panel header="Person" style="margin-top: 10px;">
-			<p:toolbar>
-				<p:toolbarGroup align="left">
-					<p:commandButton title="Save"
-						actionListener="#{personCRUDBean.save}" icon="ui-icon-disk" />
-					<p:commandButton title="Delete" icon="ui-icon-trash" />
-					<p:commandButton title="Print" icon="ui-icon-print" />
-				</p:toolbarGroup>
-
-			</p:toolbar>
-
-
-
-			<p:panel header="#{msg['sistema.subTitulo_6']}">
-				<p:messages id="messages" showSummary="true" showDetails="true"
-					autoUpdate="true" closable="true" />
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="name" value="Nome" /></td>
-						<td><p:inputText id="name"
-								value="#{personCRUDBean.person.name}" required="true"
-								maxlength="22" /></td>
-					</tr>
-
-				</table>
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="email" value="Email" /></td>
-						<td><p:inputText id="email"
-								value="#{personCRUDBean.person.email}" required="true"
-								maxlength="7" /></td>
-					</tr>
-
-				</table>
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="phoneNumber" value="Telefone" /></td>
-						<td><p:inputMask id="phoneNumber"
-								value="#{person.phoneNumber}" required="true" maxlength="7"
-								mask="(99)9999-9999?9" /></td>
-					</tr>
-				</table>
-				<p:selectOneMenu id="placeReregistrations"
-					value="#{person.placeReregistrations}"
-					converter="selectOneUsingObjectConverter" required="true">
-					<f:selectItem itemLabel="Selecione" itemValue="" />
-					<f:selectItems var="placeReregistrations"
-						itemLabel="placeReregistrations.name" />
-				</p:selectOneMenu>
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="nickname" value="Nickname" /></td>
-						<td><p:inputText id="nickname"
-								value="#{personCRUDBean.person.nickname}" required="false"
-								maxlength="7" /></td>
-					</tr>
-
-				</table>
-				<table style="margin-bottom: 10px; margin: 0">
-					<tr>
-						<td><h:outputLabel for="dateBirth" value="Data Nascimento" />
-						</td>
-						<td><p:calendar id="dateBirth" value="#{person.dateBirth}"
-								mode="popup" pattern="dd/MM/yyyy" showOn="button" /></td>
-					</tr>
-				</table>
-			</p:panel>
-
-		</p:panel>
+	
+		<script type="text/javascript">  
+				function handleSave(xhr, status, args) {
+		        if (args.saved) {
+		            okdlg.show();
+		        } else {
+		            okdlg.hide();
+		        }
+		    }
+		</script>
+		
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluido"
+			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
+			<p:commandButton value="Ok"
+				action="PersonSearch?faces-redirect=true" />
+		</p:confirmDialog>
+	
+		<h:form id="mainform">
+			<p:panel header="Person" style="margin-top: 10px;">
+				<p:toolbar>
+					<p:toolbarGroup align="left">
+						<p:commandButton title="Save" actionListener="#{personCRUDBean.save}" 
+						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" />
+						<p:commandButton title="Delete" icon="ui-icon-trash" />
+						<p:commandButton title="Print" icon="ui-icon-print" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				
+				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
+					    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="name" value="Nome" /> 
+		</td> 
+		<td><p:inputText id="name" value="#{personCRUDBean.person.name}"  
+		required="true" 		/>
+								</td>
+	</tr>
+</table>					    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="email" value="Email" /> 
+		</td> 
+		<td><p:inputText id="email" value="#{personCRUDBean.person.email}"  
+		required="true" 		/>
+								</td>
+	</tr>
+</table>					    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="nickname" value="Nickname" /> 
+		</td> 
+		<td><p:inputText id="nickname" value="#{personCRUDBean.person.nickname}"  
+		required="false" 		/>
+								</td>
+	</tr>
+</table>					    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="dateBirth" value="Data Nascimento" /> 
+		</td> 
+		<td>
+				
+			<p:calendar id="dateBirth" value="#{personCRUDBean.person.dateBirth}"		  	 
+		  	  mode="popup" 		  	 		  	 		  	 		  	  pattern="dd/MM/yyyy" 		  	  showOn="button" />
+			
+		</td>
+	</tr>
+</table>					    			<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="phoneNumber" value="Telefone" /> 
+		</td> 
+		<td>
+				
+			<p:inputMask id="phoneNumber" value="#{personCRUDBean.person.phoneNumber}"
+		  	required="true" 		  	  mask="(99)9999-9999?9" 		  	/>
+			
+		</td>
+	</tr>
+</table>					    			<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
+		  	 
+		  	  converter="selectOneUsingObjectConverter" 		  	 
+		  	 		  	 
+		  	  required="true" 		  	 
+		  	 		  	 
+		  	  items="#{personCRUDBean.person.placeReregistrations}" 		  	 
+		  	 >
+		  	 
+			<f:selectItem itemLabel="Selecione" itemValue="" />
+			
+							
+				<f:selectItems 
+				    value="#{personCRUDBean.person.placeReregistrations}"
+				    
+				     var="placeReregistration" 				
+				 	 itemLabel="#{placeReregistration.name}" 				 />
+				 		
+			</p:selectOneMenu>		  							</p:panel>
+		</h:form>
 	</ui:define>
+	
 </ui:composition>

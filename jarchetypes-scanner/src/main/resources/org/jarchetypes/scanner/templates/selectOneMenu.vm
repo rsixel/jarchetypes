@@ -1,13 +1,28 @@
-<p:selectOneMenu id="${widget.getFieldName()}" value="#{${widget.getBeanName()}.${widget.getFieldName()}}"		  	 
+<p:selectOneMenu id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getFieldObject()}}"		  	 
+		  	 
 		  	 #if(${widget.getAttribute("converter")}!="") converter="${widget.getAttribute("converter")}" #end	
+		  	 
 		  	 #if(${widget.getAttribute("var")}!="") var="${widget.getAttribute("var")}" #end
+		  	 
 		  	 #if(${widget.getAttribute("required")}!="") required="true" #end
+		  	 
 		  	 #if(${widget.getAttribute("requiredMessage")}!="") requiredMessage="${widget.getAttribute("requiredMessage")}" #end
-		  	 #if(${widget.getAttribute("items")}!="") items="${widget.getAttribute("items")}" #end
+		  	 
+		  	 #if(${widget.getAttribute("items")}) items="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}" #end
+		  	 
 		  	 #if(${widget.getAttribute("style")}!="") style="${widget.getAttribute("style")}" #end>
+		  	 
 			<f:selectItem itemLabel="Selecione" itemValue="" />
+			
 			#if(${widget.getAttribute("selectItems")})
-				<f:selectItems  #if(${widget.getAttribute("selectItemsVar")}!="") var="${widget.getAttribute("selectItemsVar")}" #end
-				 	#if(${widget.getAttribute("itemLabel")}!="") itemLabel="${widget.getAttribute("itemLabel")}" #end/>	
+				
+				<f:selectItems 
+				    value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
+				    
+				    #if(${widget.getAttribute("selectItemsVar")}!="") var="${widget.getFieldObject()}" #end
+				
+				 	#if(${widget.getAttribute("itemLabel")}!="") itemLabel="#{${widget.getAttribute("itemLabel")}}" #end
+				 />
+				 		
 			#end
 </p:selectOneMenu>		  
