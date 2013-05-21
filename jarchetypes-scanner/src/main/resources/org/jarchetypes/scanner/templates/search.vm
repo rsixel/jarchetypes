@@ -25,7 +25,7 @@
 	
 	<ui:define name="content">
 	<h:form id="mainform">
-		<p:panel header="Archetypes" style="margin-top: 10px;">
+		<p:panel header="$title" style="margin-top: 10px;">
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
