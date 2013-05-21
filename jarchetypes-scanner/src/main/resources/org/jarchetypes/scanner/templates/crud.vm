@@ -44,7 +44,7 @@
 		<p:confirmDialog id="returnDlg" message="As alterações serão perdidas. Deseja retornar à consulta ?" modal="true" header="Retornar a consulta"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="returndlg" appendToBody = "true">
 			<p:commandButton value="Sim"
-				action="${beanName}Search?faces-redirect=true" immediate="true" />
+				action="#{${CRUDBean}.cancel}" immediate="true" />
 			<p:commandButton value="Não" onclick="returndlg.hide()" />				
 		</p:confirmDialog>
 		

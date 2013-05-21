@@ -108,5 +108,19 @@ public class ${beanName}CRUDBean  implements Serializable {
 		
 		return "$beanName?faces-redirect=true";		
 	}
+	
+	public String cancel() throws Exception{
+		Object id = bean.getClass().getMethod("getId").invoke(bean);
+	
+		if (id == null) {
+			bean = new ${beanName}();
+		} else {
+			bean = cRUDService.find(${beanName}.class,id);
+		}
+			
+		
+		return "${beanName}Search?faces-redirect=true";		
+	}
+	
 		
 }

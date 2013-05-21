@@ -33,6 +33,11 @@ public class CRUDService<T> {
 			em.merge(bean);
 		}
 	}
+	
+	public T find(Class<T> c,Object id) throws Exception {
+		return em.find(c, id);
+	}
+
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<T> search(Class<T> entityClass, Map<String, Object> parameters) {
