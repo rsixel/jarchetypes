@@ -2,8 +2,10 @@ package org.jarchetypes.scanner;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
 
 import org.apache.velocity.VelocityContext;
+import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUDList;
 
 public class CRUDListScanner extends BaseCRUDScanner {
@@ -13,6 +15,8 @@ public class CRUDListScanner extends BaseCRUDScanner {
 	static {
 		register(CRUDList.class, new CRUDListScanner());
 	}
+	
+	
 
 	@Override
 	protected Annotation getArchetypeAnnotation(Class<?> archetype) {
@@ -22,6 +26,17 @@ public class CRUDListScanner extends BaseCRUDScanner {
 	@Override
 	protected void afterScanMembers(Class<?> archetype,
 			VelocityContext context, Annotation annotation) throws Exception {
+		
+		context.put("managedBean",
+				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
+						+ "CRUDListBean");
+		context.put("pathToBean","item");
+		
+	}
+
+	@Override
+	protected void generate(Class<?> archetype, VelocityContext context) {
+
 		try {
 			String outputPath = (String) context.get("outputPath");
 			String sourceDirectory = (String) context.get("sourceDirectory");
@@ -40,11 +55,6 @@ public class CRUDListScanner extends BaseCRUDScanner {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	protected void generate(Class<?> archetype, VelocityContext context) {
-		// TODO Auto-generated method stub
 
 	}
 	

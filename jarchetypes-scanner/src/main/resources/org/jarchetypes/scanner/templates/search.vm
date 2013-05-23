@@ -33,7 +33,7 @@
 								icon="ui-icon-trash" />
 								
 							<p:commandButton value="Adicionar $title" ajax="false"
-								action="#{${CRUDBean}.add}"
+								action="#{${managedBean}.add}"
 								icon="ui-icon-plus" />
 								
 						</p:toolbarGroup>
@@ -44,7 +44,7 @@
 						<p:toolbarGroup align="right">								
 							<p:commandButton id="cbSearch" value="consultar"
 									styleClass="btRed" update="searchResult"
-									actionListener="#{${CRUDBean}.search}" 	icon="ui-icon-search" />						
+									actionListener="#{${managedBean}.search}" 	icon="ui-icon-search" />						
 		
 						</p:toolbarGroup>
 		
@@ -62,7 +62,7 @@
 				<div style="margin-top: 50px; margin-bottom: 10px;">
 					<p:dataTable id="searchResult" var="resultItem"
 						emptyMessage="Realize a consulta"
-						value="#{${CRUDBean}.list}"
+						value="#{${managedBean}.list}"
 						scrollable="true" liveScroll="true" scrollRows="20"
 						scrollHeight="300" style="width:950px;">
 						
@@ -76,7 +76,7 @@
 							<p:commandButton id="selectButton" icon="ui-icon-search"
 								title="editar" action="$beanName?faces-redirect=true" immediate="true">
 								<f:setPropertyActionListener
-									target="#{${CRUDBean}.bean}" value="#{resultItem}"></f:setPropertyActionListener>
+									target="#{${pathToBean}}" value="#{resultItem}"></f:setPropertyActionListener>
 							</p:commandButton>
 						</p:column>
 

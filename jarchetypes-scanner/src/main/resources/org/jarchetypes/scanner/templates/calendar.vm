@@ -4,7 +4,7 @@
 		</td> 
 		<td>
 				
-			<p:calendar id="${widget.getFieldName()}" value="#{${CRUDBean}.bean.${widget.getFieldName()}}"		  	 
+			<p:calendar id="${widget.getFieldName()}" value="#{${pathToBean}.${widget.getFieldName()}}"		  	 
 		  	 #if(${widget.getAttribute("mode")}!="") mode="${widget.getAttribute("mode")}" #end	
 		  	 #if(${widget.getAttribute("maxdate")}!="") maxdate="${widget.getAttribute("maxdate")}" #end
 		  	 #if(${widget.getAttribute("mindate")}!="") mindate="${widget.getAttribute("mindate")}" #end

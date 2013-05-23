@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import org.jarchetypes.service.CRUDService;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent; 
+
 import $beanPathName;
 
 
@@ -41,12 +43,7 @@ public class ${beanName}CRUDListBean  implements Serializable {
 	public void search(){
 		
 		HashMap<String,Object> parameters = new HashMap<String,Object>(); 
-		
-		#foreach( $widget in $filters )
-		parameters.put("$widget.getFieldName()",$widget.getFieldName());			
-		#end
-		
-		
+
 		try {
 			list = cRUDService.search(${beanName}.class,parameters);
 		} catch (Exception e) {
@@ -106,6 +103,8 @@ public class ${beanName}CRUDListBean  implements Serializable {
 	public String add(){
 		bean = new ${beanName}();
 		
+		list.add(bean);
+		
 		return "$beanName?faces-redirect=true";		
 	}
 	
@@ -122,5 +121,14 @@ public class ${beanName}CRUDListBean  implements Serializable {
 		return "${beanName}Search?faces-redirect=true";		
 	}
 	
+  	public void onCellEdit(CellEditEvent event) {  
+        Object oldValue = event.getOldValue();  
+        Object newValue = event.getNewValue();  
+          
+##        if(newValue != null && !newValue.equals(oldValue)) {  
+##            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
+##            FacesContext.getCurrentInstance().addMessage(null, msg);  
+##        }  
+    }  	
 		
 }

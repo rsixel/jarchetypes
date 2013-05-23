@@ -1,4 +1,4 @@
-<p:selectOneMenu id="${widget.getFieldName()}" value="#{${CRUDBean}.${widget.getFieldObject()}}"		  	 
+<p:selectOneMenu id="${widget.getFieldName()}" value="#{${managedBean}.${widget.getFieldObject()}}"		  	 
 		  	 
 		  	 #if(${widget.getAttribute("converter")}!="") converter="${widget.getAttribute("converter")}" #end	
 		  	 
@@ -8,7 +8,7 @@
 		  	 
 		  	 #if(${widget.getAttribute("requiredMessage")}!="") requiredMessage="${widget.getAttribute("requiredMessage")}" #end
 		  	 
-		  	 #if(${widget.getAttribute("items")}) items="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}" #end
+		  	 #if(${widget.getAttribute("items")}) items="#{${managedBean}.${widget.getBeanName()}.${widget.getFieldName()}}" #end
 		  	 
 		  	 #if(${widget.getAttribute("style")}!="") style="${widget.getAttribute("style")}" #end>
 		  	 
@@ -17,7 +17,7 @@
 			#if(${widget.getAttribute("selectItems")})
 				
 				<f:selectItems 
-				    value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
+				    value="#{${managedBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
 				    
 				    #if(${widget.getAttribute("selectItemsVar")}!="") var="${widget.getFieldObject()}" #end
 				

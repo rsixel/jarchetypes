@@ -24,7 +24,6 @@ public class PlaceReregistration  implements Serializable  {
 	private int id;
 	
 	@Column
-	@InputText
 	private String name;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -39,6 +38,7 @@ public class PlaceReregistration  implements Serializable  {
 		this.id = id;
 	}
 
+	@InputText
 	public String getName() {
 		return name;
 	}

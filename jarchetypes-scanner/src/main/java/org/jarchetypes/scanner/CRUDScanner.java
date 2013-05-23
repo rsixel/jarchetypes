@@ -40,7 +40,19 @@ public class CRUDScanner extends BaseCRUDScanner {
 		register(CRUD.class, new CRUDScanner());
 	}
 
+	@Override
+	protected void doScan(Class<?> archetype, Member member,
+			VelocityContext context) {
+		super.doScan(archetype, member, context);
+		context.put("managedBean",
+				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
+						+ "CRUDBean");
+		context.put("pathToBean",
+				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
+						+ "CRUDBean.bean");
 
+	}
+	
 	protected void afterScanMembers(Class<?> archetype, VelocityContext context,
 			Annotation annotation) throws Exception {
 		scanSearchColumns(archetype, annotation, context);
@@ -48,26 +60,6 @@ public class CRUDScanner extends BaseCRUDScanner {
 
 	protected Annotation getArchetypeAnnotation(Class<?> archetype) {
 		return archetype.getAnnotation(CRUD.class);
-	}
-
-	private void scanMembers(Class<?> archetype, VelocityContext context,
-			Annotation annotation) throws Exception {
-		for (Method method : archetype.getMethods()) {
-			boolean found = false;
-			for (Annotation a : method.getAnnotations()) {
-				if (annotation.annotationType().isAnnotationPresent(
-						Widget.class)) {
-					scan(annotation, archetype, method, context);
-					found = true;
-					break;
-				}
-			}
-
-			if (!found && (Boolean)ArchetypesUtils.get(annotation,"generateAll")
-					&& ArchetypesUtils.isGetter(method)) {
-				scanByType(method, archetype, context);
-			}
-		}
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 <h:panelGrid id="${widget.getFieldName()}PanelGrid" columns="3">   
 	<h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
-		<p:inputText id="${widget.getFieldName()}" value="#{${CRUDBean}.bean.${widget.getFieldName()}}"  
+		<p:inputText id="${widget.getFieldName()}" value="#{${pathToBean}.${widget.getFieldName()}}"  
 			required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
 			>
 			#if(${widget.getAttribute("regex")}) 

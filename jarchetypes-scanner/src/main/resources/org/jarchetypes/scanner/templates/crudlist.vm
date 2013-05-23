@@ -44,7 +44,7 @@
 		<p:confirmDialog id="returnDlg" message="As alterações serão perdidas. Deseja retornar à consulta ?" modal="true" header="Retornar a consulta"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="returndlg" appendToBody = "true">
 			<p:commandButton value="Sim"
-				action="#{${CRUDBean}.cancel}" immediate="true" />
+				action="#{${managedBean}.cancel}" immediate="true" />
 			<p:commandButton value="Não" onclick="returndlg.hide()" />				
 		</p:confirmDialog>
 		
@@ -53,7 +53,10 @@
 			<p:panel id="crudPanel" header="$title" style="margin-top: 10px;">
 				<p:toolbar>
 					<p:toolbarGroup align="left">
-						<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" 
+						<p:commandButton value="Adicionar $title" ajax="false"
+								action="#{${managedBean}.add}"
+								icon="ui-icon-plus" update="crudListTable" />
+						<p:commandButton title="Save" actionListener="#{${managedBean}.save}" 
 						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" update="crudPanel" />
 						<p:commandButton title="Delete" icon="ui-icon-trash" update="crudPanel"  />
 						<p:commandButton title="Print" icon="ui-icon-print" update="crudPanel" />
@@ -63,8 +66,8 @@
 				
 				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />				
 				
-				<p:dataTable var="item" value="#{${CRUDBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
-					<p:ajax event="cellEdit" listener="#{${CRUDBean}.onCellEdit}" update=":mainform:messages" />   
+				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
+					<p:ajax event="cellEdit" listener="#{${managedBean}.onCellEdit}" update=":mainform:messages" />   
 					#foreach( $widget in $widgets )
 					     <p:column headerText="Manufacturer" style="width:25%">  
 				            <p:cellEditor>

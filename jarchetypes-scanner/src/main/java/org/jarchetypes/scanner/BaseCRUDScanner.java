@@ -51,9 +51,6 @@ public abstract class BaseCRUDScanner extends ArchetypesScanner {
 
 			context.put("ArchetypesUtils", ArchetypesUtils.class);
 
-			context.put("CRUDBean",
-					ArchetypesUtils.uncaptalize(archetype.getSimpleName())
-							+ "CRUDBean");
 
 			scanMembers(archetype, context, annotation);
 
@@ -75,13 +72,17 @@ public abstract class BaseCRUDScanner extends ArchetypesScanner {
 			Annotation annotation) throws Exception {
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
-			for (Annotation a : method.getAnnotations()) {
-				if (annotation.annotationType().isAnnotationPresent(
-						Widget.class)) {
-					scan(annotation, archetype, method, context);
-					found = true;
-					break;
+	for (Annotation a : method.getAnnotations()) {
+				for (Annotation meta : a.annotationType().getAnnotations()) {
+					if (meta.annotationType().getName().equals(
+							Widget.class.getName())) {
+						scan(a, archetype, method, context);
+						found = true;
+						break;
+					}
+					if(found) break;
 				}
+
 			}
 
 			if (!found && (Boolean)ArchetypesUtils.get(annotation,"generateAll")
