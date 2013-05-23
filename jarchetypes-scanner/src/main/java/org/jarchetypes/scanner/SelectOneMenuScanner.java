@@ -9,8 +9,10 @@ import java.util.List;
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.Filter;
+import org.jarchetypes.annotation.ListFilter;
 import org.jarchetypes.annotation.SelectOneMenu;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
 /**
@@ -54,10 +56,10 @@ public class SelectOneMenuScanner extends InputTextScanner {
         out += ob.getSimpleName().substring( 1,len );
 		descriptor.setFieldName(out);
 		descriptor.setFieldType(nameclass);
-		FilterDescriptor filterDescriptor2 = new FilterDescriptor(descriptor);
-		if (getAnnotation(Filter.class, member) != null)
-			((List<FilterDescriptor>) context.get("filters"))
-					.add(filterDescriptor2);
+		ListFilterDescriptor listFilterDescriptor2 = new ListFilterDescriptor(descriptor);
+		if (getAnnotation(ListFilter.class, member) != null)
+			((List<ListFilterDescriptor>) context.get("listFilters"))
+					.add(listFilterDescriptor2);
 		
 		
 		descriptor.setFieldName(name);
@@ -68,10 +70,10 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
 				.getGenericReturnType().toString() : ((Field) member).getGenericType().toString());
 		
-		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
+		ListFilterDescriptor listFilterDescriptor = new ListFilterDescriptor(descriptor);
 		
 		
-		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
+		listFilterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
 		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
@@ -83,9 +85,9 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		scanForStyle(archetype, member, descriptor);
 		scanForSelectItems(archetype, member, descriptor);
 		
-		if (getAnnotation(Filter.class, member) != null)
-			((List<FilterDescriptor>) context.get("filters"))
-					.add(filterDescriptor);
+		if (getAnnotation(ListFilter.class, member) != null)
+			((List<ListFilterDescriptor>) context.get("listFilters"))
+					.add(listFilterDescriptor);
 		
 	}
 	

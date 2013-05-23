@@ -8,7 +8,7 @@
 		  	 
 		  	 #if(${widget.getAttribute("requiredMessage")}!="") requiredMessage="${widget.getAttribute("requiredMessage")}" #end
 		  	 
-		  	 #if(${widget.getAttribute("items")}) items="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}" #end
+		  	 #if(${widget.getAttribute("items")}) items="#{${CRUDBean}.bean.${widget.getFieldName()}}" #end
 		  	 
 		  	 #if(${widget.getAttribute("style")}!="") style="${widget.getAttribute("style")}" #end>
 		  	 
@@ -17,7 +17,7 @@
 			#if(${widget.getAttribute("selectItems")})
 				
 				<f:selectItems 
-				    value="#{${CRUDBean}.${widget.getBeanName()}.${widget.getFieldName()}}"
+				    value="#{${CRUDBean}.bean.${widget.getFieldName()}}"
 				    
 				    #if(${widget.getAttribute("selectItemsVar")}!="") var="${widget.getFieldObject()}" #end
 				

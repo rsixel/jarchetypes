@@ -11,7 +11,7 @@
 	
 	<ui:define name="content">
 	<h:form id="mainform">
-		<p:panel header="Archetypes" style="margin-top: 10px;">
+		<p:panel header="Person" style="margin-top: 10px;">
 					<p:toolbar>
 						<p:toolbarGroup align="left">
 		
@@ -20,7 +20,7 @@
 								
 							<p:commandButton value="Adicionar Person" ajax="false"
 								action="#{personCRUDBean.add}"
-								icon="ui-icon-add" />
+								icon="ui-icon-plus" />
 								
 						</p:toolbarGroup>
 		
@@ -43,32 +43,10 @@
 	<tr> 
 		<td><h:outputLabel for="name" value="Nome" /> 
 		</td> 
-		<td><p:inputText id="name" value="#{personCRUDBean.person.name}"  />
+		<td><p:inputText id="name" value="#{personCRUDBean.name}"  />
 		</td>
 	</tr>
-</table>									    			<p:selectOneMenu id="placeReregistration" value="#{personCRUDBean.${widget.getFieldObject()}}"		  	 
-		  	 
-		  	  converter="${widget.getAttribute("converter")}" 		  	 
-		  	  var="${widget.getAttribute("var")}" 		  	 
-		  	  required="true" 		  	 
-		  	  requiredMessage="${widget.getAttribute("requiredMessage")}" 		  	 
-		  	 		  	 
-		  	  style="${widget.getAttribute("style")}" >
-		  	 
-			<f:selectItem itemLabel="Selecione" itemValue="" />
-			
-			</p:selectOneMenu>		  									    			<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
-		  	 
-		  	  converter="${widget.getAttribute("converter")}" 		  	 
-		  	  var="${widget.getAttribute("var")}" 		  	 
-		  	  required="true" 		  	 
-		  	  requiredMessage="${widget.getAttribute("requiredMessage")}" 		  	 
-		  	 		  	 
-		  	  style="${widget.getAttribute("style")}" >
-		  	 
-			<f:selectItem itemLabel="Selecione" itemValue="" />
-			
-			</p:selectOneMenu>		  											</p:panel>
+</table>											</p:panel>
 		
 			
 				<div style="margin-top: 50px; margin-bottom: 10px;">
@@ -77,21 +55,28 @@
 						value="#{personCRUDBean.list}"
 						scrollable="true" liveScroll="true" scrollRows="20"
 						scrollHeight="300" style="width:950px;">
-
-						<p:column width="400" style="text-align: center;">
-							<f:facet name="header">  
-               				 Nome  
-            				</f:facet>
-							<h:outputText value="#{resultItem.nomeCpessoa}" />
-						</p:column>
+						
+									    			<p:column headerText="name">
+								<h:outputText value="#{resultItem.name}" />
+							</p:column>		    			
+									    			<p:column headerText="nickname">
+								<h:outputText value="#{resultItem.nickname}" />
+							</p:column>		    			
+									    			<p:column headerText="email">
+								<h:outputText value="#{resultItem.email}" />
+							</p:column>		    			
+									    			<p:column headerText="phoneNumber">
+								<h:outputText value="#{resultItem.phoneNumber}" />
+							</p:column>		    			
+												
 						<p:column width="50" style="text-align: center;">
 							<p:commandButton id="selectButton" icon="ui-icon-search"
-								title="editar" action="recadastramento?faces-redirect=true"
-								immediate="true">
+								title="editar" action="Person?faces-redirect=true" immediate="true">
 								<f:setPropertyActionListener
-									target="#{recadastramentoConsultaBean.pessoa}" value="#{resultItem}"></f:setPropertyActionListener>
+									target="#{personCRUDBean.bean}" value="#{resultItem}"></f:setPropertyActionListener>
 							</p:commandButton>
 						</p:column>
+
 					</p:dataTable>
 				</div>
 			</p:panel>

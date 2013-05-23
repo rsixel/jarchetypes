@@ -27,6 +27,7 @@ import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
@@ -54,7 +55,8 @@ public class CRUDScanner extends ArchetypesScanner {
 		context.put("beanPathName", archetype.getName());
 
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
-		context.put("filters", new ArrayList<FilterDescriptor>());
+		context.put("listFilters", new ArrayList<ListFilterDescriptor>());
+		context.put("filters", new ArrayList<FilterDescriptor>());		
 		
 		context.put("ArchetypesUtils", ArchetypesUtils.class);
 		
