@@ -169,7 +169,7 @@ public abstract class ArchetypesScanner {
 
 			}
 
-			String path = archetype.getSimpleName()+"Search.jsf";
+			String path = getPath(archetype);
 			archetypesDescriptors.add(new ArchetypeDescriptor(archetype
 					.getName(), category, title,path ));
 		} catch (Exception e) {
@@ -178,4 +178,6 @@ public abstract class ArchetypesScanner {
 		}
 
 	}
+
+	protected abstract String getPath(Class<?> archetype) ;
 }

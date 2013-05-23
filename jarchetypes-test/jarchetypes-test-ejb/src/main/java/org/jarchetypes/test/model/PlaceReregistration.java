@@ -10,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.jarchetypes.annotation.CRUDList;
+import org.jarchetypes.annotation.InputText;
+
 @Entity
+@CRUDList(title="Places")
 public class PlaceReregistration  implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -20,6 +24,7 @@ public class PlaceReregistration  implements Serializable  {
 	private int id;
 	
 	@Column
+	@InputText
 	private String name;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

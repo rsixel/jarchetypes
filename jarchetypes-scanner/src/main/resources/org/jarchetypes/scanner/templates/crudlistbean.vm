@@ -17,7 +17,7 @@ import $beanPathName;
 
 @ManagedBean
 @SessionScoped
-public class ${beanName}CRUDBean  implements Serializable {
+public class ${beanName}CRUDListBean  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	
 	private boolean saved = false;
 	
-	public ${beanName}CRUDBean() {
+	public ${beanName}CRUDListBean() {
 		super();
 	}
 	

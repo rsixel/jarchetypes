@@ -1,0 +1,80 @@
+##
+## Copyright 2013 Ricardo Girardi Sixel
+##
+## Licensed under the Apache License, Version 2.0 (the "License");
+## you may not use this file except in compliance with the License.
+## You may obtain a copy of the License at
+##
+##     http://www.apache.org/licenses/LICENSE-2.0
+##
+## Unless required by applicable law or agreed to in writing, software
+## distributed under the License is distributed on an "AS IS" BASIS,
+## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+## See the License for the specific language governing permissions and
+## limitations under the License.
+ 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:s="http://jboss.org/seam/faces"
+	template="/templates/main.xhtml">
+	
+	<ui:define name="content">
+	
+		<script type="text/javascript">  
+				function handleSave(xhr, status, args) {
+		        if (args.saved) {
+		            okdlg.show();
+		        } else {
+		            okdlg.hide();
+		        }
+		    }
+		</script>
+		
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
+			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
+			<p:commandButton value="Ok"
+				action="${beanName}Search?faces-redirect=true" />
+		</p:confirmDialog>
+		
+		<p:confirmDialog id="returnDlg" message="As alterações serão perdidas. Deseja retornar à consulta ?" modal="true" header="Retornar a consulta"
+			draggable="false" closable="false" styleClass="process_msg"	widgetVar="returndlg" appendToBody = "true">
+			<p:commandButton value="Sim"
+				action="#{${CRUDBean}.cancel}" immediate="true" />
+			<p:commandButton value="Não" onclick="returndlg.hide()" />				
+		</p:confirmDialog>
+		
+	
+		<h:form id="mainform">
+			<p:panel id="crudPanel" header="$title" style="margin-top: 10px;">
+				<p:toolbar>
+					<p:toolbarGroup align="left">
+						<p:commandButton title="Save" actionListener="#{${CRUDBean}.save}" 
+						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" update="crudPanel" />
+						<p:commandButton title="Delete" icon="ui-icon-trash" update="crudPanel"  />
+						<p:commandButton title="Print" icon="ui-icon-print" update="crudPanel" />
+						<p:commandButton title="Return" icon="ui-icon-arrowreturn-1-w" onclick="returndlg.show()" immediate="true" />
+					</p:toolbarGroup>
+				</p:toolbar>
+				
+				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />				
+				
+				<p:dataTable var="item" value="#{${CRUDBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
+					<p:ajax event="cellEdit" listener="#{${CRUDBean}.onCellEdit}" update=":mainform:messages" />   
+					#foreach( $widget in $widgets )
+					     <p:column headerText="Manufacturer" style="width:25%">  
+				            <p:cellEditor>
+				            	#parse( $widget.getTemplateName() )  
+				            </p:cellEditor>  
+				        </p:column>  
+					#end
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

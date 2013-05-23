@@ -169,4 +169,9 @@ public class InputTextScanner extends ArchetypesScanner {
 			return ((Method) member).getAnnotation(annotationType);
 		}
 	}
+	
+	@Override
+	protected String getPath(Class<?> archetype) {
+		return archetype.getSimpleName()+"Search.jsf";
+	}
 }
