@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class SearchColumnDescriptor implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private String title;
 	private String action;
 	private String fieldName;

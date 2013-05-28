@@ -27,6 +27,7 @@ import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
@@ -43,13 +44,37 @@ public class CRUDScanner extends BaseCRUDScanner {
 	@Override
 	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
-		super.doScan(archetype, member, context);
-		context.put("managedBean",
-				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
-						+ "CRUDBean");
-		context.put("pathToBean",
-				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
-						+ "CRUDBean.bean");
+		
+		CRUD crud = archetype.getAnnotation(CRUD.class);
+		
+		addArchetypeDescriptor(archetype,crud,context);
+		
+
+		context.put("title", crud.title());
+		context.put("beanName", archetype.getSimpleName());
+		context.put("beanPathName", archetype.getName());
+
+		context.put("widgets", new ArrayList<WidgetDescriptor>());
+		context.put("listFilters", new ArrayList<ListFilterDescriptor>());
+		context.put("filters", new ArrayList<FilterDescriptor>());		
+		
+		context.put("ArchetypesUtils", ArchetypesUtils.class);
+		
+		context.put("CRUDBean", ArchetypesUtils.uncaptalize(archetype
+				.getSimpleName()) + "CRUDBean");
+		
+		scanSearchColumns(crud,context);
+
+		for (Method method : archetype.getMethods()) {
+			boolean found = false;
+			for (Annotation annotation : method.getAnnotations()) {
+				if (annotation.annotationType().isAnnotationPresent(
+						Widget.class)) {
+					scan(annotation, archetype, method, context);
+					found = true;
+					break;
+				}
+			}
 
 	}
 	
