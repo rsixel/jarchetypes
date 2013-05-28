@@ -17,7 +17,7 @@
 			#if(${widget.getAttribute("selectItems")})
 				
 				<f:selectItems 
-				    value="#{${managedBean}.bean.${widget.getFieldName()}}"
+				    value="#{${managedBean}.${widget.getFieldName()}List}"
 				    
 				    #if(${widget.getAttribute("selectItemsVar")}!="") var="${widget.getFieldObject()}" #end
 				

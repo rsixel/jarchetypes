@@ -16,7 +16,7 @@ import javax.persistence.criteria.Root;
 
 @Stateless
 @Named
-public class CRUDService<T> {
+public class CRUDService {
 
 	@Inject
 	private Logger log;
@@ -34,13 +34,13 @@ public class CRUDService<T> {
 		}
 	}
 	
-	public T find(Class<T> c,Object id) throws Exception {
+	public <T> T find(Class<T> c,Object id) throws Exception {
 		return em.find(c, id);
 	}
 
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<T> search(Class<T> entityClass, Map<String, Object> parameters) {
+	public <T> List<T> search(Class<T> entityClass, Map<String, Object> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
 		CriteriaQuery query = builder.createQuery();

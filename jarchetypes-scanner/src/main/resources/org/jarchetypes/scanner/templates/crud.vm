@@ -41,7 +41,7 @@
 				action="${beanName}Search?faces-redirect=true" />
 		</p:confirmDialog>
 		
-		<p:confirmDialog id="returnDlg" message="As alterações serão perdidas. Deseja retornar a  consulta ?" modal="true" header="Retornar a consulta"
+		<p:confirmDialog id="returnDlg" message="As alteraÃ§Ãµes serÃ£o perdidas. Deseja retornar Ã  consulta ?" modal="true" header="Retornar a consulta"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="returndlg" appendToBody = "true">
 			<p:commandButton value="Sim"
 				action="#{${managedBean}.cancel}" immediate="true" />

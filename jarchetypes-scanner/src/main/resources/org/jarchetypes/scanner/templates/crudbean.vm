@@ -22,9 +22,17 @@ public class ${beanName}CRUDBean  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private CRUDService<${beanName}> cRUDService;
+	private CRUDService cRUDService;
 	
 	private List<${beanName}> list = new ArrayList<${beanName}>();
+	
+	#foreach( $widget in $widgets )
+	#if(${widget.getAttribute("selectItems")})
+		
+	private List<${widget.getAttribute("genericType")}> $widget.getFieldName()List;	
+	
+	#end
+	#end
 	
 	#foreach( $widget in $filters )
 	private $widget.getFieldType() $widget.getFieldName();			
@@ -33,6 +41,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $listFilters )
 	private $widget.getFieldType() $widget.getFieldName();			
 	#end
+	
 		
 	private ${beanName} bean = new ${beanName}();
 	
@@ -52,7 +61,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 		
 		
 		try {
-			list = cRUDService.search(${beanName}.class,parameters);
+			list = cRUDService.<${beanName}>search(${beanName}.class,parameters);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +88,29 @@ public class ${beanName}CRUDBean  implements Serializable {
 	public void set$ArchetypesUtils.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
 		this.$widget.getFieldName() = $widget.getFieldName();
 	}
+    #end
+	
+	
+	#foreach( $widget in $widgets )
+	#if(${widget.getAttribute("selectItems")})
+	
+	public  List<$widget.getFieldType()> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
+		if($widget.getFieldName()List==null){
+			HashMap<String,Object> parameters = new HashMap<String,Object>(); 
+			
+			try {
+				$widget.getFieldName()List = cRUDService.<${widget.getAttribute("genericType")}>search(${widget.getAttribute("genericType")}.class,parameters);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		return $widget.getFieldName()List;
+	}
 	#end
+	#end
+	
+
 	
 	#foreach( $widget in $listFilters )
 	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
@@ -135,6 +166,8 @@ public class ${beanName}CRUDBean  implements Serializable {
 		
 		return "${beanName}Search?faces-redirect=true";		
 	}
+	
+	
 	
 		
 }

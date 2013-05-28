@@ -83,6 +83,8 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
 				.getGenericReturnType().toString() : ((Field) member)
 				.getGenericType().toString());
+		
+		descriptor.setAttribute("genericType", nameclass);
 
 		ListFilterDescriptor listFilterDescriptor = new ListFilterDescriptor(
 				descriptor);
