@@ -29,6 +29,10 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $filters )
 	private $widget.getFieldType() $widget.getFieldName();			
 	#end
+	
+	#foreach( $widget in $listFilters )
+	private $widget.getFieldType() $widget.getFieldName();			
+	#end
 		
 	private ${beanName} bean = new ${beanName}();
 	
@@ -68,6 +72,16 @@ public class ${beanName}CRUDBean  implements Serializable {
 	}
 	
 	#foreach( $widget in $filters )
+	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
+		return $widget.getFieldName();
+	}
+
+	public void set$ArchetypesUtils.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
+		this.$widget.getFieldName() = $widget.getFieldName();
+	}
+	#end
+	
+	#foreach( $widget in $listFilters )
 	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
 		return $widget.getFieldName();
 	}

@@ -23,6 +23,7 @@ import org.jarchetypes.annotation.Calendar;
 import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
+import org.jarchetypes.annotation.ListFilter;
 import org.jarchetypes.annotation.SelectItems;
 import org.jarchetypes.annotation.SelectOneMenu;
 
@@ -113,7 +114,7 @@ public class Person implements Serializable {
 	}
 
 	@SelectOneMenu(selectItems = @SelectItems(var="placeReregistrations", itemLabel="placeReregistration.name"),converter="selectOneUsingObjectConverter", items= true)
-	@Filter
+	@ListFilter
 	public List<PlaceReregistration> getPlaceReregistrations() {
 		placeReregistrations = new ArrayList<PlaceReregistration>();
 		for (int i = 0; i < 4; i++) {

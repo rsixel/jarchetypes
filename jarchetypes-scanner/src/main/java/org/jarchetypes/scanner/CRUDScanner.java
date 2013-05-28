@@ -27,6 +27,7 @@ import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 

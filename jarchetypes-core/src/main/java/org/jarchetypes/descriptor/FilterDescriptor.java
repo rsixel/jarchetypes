@@ -6,6 +6,11 @@ import org.archetypes.common.ArchetypesUtils;
 
 public class FilterDescriptor extends WidgetDescriptor {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public FilterDescriptor(WidgetDescriptor descriptor) {
 		super();
 		assignFrom(descriptor);
