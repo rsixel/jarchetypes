@@ -1,3 +1,4 @@
 /jarchetypes-core/target
 /jarchetypes-plugin/target
 /jarchetypes-test/jarchetypes-test-web/src/main/generated
+/jarchetypes-test/jarchetypes-test-web/target/generated-sources
