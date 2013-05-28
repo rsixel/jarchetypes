@@ -21,7 +21,7 @@ public class PlaceReregistration  implements Serializable  {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private String id;
 	
 	@Column
 	private String name;
@@ -30,11 +30,11 @@ public class PlaceReregistration  implements Serializable  {
 	@JoinColumn
 	private Person person;
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -18,16 +18,11 @@ package org.jarchetypes.scanner;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
-import org.jarchetypes.annotation.meta.Widget;
-import org.jarchetypes.descriptor.FilterDescriptor;
-import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
@@ -41,22 +36,16 @@ public class CRUDScanner extends BaseCRUDScanner {
 		register(CRUD.class, new CRUDScanner());
 	}
 
-	@Override
-	protected void doScan(Class<?> archetype, Member member,
-			VelocityContext context) {
-		super.doScan(archetype, member, context);
+	protected void afterScanMembers(Class<?> archetype,
+			VelocityContext context, Annotation annotation) throws Exception {
 		context.put("managedBean",
 				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
 						+ "CRUDBean");
 		context.put("pathToBean",
 				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
 						+ "CRUDBean.bean");
-
-	}
-	
-	protected void afterScanMembers(Class<?> archetype, VelocityContext context,
-			Annotation annotation) throws Exception {
 		scanSearchColumns(archetype, annotation, context);
+
 	}
 
 	protected Annotation getArchetypeAnnotation(Class<?> archetype) {
@@ -94,7 +83,8 @@ public class CRUDScanner extends BaseCRUDScanner {
 
 		context.put("searchColumns", searchColumns);
 
-		for (String column : (String[])ArchetypesUtils.get(annotation,"resultFields")) {
+		for (String column : (String[]) ArchetypesUtils.get(annotation,
+				"resultFields")) {
 			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(
 					column, getColumnTitle(context, column));
 
@@ -117,9 +107,9 @@ public class CRUDScanner extends BaseCRUDScanner {
 
 		return column;
 	}
-	
+
 	@Override
 	protected String getPath(Class<?> archetype) {
-		return archetype.getSimpleName()+"Search.jsf";
+		return archetype.getSimpleName() + "Search.jsf";
 	}
 }

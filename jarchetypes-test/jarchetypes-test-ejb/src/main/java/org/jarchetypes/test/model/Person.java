@@ -35,7 +35,7 @@ public class Person implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private String id;
 
 	@NotNull(message="The field name cannot be empty")
 	@Size(min = 1, max = 25)
@@ -61,11 +61,11 @@ public class Person implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST, mappedBy = "person")
 	private List<PlaceReregistration> placeReregistrations;
 	
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -119,7 +119,7 @@ public class Person implements Serializable {
 		placeReregistrations = new ArrayList<PlaceReregistration>();
 		for (int i = 0; i < 4; i++) {
 			PlaceReregistration placeReregistration = new PlaceReregistration();
-			placeReregistration.setId(i);
+			placeReregistration.setId(String.valueOf(i));
 			placeReregistration.setName("Cabo Frio " + i);
 			placeReregistrations.add(placeReregistration);
 		}

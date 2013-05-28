@@ -21,17 +21,18 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
 public abstract class BaseCRUDScanner extends ArchetypesScanner {
-
 
 	@Override
 	protected void doScan(Class<?> archetype, Member member,
@@ -42,15 +43,15 @@ public abstract class BaseCRUDScanner extends ArchetypesScanner {
 
 			addArchetypeDescriptor(archetype, annotation, context);
 
-			context.put("title", ArchetypesUtils.get(annotation,"title"));
+			context.put("title", ArchetypesUtils.get(annotation, "title"));
 			context.put("beanName", archetype.getSimpleName());
 			context.put("beanPathName", archetype.getName());
 
 			context.put("widgets", new ArrayList<WidgetDescriptor>());
 			context.put("filters", new ArrayList<FilterDescriptor>());
+			context.put("listFilters", new ArrayList<ListFilterDescriptor>());
 
 			context.put("ArchetypesUtils", ArchetypesUtils.class);
-
 
 			scanMembers(archetype, context, annotation);
 
@@ -63,37 +64,42 @@ public abstract class BaseCRUDScanner extends ArchetypesScanner {
 		}
 	}
 
-	protected abstract void afterScanMembers(Class<?> archetype, VelocityContext context,
-			Annotation annotation) throws Exception ;
+	protected abstract void afterScanMembers(Class<?> archetype,
+			VelocityContext context, Annotation annotation) throws Exception;
 
-	protected abstract Annotation getArchetypeAnnotation(Class<?> archetype) ;
+	protected abstract Annotation getArchetypeAnnotation(Class<?> archetype);
 
 	private void scanMembers(Class<?> archetype, VelocityContext context,
 			Annotation annotation) throws Exception {
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
-	for (Annotation a : method.getAnnotations()) {
+
+			if (method.getName().equals("getId"))
+				continue;
+			for (Annotation a : method.getAnnotations()) {
+
 				for (Annotation meta : a.annotationType().getAnnotations()) {
-					if (meta.annotationType().getName().equals(
-							Widget.class.getName())) {
+					if (meta.annotationType().getName()
+							.equals(Widget.class.getName())) {
 						scan(a, archetype, method, context);
 						found = true;
 						break;
 					}
-					if(found) break;
+					if (found)
+						break;
 				}
 
 			}
 
-			if (!found && (Boolean)ArchetypesUtils.get(annotation,"generateAll")
+			if (!found
+					&& (Boolean) ArchetypesUtils.get(annotation, "generateAll")
 					&& ArchetypesUtils.isGetter(method)) {
 				scanByType(method, archetype, context);
 			}
 		}
 	}
 
-	protected abstract void generate(Class<?> archetype, VelocityContext context) ;
-
+	protected abstract void generate(Class<?> archetype, VelocityContext context);
 
 	protected String getColumnTitle(VelocityContext context, String column) {
 

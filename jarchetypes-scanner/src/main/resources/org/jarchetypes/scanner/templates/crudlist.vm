@@ -69,9 +69,12 @@
 				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
 					<p:ajax event="cellEdit" listener="#{${managedBean}.onCellEdit}" update=":mainform:messages" />   
 					#foreach( $widget in $widgets )
-					     <p:column headerText="Manufacturer" style="width:25%">  
+					     <p:column headerText="${widget.title}" style="width:25%">  
 				            <p:cellEditor>
-				            	#parse( $widget.getTemplateName() )  
+				            	<f:facet name="output"><h:outputText value="#{item.${widget.fieldName}}" /></f:facet>  
+                   				<f:facet name="input">
+				            		#parse( $widget.getTemplateName() )
+				            	</f:facet>  
 				            </p:cellEditor>  
 				        </p:column>  
 					#end

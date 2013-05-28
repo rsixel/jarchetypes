@@ -1,4 +1,12 @@
-package org.jarchetypes.converter;
+##package ${targetPackage};
+##
+##import javax.faces.convert.FacesConverter;
+##
+##  
+##@FacesConverter("selectOneUsingObjectConverter") 
+##public class SelectOneUsingObjectConverter extends org.jarchetypes.converter.SelectOneUsingObjectConverter {
+##}
+package ${targetPackage};
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -8,8 +16,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
-  
-@FacesConverter("selectOneUsingObjectConverter") 
+
+@FacesConverter("selectOneUsingObjectConverter")
 public class SelectOneUsingObjectConverter implements Converter {
 
 	@SuppressWarnings("rawtypes")
@@ -50,10 +58,26 @@ public class SelectOneUsingObjectConverter implements Converter {
       
     private String getIdByReflection(Object bean){  
         try{  
-        	Field idField = bean.getClass().getDeclaredField("id");  
-           // Field idField = bean.getClass().getSuperclass().getDeclaredField("id");  
-            idField.setAccessible(true);  
-            return  String.valueOf(idField.get(bean));  
+        	Class<?> c = bean.getClass();
+        	
+        	Field idField = null;
+        	
+        	while( ! c.getName().equals(Object.class.getName())){
+        		
+        		try{
+        			idField = c.getDeclaredField("id");
+                	idField.setAccessible(true);
+                	return (String) idField.get(bean); 
+        		}catch(NoSuchFieldException nsfe){
+        			
+        		}
+        		
+        		c = c.getSuperclass();
+        		  
+        	}
+        	
+        	
+            return  null;  
         }catch(Exception ex){  
             throw new RuntimeException("Não foi possível obter a propriedade 'id' do item",ex);  
         }  

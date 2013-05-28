@@ -2,7 +2,6 @@ package org.jarchetypes.scanner;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Member;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
