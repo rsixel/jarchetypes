@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.jarchetypes.annotation.CRUDList;
 import org.jarchetypes.annotation.InputText;
 
@@ -19,8 +20,9 @@ public class PlaceReregistration  implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue
+	@Id @GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid",
+	  strategy = "uuid")
 	private String id;
 	
 	@Column

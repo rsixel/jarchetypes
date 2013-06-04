@@ -94,7 +94,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $widgets )
 	#if(${widget.getAttribute("selectItems")})
 	
-	public  List<$widget.getFieldType()> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
+	public  List<${widget.getAttribute("genericType")}> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
 		if($widget.getFieldName()List==null){
 			HashMap<String,Object> parameters = new HashMap<String,Object>(); 
 			

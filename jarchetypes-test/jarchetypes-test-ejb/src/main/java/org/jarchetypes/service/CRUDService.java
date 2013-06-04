@@ -58,7 +58,8 @@ public class CRUDService {
 			builder.and(predicate, p);
 		}
 
-		query.where(predicate);
+		if(predicate!=null)
+			query.where(predicate);
 
 		return em.createQuery(query).getResultList();
 	}
