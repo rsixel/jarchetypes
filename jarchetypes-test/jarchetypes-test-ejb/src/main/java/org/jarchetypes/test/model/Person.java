@@ -1,9 +1,7 @@
 package org.jarchetypes.test.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -61,8 +59,7 @@ public class Person implements Serializable {
 	@Column(name = "dateBirth")
 	private Date dateBirth;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "person")
-	private List<PlaceReregistration> placeReregistrations;
+	private PlaceReregistration placeReregistration;
 
 	public String getId() {
 		return id;
@@ -118,20 +115,15 @@ public class Person implements Serializable {
 
 	@SelectOneMenu(selectItems = @SelectItems(var = "placeReregistrations", itemLabel = "placeReregistration.name"), converter = "selectOneUsingObjectConverter", items = true)
 	@ListFilter
-	public List<PlaceReregistration> getPlaceReregistrations() {
-		placeReregistrations = new ArrayList<PlaceReregistration>();
-		for (int i = 0; i < 4; i++) {
-			PlaceReregistration placeReregistration = new PlaceReregistration();
-			placeReregistration.setId(String.valueOf(i));
-			placeReregistration.setName("Cabo Frio " + i);
-			placeReregistrations.add(placeReregistration);
-		}
-		return placeReregistrations;
+	@ManyToOne
+	public PlaceReregistration getPlaceReregistration() {
+		
+		return placeReregistration;
 	}
 
-	public void setPlaceReregistrations(
-			List<PlaceReregistration> placeReregistrations) {
-		this.placeReregistrations = placeReregistrations;
+	public void setPlaceReregistration(
+			PlaceReregistration placeReregistration) {
+		this.placeReregistration = placeReregistration;
 	}
 
 }

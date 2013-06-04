@@ -29,7 +29,7 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $widgets )
 	#if(${widget.getAttribute("selectItems")})
 		
-	private List<${widget.getAttribute("genericType")}> $widget.getFieldName()List;	
+	private List<${widget.getFieldType()}> $widget.getFieldName()List;	
 	
 	#end
 	#end
@@ -94,12 +94,12 @@ public class ${beanName}CRUDBean  implements Serializable {
 	#foreach( $widget in $widgets )
 	#if(${widget.getAttribute("selectItems")})
 	
-	public  List<${widget.getAttribute("genericType")}> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
+	public  List<${widget.getFieldType()}> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
 		if($widget.getFieldName()List==null){
 			HashMap<String,Object> parameters = new HashMap<String,Object>(); 
 			
 			try {
-				$widget.getFieldName()List = cRUDService.<${widget.getAttribute("genericType")}>search(${widget.getAttribute("genericType")}.class,parameters);
+				$widget.getFieldName()List = cRUDService.<${widget.getFieldType()}>search(${widget.getFieldType()}.class,parameters);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

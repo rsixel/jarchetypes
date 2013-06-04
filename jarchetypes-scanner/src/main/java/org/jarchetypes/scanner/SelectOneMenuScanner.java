@@ -9,10 +9,8 @@ import java.util.List;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
-import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.ListFilter;
 import org.jarchetypes.annotation.SelectOneMenu;
-import org.jarchetypes.descriptor.FilterDescriptor;
 import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
@@ -54,9 +52,13 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		descriptor.setTitle(annotation != null ? annotation.title()
 				: ArchetypesUtils.captalize(name));
 
-		ParameterizedType parametezed = (ParameterizedType) (member instanceof Method ? ((Method) member)
-				.getGenericReturnType() : ((Field) member).getGenericType());
-		Class<?> ob = (Class<?>) parametezed.getActualTypeArguments()[0];
+//		ParameterizedType parametezed = (ParameterizedType) (member instanceof Method ? ((Method) member)
+//				.getGenericReturnType() : ((Field) member).getGenericType());
+		
+		Class<?> ob = (member instanceof Method ? ((Method) member)
+				.getReturnType() : ((Field) member).getType());
+		
+//		Class<?> ob = (Class<?>) parametezed.getActualTypeArguments()[0];
 
 		String nameclass = ob.getName();
 		int len = ob.getSimpleName().length();
@@ -65,15 +67,15 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		out += ob.getSimpleName().substring(1, len);
 		descriptor.setFieldName(out);
 		descriptor.setFieldType(nameclass);
-		ListFilterDescriptor listFilterDescriptor2 = new ListFilterDescriptor(
-				descriptor);
-
+//		ListFilterDescriptor listFilterDescriptor2 = new ListFilterDescriptor(
+//				descriptor);
+//
 		List<ListFilterDescriptor> listFilters = (List<ListFilterDescriptor>) context
 				.get("listFilters");
-
-		if (getAnnotation(ListFilter.class, member) != null) {
-			listFilters.add(listFilterDescriptor2);
-		}
+//
+//		if (getAnnotation(ListFilter.class, member) != null) {
+//			listFilters.add(listFilterDescriptor2);
+//		}
 
 		descriptor.setFieldName(name);
 		descriptor.setFieldObject(out);
@@ -81,10 +83,10 @@ public class SelectOneMenuScanner extends InputTextScanner {
 				.getSimpleName()));
 
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
-				.getGenericReturnType().toString() : ((Field) member)
-				.getGenericType().toString());
+				.getReturnType().getName() : ((Field) member)
+				.getType().getName());
 		
-		descriptor.setAttribute("genericType", nameclass);
+//		descriptor.setAttribute("genericType", nameclass);
 
 		ListFilterDescriptor listFilterDescriptor = new ListFilterDescriptor(
 				descriptor);

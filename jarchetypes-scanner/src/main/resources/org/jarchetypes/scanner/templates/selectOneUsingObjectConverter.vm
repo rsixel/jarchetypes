@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 @FacesConverter("selectOneUsingObjectConverter")
 public class SelectOneUsingObjectConverter implements Converter {
@@ -24,13 +25,23 @@ public class SelectOneUsingObjectConverter implements Converter {
 	@Override  
     public Object getAsObject(FacesContext context,  
         UIComponent component, String value) {  
-        if (value == null || value.equals(""))  
-            return null;  
-  
+        
+        SelectOneMenu selectOneMenu = (SelectOneMenu) component;
+        
+        String id = value;
+        
+        if( value == null || value.equals("") ){
+        	Object o = selectOneMenu.getValue();
+        	
+        	if(o==null)  return null;
+        	id =  getIdByReflection(o);
+        }
+        	
+        
+        
         try{  
-          //  Long id = Long.valueOf(value);  
             Collection items =  (Collection) component.getAttributes().get("items");  
-            return findById(items, value);  
+            return findById(items, id);  
         }catch(Exception ex){  
             throw new ConverterException("Não foi possível aplicar conversão de item com valor ["+value+"] no componente ["+component.getId()+"]", ex);  
         }  
@@ -41,8 +52,12 @@ public class SelectOneUsingObjectConverter implements Converter {
             Object value) {  
         if (value == null || value.equals(""))  
             return "";  
+        Object id = getIdByReflection(value);
+        
+        if(id == null)            
+        	return ""; 
           
-        return getIdByReflection(value).toString();  
+        return id.toString();  
     }  
       
     @SuppressWarnings("rawtypes")

@@ -86,7 +86,7 @@ public class CRUDScanner extends BaseCRUDScanner {
 		for (String column : (String[]) ArchetypesUtils.get(annotation,
 				"resultFields")) {
 			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(
-					column, getColumnTitle(context, column));
+					getColumnTitle(context, column), column);
 
 			searchColumns.add(descriptor);
 		}
