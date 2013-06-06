@@ -33,6 +33,13 @@
 		            okdlg.hide();
 		        }
 		    }
+		    
+
+	        function editLastDatatableRow(){
+			  jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
+			     jQuery(this).click()
+			  });
+		    }
 		</script>
 		
 		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
@@ -53,8 +60,9 @@
 			<p:panel id="crudPanel" header="$title" style="margin-top: 10px;">
 				<p:toolbar>
 					<p:toolbarGroup align="left">
-						<p:commandButton value="Adicionar $title" ajax="false"
+						<p:commandButton value="Adicionar $title" 
 								action="#{${managedBean}.add}"
+								oncomplete="editLastDatatableRow();"
 								icon="ui-icon-plus" update="crudListTable" />
 						<p:commandButton title="Save" actionListener="#{${managedBean}.save}" 
 						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" update="crudPanel" />
@@ -69,7 +77,10 @@
 				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
 					<p:ajax event="cellEdit" listener="#{${managedBean}.onCellEdit}" update=":mainform:messages" />   
 					#foreach( $widget in $widgets )
-					     <p:column headerText="${widget.title}" style="width:25%">  
+					     <p:column headerText="${widget.title}" style="width:25%">
+					     	<f:facet name="header">
+								<h:outputText value="${widget.title}" />
+							</f:facet>  
 				            <p:cellEditor>
 				            	<f:facet name="output"><h:outputText value="#{item.${widget.fieldName}}" /></f:facet>  
                    				<f:facet name="input">

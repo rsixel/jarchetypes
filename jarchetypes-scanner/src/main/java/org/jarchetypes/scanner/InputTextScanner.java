@@ -41,7 +41,7 @@ public class InputTextScanner extends ArchetypesScanner {
 		String name = ArchetypesUtils.uncaptalize(ArchetypesUtils
 				.getFieldName(member));
 		descriptor.setTemplateName(TEMPLATE_NAME);
-		descriptor.setTitle(annotation != null ? annotation.title()
+		descriptor.setTitle(annotation != null &&  !"".equals(annotation.title())? annotation.title()
 				: ArchetypesUtils.captalize(name));
 		descriptor.setFieldName(name);
 		descriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
