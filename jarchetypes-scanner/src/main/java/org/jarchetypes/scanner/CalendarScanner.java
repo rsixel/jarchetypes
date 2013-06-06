@@ -21,7 +21,6 @@ public class CalendarScanner extends InputTextScanner {
 	static {
 		CalendarScanner scanner = new CalendarScanner();
 		register(Calendar.class, scanner);
-		//registerDefaultType(String.class, scanner);// define o registro padão
 	}
 	
 	@SuppressWarnings("unchecked")

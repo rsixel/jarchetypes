@@ -40,7 +40,7 @@ public class PlaceReregistration implements Serializable {
 		this.id = id;
 	}
 
-	@InputText(title="Name")
+	@InputText
 	public String getName() {
 		return name;
 	}
