@@ -22,80 +22,86 @@ import org.primefaces.component.selectonemenu.SelectOneMenu;
 public class SelectOneUsingObjectConverter implements Converter {
 
 	@SuppressWarnings("rawtypes")
-	@Override  
-    public Object getAsObject(FacesContext context,  
-        UIComponent component, String value) {  
-        
-        SelectOneMenu selectOneMenu = (SelectOneMenu) component;
-        
-        String id = value;
-        
-        if( value == null || value.equals("") ){
-        	Object o = selectOneMenu.getValue();
-        	
-        	if(o==null)  return null;
-        	id =  getIdByReflection(o);
-        }
-        	
-        
-        
-        try{  
-            Collection items =  (Collection) component.getAttributes().get("items");  
-            return findById(items, id);  
-        }catch(Exception ex){  
-            throw new ConverterException("Não foi possível aplicar conversão de item com valor ["+value+"] no componente ["+component.getId()+"]", ex);  
-        }  
-    }  
-      
-    @Override  
-    public String getAsString(FacesContext context, UIComponent component,  
-            Object value) {  
-        if (value == null || value.equals(""))  
-            return "";  
-        Object id = getIdByReflection(value);
-        
-        if(id == null)            
-        	return ""; 
-          
-        return id.toString();  
-    }  
-      
-    @SuppressWarnings("rawtypes")
-	private Object findById(Collection collection, String idToFind){  
-        for (Object obj : collection){  
-             String id = getIdByReflection(obj);  
-             if (id.equals(idToFind))  
-                 return obj;  
-        }  
-          
-        return null;  
-    }  
-      
-    private String getIdByReflection(Object bean){  
-        try{  
-        	Class<?> c = bean.getClass();
-        	
-        	Field idField = null;
-        	
-        	while( ! c.getName().equals(Object.class.getName())){
-        		
-        		try{
-        			idField = c.getDeclaredField("id");
-                	idField.setAccessible(true);
-                	return (String) idField.get(bean); 
-        		}catch(NoSuchFieldException nsfe){
-        			
-        		}
-        		
-        		c = c.getSuperclass();
-        		  
-        	}
-        	
-        	
-            return  null;  
-        }catch(Exception ex){  
-            throw new RuntimeException("Não foi possível obter a propriedade 'id' do item",ex);  
-        }  
-    }  
+	@Override
+	public Object getAsObject(FacesContext context, UIComponent component,
+			String value) {
+
+		String id = getCurrentId(component, value);
+
+		try {
+			Collection items = (Collection) component.getAttributes().get(
+					"items");
+			return findById(items, id);
+		} catch (Exception ex) {
+			throw new ConverterException(
+					"Não foi possível aplicar conversão de item com valor ["
+							+ value + "] no componente [" + component.getId()
+							+ "]", ex);
+		}
+	}
+
+	private String getCurrentId(UIComponent component, Object value) {
+		SelectOneMenu selectOneMenu = (SelectOneMenu) component;
+
+		Object o = selectOneMenu.getValue();
+
+		String id = "";
+
+		if (value == null || value.equals("")) {
+
+			if (o == null)
+				return null;
+			id = getIdByReflection(o);
+		} else {
+			id = value instanceof String ? value.toString() : getIdByReflection(value) ;
+		}
+		
+		return id;
+	}
+
+	@Override
+	public String getAsString(FacesContext context, UIComponent component,
+			Object value) {
+		String id = getCurrentId(component, value);
+		return id;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private Object findById(Collection collection, String idToFind) {
+		for (Object obj : collection) {
+			String id = getIdByReflection(obj);
+			if (id.equals(idToFind))
+				return obj;
+		}
+
+		return null;
+	}
+
+	private String getIdByReflection(Object bean) {
+		try {
+			Class<?> c = bean.getClass();
+
+			Field idField = null;
+
+			while (!c.getName().equals(Object.class.getName())) {
+
+				try {
+					idField = c.getDeclaredField("id");
+					idField.setAccessible(true);
+					return (String) idField.get(bean);
+				} catch (NoSuchFieldException nsfe) {
+
+				}
+
+				c = c.getSuperclass();
+
+			}
+
+			return null;
+		} catch (Exception ex) {
+			throw new RuntimeException(
+					"Não foi possível obter a propriedade 'id' do item", ex);
+		}
+	}
 
 }
