@@ -21,9 +21,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:s="http://jboss.org/seam/faces"
-	template="/templates/padrao.xhtml">
+	template="/templates/main.xhtml">
 	
-	<ui:define name="conteudo">
+	<ui:define name="content">
 	
 		<script type="text/javascript">  
 				function handleSave(xhr, status, args) {
@@ -35,7 +35,7 @@
 		    }
 		</script>
 		
-		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluido"
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
 			<p:commandButton value="Ok"
 				action="${beanName}Search?faces-redirect=true" />
