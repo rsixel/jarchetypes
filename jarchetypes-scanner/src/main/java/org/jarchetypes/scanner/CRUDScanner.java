@@ -129,4 +129,11 @@ public class CRUDScanner extends ArchetypesScanner {
 	private String getColumnTitle(String column) {
 		return column;
 	}
+
+
+	@Override
+	protected String getPath(Class<?> archetype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

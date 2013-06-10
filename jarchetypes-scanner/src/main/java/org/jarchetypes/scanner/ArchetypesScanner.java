@@ -153,6 +153,8 @@ public abstract class ArchetypesScanner {
 
 		return result;
 	}
+	
+	protected abstract String getPath(Class<?> archetype);
 
 	@SuppressWarnings("unchecked")
 	protected void addArchetypeDescriptor(Class<?> archetype,

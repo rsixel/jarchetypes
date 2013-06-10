@@ -1,4 +1,4 @@
-activeProfiles=arq-jbossas-remote
+activeProfiles=arq-jbossas-remote, primefaces
 eclipse.preferences.version=1
 resolveWorkspaceProjects=true
 version=1

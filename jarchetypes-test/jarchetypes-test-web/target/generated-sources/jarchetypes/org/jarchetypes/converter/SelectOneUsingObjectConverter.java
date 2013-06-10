@@ -24,7 +24,7 @@ public class SelectOneUsingObjectConverter implements Converter {
             Collection items =  (Collection) component.getAttributes().get("items");  
             return findById(items, value);  
         }catch(Exception ex){  
-            throw new ConverterException("Não foi possível aplicar conversão de item com valor ["+value+"] no componente ["+component.getId()+"]", ex);  
+            throw new ConverterException("Nao foi possível aplicar conversão de item com valor ["+value+"] no componente ["+component.getId()+"]", ex);  
         }  
     }  
       

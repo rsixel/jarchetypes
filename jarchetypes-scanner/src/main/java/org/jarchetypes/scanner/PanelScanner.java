@@ -106,4 +106,10 @@ public class PanelScanner extends ArchetypesScanner {
 		}
 	}
 
+	@Override
+	protected String getPath(Class<?> archetype) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
