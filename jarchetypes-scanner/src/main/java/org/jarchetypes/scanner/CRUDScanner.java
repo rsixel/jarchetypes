@@ -18,42 +18,77 @@ package org.jarchetypes.scanner;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.CRUD;
+import org.jarchetypes.annotation.meta.Widget;
+import org.jarchetypes.descriptor.FilterDescriptor;
+import org.jarchetypes.descriptor.ListFilterDescriptor;
 import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
-public class CRUDScanner extends BaseCRUDScanner {
+public class CRUDScanner extends ArchetypesScanner {
 
-	protected static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/crud.vm";
-	protected static final String SEARCH_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/search.vm";
-	protected static final String CRUD_BEAN_NAME = "org/jarchetypes/scanner/templates/crudbean.vm";
+	private static final String TEMPLATE_NAME = "org/jarchetypes/scanner/templates/crud.vm";
+	private static final String SEARCH_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/search.vm";
+	private static final String CRUD_BEAN_NAME = "org/jarchetypes/scanner/templates/crudbean.vm";
 
 	static {
 		register(CRUD.class, new CRUDScanner());
 	}
 
-	protected void afterScanMembers(Class<?> archetype,
-			VelocityContext context, Annotation annotation) throws Exception {
-		context.put("managedBean",
+	@Override
+	protected void doScan(Class<?> archetype, Member member,
+			VelocityContext context) {
+
+		CRUD crud = archetype.getAnnotation(CRUD.class);
+
+		addArchetypeDescriptor(archetype, crud, context);
+
+		context.put("title", crud.title());
+		context.put("beanName", archetype.getSimpleName());
+		context.put("beanPathName", archetype.getName());
+
+		context.put("widgets", new ArrayList<WidgetDescriptor>());
+		context.put("listFilters", new ArrayList<ListFilterDescriptor>());
+		context.put("filters", new ArrayList<FilterDescriptor>());
+		context.put("panels", new HashMap<String,ArrayList<WidgetDescriptor>>());
+		context.put("attributePanels", new HashMap<String,ArrayList<WidgetDescriptor>>());
+		context.put("attributePanel", new  WidgetDescriptor());
+		context.put("ArchetypesUtils", ArchetypesUtils.class);
+		
+
+		context.put("CRUDBean",
 				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
 						+ "CRUDBean");
-		context.put("pathToBean",
-				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
-						+ "CRUDBean.bean");
-		scanSearchColumns(archetype, annotation, context);
 
-	}
+		scanSearchColumns(crud, context);
 
-	protected Annotation getArchetypeAnnotation(Class<?> archetype) {
-		return archetype.getAnnotation(CRUD.class);
-	}
+		for (Method method : archetype.getMethods()) {
+			boolean found = false;
+			for (Annotation annotation : method.getAnnotations()) {
+				if (annotation.annotationType().isAnnotationPresent(
+						Widget.class)) {
+					scan(annotation, archetype, method, context);
+					found = true;
+					//break;
+				}
+				
+				if (!found && crud.generateAll()
+						&& ArchetypesUtils.isGetter(method)) {
+					scanByType(method, archetype, context);
+					found = false;
+				}
+			}
 
-	@Override
-	protected void generate(Class<?> archetype, VelocityContext context) {
+		}
+
+
 		try {
 			String outputPath = (String) context.get("outputPath");
 			String sourceDirectory = (String) context.get("sourceDirectory");
@@ -72,44 +107,26 @@ public class CRUDScanner extends BaseCRUDScanner {
 					archetype.getSimpleName() + "CRUDBean", ".java", context);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void scanSearchColumns(Class<?> archetype, Annotation annotation,
-			VelocityContext context) throws Exception {
+
+	private void scanSearchColumns(CRUD crud, VelocityContext context) {
 		ArrayList<SearchColumnDescriptor> searchColumns = new ArrayList<SearchColumnDescriptor>();
 
 		context.put("searchColumns", searchColumns);
 
-		for (String column : (String[]) ArchetypesUtils.get(annotation,
-				"resultFields")) {
+		for (String column : crud.resultFields()) {
 			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(
-					getColumnTitle(context, column), column);
+					column, getColumnTitle(column));
 
 			searchColumns.add(descriptor);
 		}
 
 	}
 
-	@Override
-	protected String getColumnTitle(VelocityContext context, String column) {
-
-		ArrayList<WidgetDescriptor> widgets = (ArrayList<WidgetDescriptor>) context
-				.get("widgets");
-
-		for (WidgetDescriptor widget : widgets) {
-			if (widget.getFieldName().equals(column)) {
-				return widget.getTitle();
-			}
-		}
-
+	private String getColumnTitle(String column) {
 		return column;
-	}
-
-	@Override
-	protected String getPath(Class<?> archetype) {
-		return archetype.getSimpleName() + "Search.jsf";
 	}
 }

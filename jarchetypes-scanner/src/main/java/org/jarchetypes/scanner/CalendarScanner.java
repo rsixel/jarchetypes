@@ -49,7 +49,7 @@ public class CalendarScanner extends InputTextScanner {
 		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
-		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+	//	((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 
 //		scanForRequired(archetype, member, descriptor);
 //
@@ -59,6 +59,11 @@ public class CalendarScanner extends InputTextScanner {
 		scanForNavigator(archetype, member, descriptor);
 		scanForPattern(archetype, member, descriptor);
 		scanForShowOn(archetype, member, descriptor);
+		
+		if(!isPresentAnnotationPanel(member instanceof Method ? ((Method) member)
+				.getAnnotations() : ((Field) member).getAnnotations(), context,descriptor)){
+			((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		}
 		
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))

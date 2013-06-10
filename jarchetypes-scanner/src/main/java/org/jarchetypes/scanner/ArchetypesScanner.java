@@ -26,17 +26,19 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
+import org.jarchetypes.annotation.Panel;
 import org.jarchetypes.annotation.meta.Archetype;
 import org.jarchetypes.descriptor.ArchetypeDescriptor;
+import org.jarchetypes.descriptor.WidgetDescriptor;
 
 public abstract class ArchetypesScanner {
 
@@ -71,6 +73,7 @@ public abstract class ArchetypesScanner {
 		scanners.put(archetypeAnnotation, scanner);
 	}
 
+	@SuppressWarnings("unused")
 	private Object properties;
 
 	protected abstract void doScan(Class<?> archetype, Member member,
@@ -83,6 +86,7 @@ public abstract class ArchetypesScanner {
 	 * @param outputFilename
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unused")
 	public static void generate(String templatePath, String outputDirectory,
 			String outputFilename, String extension, VelocityContext context)
 			throws Exception {
@@ -150,6 +154,7 @@ public abstract class ArchetypesScanner {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addArchetypeDescriptor(Class<?> archetype,
 			Annotation annotation, VelocityContext context) {
 		List<ArchetypeDescriptor> archetypesDescriptors = (List<ArchetypeDescriptor>) context
@@ -169,15 +174,47 @@ public abstract class ArchetypesScanner {
 
 			}
 
-			String path = getPath(archetype);
+			String path = archetype.getSimpleName() + "Search.jsf";
 			archetypesDescriptors.add(new ArchetypeDescriptor(archetype
-					.getName(), category, title,path ));
+					.getName(), category, title, path));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	protected abstract String getPath(Class<?> archetype) ;
+	@SuppressWarnings("unchecked")
+	public boolean isPresentAnnotationPanel(Annotation[] annotations,
+			VelocityContext context, WidgetDescriptor descriptor) {
+		for (Annotation annotation : annotations) {
+			if (annotation.annotationType().equals(Panel.class)) {
+				boolean found = true;
+				Panel panel = (Panel) annotation;
+				for (String key : ((HashMap<String, ArrayList<WidgetDescriptor>>) context
+						.get("panels")).keySet()) {
+
+					if (key.equals(panel.id())) {
+						ArrayList<WidgetDescriptor> panelDescriptors = ((HashMap<String, ArrayList<WidgetDescriptor>>) context
+								.get("panels")).get(key);
+						 panelDescriptors.add(descriptor);
+						((HashMap<String, ArrayList<WidgetDescriptor>>) context
+								.get("panels")).put(key, panelDescriptors);
+						found = false;
+						break;
+					}
+				}
+				if (found) {
+					ArrayList<WidgetDescriptor> descriptors = new ArrayList<WidgetDescriptor>();
+					descriptors.add(descriptor);
+					// panelDescriptors.add(new PanelDescriptor(descriptor));
+					((HashMap<String, ArrayList<WidgetDescriptor>>) context
+							.get("panels")).put(panel.id(), descriptors);
+				}
+				return true;
+			}
+
+		}
+
+		return false;
+	}
 }

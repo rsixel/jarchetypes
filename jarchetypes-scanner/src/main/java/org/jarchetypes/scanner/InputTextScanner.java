@@ -5,11 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
 import org.jarchetypes.annotation.Filter;
@@ -47,6 +45,10 @@ public class InputTextScanner extends ArchetypesScanner {
 		descriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()));
 
+		scanForRequired(archetype, member, descriptor);
+
+		scanForSize(archetype, member, descriptor);
+		
 		descriptor.setFieldType(member instanceof Method ? ((Method) member)
 				.getReturnType().getName() : ((Field) member).getType()
 				.getName());
@@ -54,13 +56,15 @@ public class InputTextScanner extends ArchetypesScanner {
 		FilterDescriptor filterDescriptor = new FilterDescriptor(descriptor);
 		// filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 		// .getSimpleName()) + "SearchBean");
-
-		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		
+			if(!isPresentAnnotationPanel(member instanceof Method ? ((Method) member)
+					.getAnnotations() : ((Field) member).getAnnotations(), context,descriptor)){
+				((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+			}
+//		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		
 		filterDescriptor.setTemplateName(FILTER_TEMPLATE_NAME);
 
-		scanForRequired(archetype, member, descriptor);
-
-		scanForSize(archetype, member, descriptor);
 
 		if (getAnnotation(Filter.class, member) != null)
 			((List<FilterDescriptor>) context.get("filters"))
