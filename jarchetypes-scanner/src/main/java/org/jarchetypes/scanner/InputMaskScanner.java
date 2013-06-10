@@ -54,7 +54,7 @@ public class InputMaskScanner extends InputTextScanner {
 		filterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
-		//((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 
 		scanForRequired(archetype, member, descriptor);
 

@@ -3,10 +3,8 @@ package org.jarchetypes.test.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -23,6 +21,7 @@ import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
 import org.jarchetypes.annotation.ListFilter;
+import org.jarchetypes.annotation.Panel;
 import org.jarchetypes.annotation.SelectItems;
 import org.jarchetypes.annotation.SelectOneMenu;
 

@@ -51,25 +51,27 @@ public class PanelScanner extends ArchetypesScanner {
 			if (descriptor.getAttribute("id").equals(
 					widgetDescriptor.getAttribute("id"))) {
 				isPanelPresent = false;
-			//break;
+				// break;
 			}
 		}
-		
+
 		if (isPanelPresent) {
 			((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 		}
+		
 		boolean found = true;
-		for (String key : ((HashMap<String, ArrayList<WidgetDescriptor>>) context
-				.get("attributePanels")).keySet()) {
-			if (key.equals(descriptor.getAttribute("id"))) {
-				found = false;
-				break;
+		
+		if (context.get("attributePanels") != null)
+			for (String key : ((HashMap<String, ArrayList<WidgetDescriptor>>) context
+					.get("attributePanels")).keySet()) {
+				if (key.equals(descriptor.getAttribute("id"))) {
+					found = false;
+					break;
+				}
 			}
-		}
-		if (found) {
-			((HashMap<String, WidgetDescriptor>) context
-					.get("attributePanels"))
-					.put(descriptor.getAttribute("id"),descriptor);
+		if (found && context.get("attributePanels") != null) {
+			((HashMap<String, WidgetDescriptor>) context.get("attributePanels"))
+					.put(descriptor.getAttribute("id"), descriptor);
 		}
 	}
 
@@ -104,6 +106,12 @@ public class PanelScanner extends ArchetypesScanner {
 			descriptor.setAttribute("toggleOrientation",
 					panel.toggleOrientation());
 		}
+	}
+
+	@Override
+	protected String getPath(Class<?> archetype) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
