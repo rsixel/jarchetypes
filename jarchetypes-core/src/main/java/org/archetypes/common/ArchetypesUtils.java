@@ -1,6 +1,8 @@
 package org.archetypes.common;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 
@@ -35,7 +37,8 @@ public class ArchetypesUtils {
 		} else {
 			String name = ((Method) member).getName();
 
-			if (ArchetypesUtils.isGetter(name) || ArchetypesUtils.isSetter(name)) {
+			if (ArchetypesUtils.isGetter(name)
+					|| ArchetypesUtils.isSetter(name)) {
 				int delta = 0;
 				if (ArchetypesUtils.isGetter(name) && name.startsWith("is")) {
 					delta = -1;
@@ -59,17 +62,23 @@ public class ArchetypesUtils {
 	public static Field getField(Class<?> cls, String fieldName) {
 		Class<?> c = cls;
 
-		while (! c.equals(Object.class)) {
+		while (!c.equals(Object.class)) {
 			for (Field field : cls.getDeclaredFields()) {
 				if (field.getName().equals(fieldName)) {
 					return field;
 				}
 			}
-			
+
 			c = c.getSuperclass();
 		}
-		
+
 		return null;
+	}
+
+	public static Object get(Annotation annotation, String identifier)
+			throws Exception {
+
+		return annotation.getClass().getMethod(identifier).invoke(annotation);
 	}
 
 }

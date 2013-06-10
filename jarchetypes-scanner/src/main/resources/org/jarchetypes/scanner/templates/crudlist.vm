@@ -21,9 +21,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:s="http://jboss.org/seam/faces"
-	template="/templates/padrao.xhtml">
+	template="/templates/main.xhtml">
 	
-	<ui:define name="conteudo">
+	<ui:define name="content">
 	
 		<script type="text/javascript">  
 				function handleSave(xhr, status, args) {
@@ -33,9 +33,16 @@
 		            okdlg.hide();
 		        }
 		    }
+		    
+
+	        function editLastDatatableRow(){
+			  jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
+			     jQuery(this).click()
+			  });
+		    }
 		</script>
 		
-		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluido"
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
 			<p:commandButton value="Ok"
 				action="${beanName}Search?faces-redirect=true" />
@@ -53,6 +60,10 @@
 			<p:panel id="crudPanel" header="$title" style="margin-top: 10px;">
 				<p:toolbar>
 					<p:toolbarGroup align="left">
+						<p:commandButton value="Adicionar $title" 
+								action="#{${managedBean}.add}"
+								oncomplete="editLastDatatableRow();"
+								icon="ui-icon-plus" update="crudListTable" />
 						<p:commandButton title="Save" actionListener="#{${managedBean}.save}" 
 						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" update="crudPanel" />
 						<p:commandButton title="Delete" icon="ui-icon-trash" update="crudPanel"  />
@@ -61,10 +72,24 @@
 					</p:toolbarGroup>
 				</p:toolbar>
 				
-				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
-				#foreach( $widget in $widgets )
-	    			#parse( $widget.getTemplateName() )
-				#end
+				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />				
+				
+				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
+					<p:ajax event="cellEdit" listener="#{${managedBean}.onCellEdit}" update=":mainform:messages" />   
+					#foreach( $widget in $widgets )
+					     <p:column headerText="${widget.title}" style="width:25%">
+					     	<f:facet name="header">
+								<h:outputText value="${widget.title}" />
+							</f:facet>  
+				            <p:cellEditor>
+				            	<f:facet name="output"><h:outputText value="#{item.${widget.fieldName}}" /></f:facet>  
+                   				<f:facet name="input">
+				            		#parse( $widget.getTemplateName() )
+				            	</f:facet>  
+				            </p:cellEditor>  
+				        </p:column>  
+					#end
+				</p:dataTable>
 			</p:panel>
 		</h:form>
 	</ui:define>

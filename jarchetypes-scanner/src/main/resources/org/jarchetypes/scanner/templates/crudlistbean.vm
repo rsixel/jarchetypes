@@ -12,12 +12,14 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import org.jarchetypes.service.CRUDService;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent; 
+
 import $beanPathName;
 
 
 @ManagedBean
 @SessionScoped
-public class ${beanName}CRUDBean  implements Serializable {
+public class ${beanName}CRUDListBean  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,42 +28,24 @@ public class ${beanName}CRUDBean  implements Serializable {
 	
 	private List<${beanName}> list = new ArrayList<${beanName}>();
 	
-	#foreach( $widget in $widgets )
-	#if(${widget.getAttribute("selectItems")})
-		
-	private List<${widget.getFieldType()}> $widget.getFieldName()List;	
-	
-	#end
-	#end
-	
 	#foreach( $widget in $filters )
 	private $widget.getFieldType() $widget.getFieldName();			
 	#end
-	
-	#foreach( $widget in $listFilters )
-	private $widget.getFieldType() $widget.getFieldName();			
-	#end
-	
 		
 	private ${beanName} bean = new ${beanName}();
 	
 	private boolean saved = false;
 	
-	public ${beanName}CRUDBean() {
+	public ${beanName}CRUDListBean() {
 		super();
 	}
 	
 	public void search(){
 		
 		HashMap<String,Object> parameters = new HashMap<String,Object>(); 
-		
-		#foreach( $widget in $filters )
-		parameters.put("$widget.getFieldName()",$widget.getFieldName());			
-		#end
-		
-		
+
 		try {
-			list = cRUDService.<${beanName}>search(${beanName}.class,parameters);
+			list = cRUDService.search(${beanName}.class,parameters);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,38 +65,6 @@ public class ${beanName}CRUDBean  implements Serializable {
 	}
 	
 	#foreach( $widget in $filters )
-	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
-		return $widget.getFieldName();
-	}
-
-	public void set$ArchetypesUtils.captalize($widget.getFieldName())($widget.getFieldType() $widget.getFieldName()) {
-		this.$widget.getFieldName() = $widget.getFieldName();
-	}
-    #end
-	
-	
-	#foreach( $widget in $widgets )
-	#if(${widget.getAttribute("selectItems")})
-	
-	public  List<${widget.getFieldType()}> get$ArchetypesUtils.captalize($widget.getFieldName())List() {
-		if($widget.getFieldName()List==null){
-			HashMap<String,Object> parameters = new HashMap<String,Object>(); 
-			
-			try {
-				$widget.getFieldName()List = cRUDService.<${widget.getFieldType()}>search(${widget.getFieldType()}.class,parameters);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} 
-		
-		return $widget.getFieldName()List;
-	}
-	#end
-	#end
-	
-
-	
-	#foreach( $widget in $listFilters )
 	public  $widget.getFieldType() get$ArchetypesUtils.captalize($widget.getFieldName())() {
 		return $widget.getFieldName();
 	}
@@ -151,6 +103,8 @@ public class ${beanName}CRUDBean  implements Serializable {
 	public String add(){
 		bean = new ${beanName}();
 		
+		list.add(bean);
+		
 		return "$beanName?faces-redirect=true";		
 	}
 	
@@ -167,7 +121,14 @@ public class ${beanName}CRUDBean  implements Serializable {
 		return "${beanName}Search?faces-redirect=true";		
 	}
 	
-	
-	
+  	public void onCellEdit(CellEditEvent event) {  
+        Object oldValue = event.getOldValue();  
+        Object newValue = event.getNewValue();  
+          
+##        if(newValue != null && !newValue.equals(oldValue)) {  
+##            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);  
+##            FacesContext.getCurrentInstance().addMessage(null, msg);  
+##        }  
+    }  	
 		
 }

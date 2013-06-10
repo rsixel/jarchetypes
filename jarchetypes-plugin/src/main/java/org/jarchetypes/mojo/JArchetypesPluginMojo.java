@@ -32,6 +32,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.velocity.VelocityContext;
 import org.jarchetypes.annotation.CRUD;
+import org.jarchetypes.annotation.meta.Archetype;
 import org.jarchetypes.descriptor.ArchetypeDescriptor;
 import org.jarchetypes.scanner.ArchetypesScanner;
 import org.reflections.Reflections;
@@ -47,9 +48,9 @@ import org.reflections.util.ConfigurationBuilder;
  * @phase generate-sources
  */
 public class JArchetypesPluginMojo extends AbstractMojo {
-	
+
 	private static final String MAIN_MENU_TEMPLATE_NAME = "org/jarchetypes/scanner/templates/mainmenubean.vm";
-	
+
 	/**
 	 * Location of the file.
 	 * 
@@ -70,13 +71,15 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 
 	/**
 	 * Location of the generated source.
+	 * 
 	 * @parameter default-value="${sourceDirectory}
 	 * @required
 	 */
 	private File sourceDirectory;
-	
+
 	/**
 	 * Location of the generated source.
+	 * 
 	 * @parameter default-value="${targetPackage}
 	 * @required
 	 */
@@ -107,20 +110,25 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 			}
 		}
 
-		// TODO: Needs to use meta annotation @Archetype to search other archetypes
-		Set<String> archetypes = reflections.getStore().getTypesAnnotatedWith(
-				CRUD.class.getName());
-		
+		Set<String> annotations = reflections.getStore().getTypesAnnotatedWith(
+				Archetype.class.getName());
+
+		Set<String> archetypes = new HashSet<String>();
+
+		for (String a : annotations) {
+			archetypes.addAll(reflections.getStore().getTypesAnnotatedWith(a));
+		}
+
 		VelocityContext context = new VelocityContext();
 
 		context.put("outputPath", outputDirectory.getAbsolutePath());
 		context.put("sourceDirectory", sourceDirectory.getAbsolutePath());
 		context.put("targetPackage", targetPackage);
-		
+
 		List<ArchetypeDescriptor> archetypesDescriptors = new ArrayList<>();
-		
-		context.put("archetypes", archetypesDescriptors );
-		context.put("archetypesDescriptors", archetypesDescriptors );
+
+		context.put("archetypes", archetypesDescriptors);
+		context.put("archetypesDescriptors", archetypesDescriptors);
 
 		for (String archetype : archetypes) {
 
@@ -132,7 +140,7 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 				e.printStackTrace();
 			}
 		}
-		
+
 		afterScan(context);
 	}
 
@@ -144,21 +152,21 @@ public class JArchetypesPluginMojo extends AbstractMojo {
 			String targetPackagePath = ((String) context.get("targetPackage"))
 					.replace(".", File.separator);
 
-
-			ArchetypesScanner.generate(MAIN_MENU_TEMPLATE_NAME, sourceDirectory + File.separator
-					+ targetPackagePath, "MainMenuBuilder", ".java", context);
+			ArchetypesScanner.generate(MAIN_MENU_TEMPLATE_NAME, sourceDirectory
+					+ File.separator + targetPackagePath, "MainMenuBuilder",
+					".java", context);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private ClassLoader getClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
 	}
- 
+
 	private Set<URL> getDependenciesURLs() {
 		Set<URL> urls = new HashSet<URL>();
 

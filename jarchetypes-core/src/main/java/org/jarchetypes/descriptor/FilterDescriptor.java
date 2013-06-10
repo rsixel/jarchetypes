@@ -25,7 +25,9 @@ public class FilterDescriptor extends WidgetDescriptor {
 					Method setter = getClass().getMethod("set"+ArchetypesUtils.captalize(name),m.getReturnType());
 					
 					setter.invoke(this, m.invoke(from));
-				} catch (Exception e) {
+				} catch (NoSuchMethodException nsme) {
+//					e.printStackTrace();
+				}catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

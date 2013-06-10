@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
+
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
-import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.SelectItems;
 import org.jarchetypes.descriptor.FilterDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
@@ -22,7 +22,7 @@ public class SelectItemsScanner extends SelectOneMenuScanner {
 	static {
 		SelectItemsScanner scanner = new SelectItemsScanner();
 		register(SelectItems.class, scanner);
-		//registerDefaultType(String.class, scanner);// define o registro padão
+		//registerDefaultType(String.class, scanner);// define o registro padï¿½o
 	}
 	
 	@SuppressWarnings("unchecked")

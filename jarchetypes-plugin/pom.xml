@@ -7,6 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jArchetypesPlugin Maven Mojo</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>prime-repo</id>
@@ -15,7 +19,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>
@@ -72,6 +76,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
