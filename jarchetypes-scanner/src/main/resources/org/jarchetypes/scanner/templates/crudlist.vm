@@ -36,7 +36,7 @@
 		    
 
 	        function editLastDatatableRow(){
-			  jQuery('.ui-datatable-data tr').last().find('span.ui-icon-pencil').each(function(){
+			  jQuery('.ui-datatable-data tr').last().find('TD.ui-editable-column').each(function(){
 			     jQuery(this).click()
 			  });
 		    }
@@ -62,8 +62,10 @@
 					<p:toolbarGroup align="left">
 						<p:commandButton value="Adicionar $title" 
 								action="#{${managedBean}.add}"
-								oncomplete="editLastDatatableRow();"
-								icon="ui-icon-plus" update="crudListTable" />
+								oncomplete="editLastDatatableRow();return true;"
+								icon="ui-icon-plus" 
+							    update="crudListTable" 
+								/>
 						<p:commandButton title="Save" actionListener="#{${managedBean}.save}" 
 						oncomplete="handleSave(xhr, status, args)" icon="ui-icon-disk" update="crudPanel" />
 						<p:commandButton title="Delete" icon="ui-icon-trash" update="crudPanel"  />
@@ -74,10 +76,10 @@
 				
 				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />				
 				
-				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ ">
+				<p:dataTable id="crudListTable" var="item" value="#{${managedBean}.list}" editable="true" editMode="cell" cellSeparator=" \/ "  rowIndexVar="rowIndex">
 					<p:ajax event="cellEdit" listener="#{${managedBean}.onCellEdit}" update=":mainform:messages" />   
 					#foreach( $widget in $widgets )
-					     <p:column headerText="${widget.title}" style="width:25%">
+					     <p:column headerText="${widget.title}" >
 					     	<f:facet name="header">
 								<h:outputText value="${widget.title}" />
 							</f:facet>  
@@ -89,6 +91,13 @@
 				            </p:cellEditor>  
 				        </p:column>  
 					#end
+					<p:column>
+					      <f:facet name="header">
+					         <h:outputText value="" />
+					      </f:facet>					
+						  <p:commandButton icon="ui-icon-close" title="remove from cart"
+	                       		actionListener="#{${managedBean}.removeItem(item)}" update="crudListTable" />
+	                </p:column>       	
 				</p:dataTable>
 			</p:panel>
 		</h:form>

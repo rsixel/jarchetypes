@@ -33,14 +33,14 @@ public class CRUDService {
 			em.merge(bean);
 		}
 	}
-	
-	public <T> T find(Class<T> c,Object id) throws Exception {
+
+	public <T> T find(Class<T> c, Object id) throws Exception {
 		return em.find(c, id);
 	}
 
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <T> List<T> search(Class<T> entityClass, Map<String, Object> parameters) {
+	public <T> List<T> search(Class<T> entityClass,
+			Map<String, Object> parameters) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 
 		CriteriaQuery query = builder.createQuery();
@@ -58,9 +58,15 @@ public class CRUDService {
 			builder.and(predicate, p);
 		}
 
-		if(predicate!=null)
+		if (predicate != null)
 			query.where(predicate);
 
 		return em.createQuery(query).getResultList();
+	}
+
+	public void remove(Object bean) throws Exception {
+		log.info("Removing " + bean);
+
+		em.remove(bean);
 	}
 }

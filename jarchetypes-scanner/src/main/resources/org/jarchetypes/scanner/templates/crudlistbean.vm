@@ -23,6 +23,8 @@ public class ${beanName}CRUDListBean  implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private int tempId = 0;
+	 
 	@Inject
 	private CRUDService cRUDService;
 	
@@ -32,8 +34,6 @@ public class ${beanName}CRUDListBean  implements Serializable {
 	private $widget.getFieldType() $widget.getFieldName();			
 	#end
 		
-	private ${beanName} bean = new ${beanName}();
-	
 	private boolean saved = false;
 	
 	public ${beanName}CRUDListBean() {
@@ -74,12 +74,22 @@ public class ${beanName}CRUDListBean  implements Serializable {
 	}
 	#end
 	
-	public void save(ActionEvent actionEvent) {
+	public void save(ActionEvent actionEvent) throws Exception{
 		RequestContext context = RequestContext.getCurrentInstance();   
 		saved = false;
+		
 		try {
 		
-			cRUDService.save(bean);
+			for(Object bean:list){
+
+				Object id = bean.getClass().getMethod("getId").invoke(bean);
+						
+				if(id!=null && ((String)id).startsWith("*_*_*remove_")){
+					bean.getClass().getMethod("setId",String.class).invoke(bean,new Object[]{null});
+				}
+			
+				cRUDService.save(bean);
+			}
 			saved = true;
 			
 		} catch (Exception e) {
@@ -90,33 +100,22 @@ public class ${beanName}CRUDListBean  implements Serializable {
 		context.addCallbackParam("saved", saved);
 	}
 	
-	public ${beanName} getBean(){
-		return bean;
-	}
 	
-	
-	public void setBean(${beanName} bean){
-		this.bean = bean;
-	}
-	
-	
-	public String add(){
-		bean = new ${beanName}();
+	public String add() throws Exception{
+		${beanName} bean = new ${beanName}();
+		
 		
 		list.add(bean);
+		
+		bean.getClass().getMethod("setId",String.class).invoke(bean,"*_*_*remove_"+tempId);
+		
+		tempId++;
 		
 		return "$beanName?faces-redirect=true";		
 	}
 	
 	public String cancel() throws Exception{
-		Object id = bean.getClass().getMethod("getId").invoke(bean);
-	
-		if (id == null) {
-			bean = new ${beanName}();
-		} else {
-			bean = cRUDService.find(${beanName}.class,id);
-		}
-			
+		search();
 		
 		return "${beanName}Search?faces-redirect=true";		
 	}
@@ -131,4 +130,15 @@ public class ${beanName}CRUDListBean  implements Serializable {
 ##        }  
     }  	
 		
+		
+ 	public void removeItem(Object item) throws Exception{
+ 		
+ 		Object id = item.getClass().getMethod("getId").invoke(item);
+ 		
+ 		list.remove(item);
+ 		
+ 		if(id!=null && ! ((String)id).startsWith("*_*_*remove_")){
+ 			cRUDService.remove(item);
+ 		}
+    }				
 }
