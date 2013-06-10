@@ -102,16 +102,11 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		scanForItems(archetype, member, descriptor);
 		scanForStyle(archetype, member, descriptor);
 		scanForSelectItems(archetype, member, descriptor);
-<<<<<<< HEAD
 		
 		if(!isPresentAnnotationPanel(member instanceof Method ? ((Method) member)
 				.getAnnotations() : ((Field) member).getAnnotations(), context,descriptor)){
 			((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 		}
-		
-=======
-
->>>>>>> e2676a14433e09e40f52a966fc1c86bb66c864f4
 		if (getAnnotation(ListFilter.class, member) != null)
 			listFilters.add(listFilterDescriptor);
 
