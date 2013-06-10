@@ -1,5 +1,7 @@
+#if(! $simpleInput)
 <h:panelGrid id="${widget.getFieldName()}PanelGrid" columns="3">   
-	<h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" /> 
+	<h:outputLabel for="${widget.getFieldName()}" value="${widget.getTitle()}" />
+#end 
 		<p:inputText id="${widget.getFieldName()}" value="#{${pathToBean}.${widget.getFieldName()}}"  
 			required="${widget.getAttribute("required")}" #if(${widget.getAttribute("max")}) maxlength="${widget.getAttribute("max")}" #end	
 			>
@@ -11,5 +13,7 @@
 			#end
 			<p:ajax event="change" />
 		</p:inputText>
+#if(! $simpleInput)		
 		<p:message for="${widget.getFieldName()}"/>
 </h:panelGrid>
+#end 

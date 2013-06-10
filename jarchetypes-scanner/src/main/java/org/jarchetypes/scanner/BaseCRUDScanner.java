@@ -16,20 +16,16 @@ package org.jarchetypes.scanner;
  *  limitations under the License.
  */
 
-import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
-import org.jarchetypes.annotation.CRUD;
 import org.jarchetypes.annotation.meta.Widget;
 import org.jarchetypes.descriptor.FilterDescriptor;
 import org.jarchetypes.descriptor.ListFilterDescriptor;
-import org.jarchetypes.descriptor.SearchColumnDescriptor;
 import org.jarchetypes.descriptor.WidgetDescriptor;
 
 public abstract class BaseCRUDScanner extends ArchetypesScanner {

@@ -30,6 +30,7 @@ public class CRUDListScanner extends BaseCRUDScanner {
 				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
 						+ "CRUDListBean");
 		context.put("pathToBean","item");
+		context.put("simpleInput",true);
 		
 	}
 
