@@ -24,6 +24,7 @@ import org.jarchetypes.annotation.Filter;
 import org.jarchetypes.annotation.InputMask;
 import org.jarchetypes.annotation.InputText;
 import org.jarchetypes.annotation.ListFilter;
+import org.jarchetypes.annotation.Panel;
 import org.jarchetypes.annotation.SelectItems;
 import org.jarchetypes.annotation.SelectOneMenu;
 
@@ -71,6 +72,7 @@ public class Person implements Serializable {
 
 	@InputText(title = "Nome")
 	@Filter 
+	@Panel(id="pnlName", header="Teste Fabio")
 	public String getName() {
 		return name;
 	}
@@ -88,6 +90,7 @@ public class Person implements Serializable {
 	}
 
 	@InputMask(title="Telefone", mask="(99)9999-9999?9")
+	@Panel(id="pnlName", header="Teste Fabio")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -105,6 +108,7 @@ public class Person implements Serializable {
 	}
 
 	@Calendar(title="Data Nascimento", pattern="dd/MM/yyyy", mode="popup", showOn="button")
+	@Panel(id="pnlName2", header="testando novamente")
 	public Date getDateBirth() {
 		return dateBirth;
 	}
@@ -115,6 +119,7 @@ public class Person implements Serializable {
 
 	@SelectOneMenu(selectItems = @SelectItems(var="placeReregistrations", itemLabel="placeReregistration.name"),converter="selectOneUsingObjectConverter", items= true)
 	@ListFilter
+	@Panel(id="pnlName2", header="testando novamente")
 	public List<PlaceReregistration> getPlaceReregistrations() {
 		placeReregistrations = new ArrayList<PlaceReregistration>();
 		for (int i = 0; i < 4; i++) {

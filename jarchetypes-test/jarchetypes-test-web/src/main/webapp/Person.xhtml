@@ -7,9 +7,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:s="http://jboss.org/seam/faces"
-	template="/templates/main.xhtml">
+	template="/templates/padrao.xhtml">
 	
-	<ui:define name="content">
+	<ui:define name="conteudo">
 	
 		<script type="text/javascript">  
 				function handleSave(xhr, status, args) {
@@ -21,7 +21,7 @@
 		    }
 		</script>
 		
-		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluído"
+		<p:confirmDialog id="confirmation" message="Salvar realizado com sucesso. Clique em OK para prosseguir." modal="true" header="Salvar concluido"
 			draggable="false" closable="false" styleClass="process_msg"	widgetVar="okdlg" appendToBody = "true">
 			<p:commandButton value="Ok"
 				action="PersonSearch?faces-redirect=true" />
@@ -48,28 +48,20 @@
 				</p:toolbar>
 				
 				<p:messages id="messages" showSummary="true" showDetails="true" autoUpdate="true" closable="true" />
-					    			<h:panelGrid id="namePanelGrid" columns="3">   
-	<h:outputLabel for="name" value="Nome" /> 
-		<p:inputText id="name" value="#{personCRUDBean.bean.name}"  
-			required="true" 			>
-									<p:ajax event="change" />
-		</p:inputText>
-		<p:message for="name"/>
-</h:panelGrid>					    			<h:panelGrid id="emailPanelGrid" columns="3">   
-	<h:outputLabel for="email" value="Email" /> 
-		<p:inputText id="email" value="#{personCRUDBean.bean.email}"  
-			required="true" 			>
-									<p:ajax event="change" />
-		</p:inputText>
-		<p:message for="email"/>
-</h:panelGrid>					    			<h:panelGrid id="phoneNumberPanelGrid" columns="3">   
-	<h:outputLabel for="phoneNumber" value="Telefone" /> 
-	<p:inputMask id="phoneNumber" value="#{personCRUDBean.bean.phoneNumber}"
-  	required="true"   	  mask="(99)9999-9999?9" >
-  		<p:ajax event="change" /> 		
-  	</p:inputMask>
-	<p:message for="phoneNumber"/>
-</h:panelGrid>					    			<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
+					    				<p:panel id="pnlName2"
+									 header="testando novamente" 																																																																													>
+			    	<table style="margin-bottom: 10px; margin: 0">
+	<tr> 
+		<td><h:outputLabel for="dateBirth" value="Data Nascimento" /> 
+		</td> 
+		<td>
+				
+			<p:calendar id="dateBirth" value="#{personCRUDBean.bean.dateBirth}"		  	 
+		  	  mode="popup" 		  	 		  	 		  	 		  	  pattern="dd/MM/yyyy" 		  	  showOn="button" />
+			
+		</td>
+	</tr>
+</table>			    	<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
 		  	 
 		  	  converter="selectOneUsingObjectConverter" 		  	 
 		  	 		  	 
@@ -87,14 +79,27 @@
 				     var="placeReregistration" 				
 				 	 itemLabel="#{placeReregistration.name}" 				 />
 				 		
-			</p:selectOneMenu>		  					    			<h:panelGrid id="nicknamePanelGrid" columns="3">   
-	<h:outputLabel for="nickname" value="Nickname" /> 
-		<p:inputText id="nickname" value="#{personCRUDBean.bean.nickname}"  
-			required="false" 			>
+			</p:selectOneMenu>		  			</p:panel>
+	<p:panel id="pnlName"
+														 header="Teste Fabio" 																																																																								>
+			    	<h:panelGrid id="namePanelGrid" columns="3">   
+	<h:outputLabel for="name" value="Nome" /> 
+		<p:inputText id="name" value="#{personCRUDBean.bean.name}"  
+			required="true" 			>
 									<p:ajax event="change" />
 		</p:inputText>
-		<p:message for="nickname"/>
-</h:panelGrid>					    			<table style="margin-bottom: 10px; margin: 0">
+		<p:message for="name"/>
+</h:panelGrid>			    	<h:panelGrid id="phoneNumberPanelGrid" columns="3">   
+	<h:outputLabel for="phoneNumber" value="Telefone" /> 
+	<p:inputMask id="phoneNumber" value="#{personCRUDBean.bean.phoneNumber}"
+  	required="true"   	  mask="(99)9999-9999?9" >
+  		<p:ajax event="change" /> 		
+  	</p:inputMask>
+	<p:message for="phoneNumber"/>
+</h:panelGrid>			</p:panel>
+					    				<p:panel id="pnlName2"
+									 header="testando novamente" 																																																																													>
+			    	<table style="margin-bottom: 10px; margin: 0">
 	<tr> 
 		<td><h:outputLabel for="dateBirth" value="Data Nascimento" /> 
 		</td> 
@@ -105,7 +110,43 @@
 			
 		</td>
 	</tr>
-</table>							</p:panel>
+</table>			    	<p:selectOneMenu id="placeReregistrations" value="#{personCRUDBean.placeReregistration}"		  	 
+		  	 
+		  	  converter="selectOneUsingObjectConverter" 		  	 
+		  	 		  	 
+		  	  required="true" 		  	 
+		  	 		  	 
+		  	  items="#{personCRUDBean.bean.placeReregistrations}" 		  	 
+		  	 >
+		  	 
+			<f:selectItem itemLabel="Selecione" itemValue="" />
+			
+							
+				<f:selectItems 
+				    value="#{personCRUDBean.bean.placeReregistrations}"
+				    
+				     var="placeReregistration" 				
+				 	 itemLabel="#{placeReregistration.name}" 				 />
+				 		
+			</p:selectOneMenu>		  			</p:panel>
+	<p:panel id="pnlName"
+														 header="Teste Fabio" 																																																																								>
+			    	<h:panelGrid id="namePanelGrid" columns="3">   
+	<h:outputLabel for="name" value="Nome" /> 
+		<p:inputText id="name" value="#{personCRUDBean.bean.name}"  
+			required="true" 			>
+									<p:ajax event="change" />
+		</p:inputText>
+		<p:message for="name"/>
+</h:panelGrid>			    	<h:panelGrid id="phoneNumberPanelGrid" columns="3">   
+	<h:outputLabel for="phoneNumber" value="Telefone" /> 
+	<p:inputMask id="phoneNumber" value="#{personCRUDBean.bean.phoneNumber}"
+  	required="true"   	  mask="(99)9999-9999?9" >
+  		<p:ajax event="change" /> 		
+  	</p:inputMask>
+	<p:message for="phoneNumber"/>
+</h:panelGrid>			</p:panel>
+							</p:panel>
 		</h:form>
 	</ui:define>
 	

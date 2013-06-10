@@ -1,0 +1,30 @@
+1
+#foreach($key in $panels.keySet())
+	<p:panel id="$key"
+		#foreach($keyAtribut in $attributePanels.keySet())
+			#if($key == $keyAtribut)
+				#if($attributePanels.get($keyAtribut).getAttribute("header")!="") header="$attributePanels.get($keyAtribut).getAttribute("header")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("rendered")!="") rendered="$attributePanels.get($keyAtribut).getAttribute("rendered")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("binding")!="") binding="$attributePanels.get($keyAtribut).getAttribute("binding")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("widgetVar")!="") widgetVar="$attributePanels.get($keyAtribut).getAttribute("widgetVar")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("footer")!="") footer="$attributePanels.get($keyAtribut).getAttribute("footer")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("toggleable")!="") toggleable="$attributePanels.get($keyAtribut).getAttribute("toggleable")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("toggleSpeed")!="") toggleSpeed="$attributePanels.get($keyAtribut).getAttribute("toggleSpeed")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("style")!="") style="$attributePanels.get($keyAtribut).getAttribute("style")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("styleClass")!="") styleClass="$attributePanels.get($keyAtribut).getAttribute("styleClass")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("collapsed")!="") collapsed="$attributePanels.get($keyAtribut).getAttribute("collapsed")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("closable")!="") closable="$attributePanels.get($keyAtribut).getAttribute("closable")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("closeSpeed")!="") closeSpeed="$attributePanels.get($keyAtribut).getAttribute("closeSpeed")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("visible")!="") visible="$attributePanels.get($keyAtribut).getAttribute("visible")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("closeTitle")!="") closeTitle="$attributePanels.get($keyAtribut).getAttribute("closeTitle")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("toggleTitle")!="") toggleTitle="$attributePanels.get($keyAtribut).getAttribute("toggleTitle")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("menuTitle")!="") menuTitle="$attributePanels.get($keyAtribut).getAttribute("menuTitle")" #end
+				#if($attributePanels.get($keyAtribut).getAttribute("toggleOrientation")!="") toggleOrientation="$attributePanels.get($keyAtribut).getAttribute("toggleOrientation")" #end
+			#end
+		#end
+			>
+		#foreach( $widget in $panels.get($key) )
+	    	#parse( $widget.getTemplateName() )
+		#end
+	</p:panel>
+#end

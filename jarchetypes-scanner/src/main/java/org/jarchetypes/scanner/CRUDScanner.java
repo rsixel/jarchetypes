@@ -21,6 +21,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.velocity.VelocityContext;
 import org.archetypes.common.ArchetypesUtils;
@@ -44,11 +45,10 @@ public class CRUDScanner extends ArchetypesScanner {
 	@Override
 	protected void doScan(Class<?> archetype, Member member,
 			VelocityContext context) {
-		
+
 		CRUD crud = archetype.getAnnotation(CRUD.class);
-		
-		addArchetypeDescriptor(archetype,crud,context);
-		
+
+		addArchetypeDescriptor(archetype, crud, context);
 
 		context.put("title", crud.title());
 		context.put("beanName", archetype.getSimpleName());
@@ -56,14 +56,18 @@ public class CRUDScanner extends ArchetypesScanner {
 
 		context.put("widgets", new ArrayList<WidgetDescriptor>());
 		context.put("listFilters", new ArrayList<ListFilterDescriptor>());
-		context.put("filters", new ArrayList<FilterDescriptor>());		
-		
+		context.put("filters", new ArrayList<FilterDescriptor>());
+		context.put("panels", new HashMap<String,ArrayList<WidgetDescriptor>>());
+		context.put("attributePanels", new HashMap<String,ArrayList<WidgetDescriptor>>());
+		context.put("attributePanel", new  WidgetDescriptor());
 		context.put("ArchetypesUtils", ArchetypesUtils.class);
 		
-		context.put("CRUDBean", ArchetypesUtils.uncaptalize(archetype
-				.getSimpleName()) + "CRUDBean");
-		
-		scanSearchColumns(crud,context);
+
+		context.put("CRUDBean",
+				ArchetypesUtils.uncaptalize(archetype.getSimpleName())
+						+ "CRUDBean");
+
+		scanSearchColumns(crud, context);
 
 		for (Method method : archetype.getMethods()) {
 			boolean found = false;
@@ -72,14 +76,18 @@ public class CRUDScanner extends ArchetypesScanner {
 						Widget.class)) {
 					scan(annotation, archetype, method, context);
 					found = true;
-					break;
+					//break;
+				}
+				
+				if (!found && crud.generateAll()
+						&& ArchetypesUtils.isGetter(method)) {
+					scanByType(method, archetype, context);
+					found = false;
 				}
 			}
 
-			if (!found && crud.generateAll() && ArchetypesUtils.isGetter(method)) {
-				scanByType(method, archetype, context);
-			}
 		}
+
 
 		try {
 			String outputPath = (String) context.get("outputPath");
@@ -95,26 +103,27 @@ public class CRUDScanner extends ArchetypesScanner {
 					archetype.getSimpleName() + "Search", ".xhtml", context);
 
 			generate(CRUD_BEAN_NAME, sourceDirectory + File.separator
-					+ targetPackagePath, archetype.getSimpleName()
-					+ "CRUDBean", ".java", context);
+					+ targetPackagePath,
+					archetype.getSimpleName() + "CRUDBean", ".java", context);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+
 	private void scanSearchColumns(CRUD crud, VelocityContext context) {
 		ArrayList<SearchColumnDescriptor> searchColumns = new ArrayList<SearchColumnDescriptor>();
-		
+
 		context.put("searchColumns", searchColumns);
-		
-		for(String column:crud.resultFields()){
-			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(column,getColumnTitle(column));
-			
+
+		for (String column : crud.resultFields()) {
+			SearchColumnDescriptor descriptor = new SearchColumnDescriptor(
+					column, getColumnTitle(column));
+
 			searchColumns.add(descriptor);
 		}
-		
+
 	}
 
 	private String getColumnTitle(String column) {

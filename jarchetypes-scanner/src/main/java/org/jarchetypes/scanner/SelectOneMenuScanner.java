@@ -76,7 +76,7 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		listFilterDescriptor.setBeanName(ArchetypesUtils.uncaptalize(archetype
 				.getSimpleName()) + "SearchBean");
 
-		((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		//((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
 
 		scanForConverter(archetype, member, descriptor);
 		scanForVar(archetype, member, descriptor);
@@ -84,6 +84,11 @@ public class SelectOneMenuScanner extends InputTextScanner {
 		scanForItems(archetype, member, descriptor);
 		scanForStyle(archetype, member, descriptor);
 		scanForSelectItems(archetype, member, descriptor);
+		
+		if(!isPresentAnnotationPanel(member instanceof Method ? ((Method) member)
+				.getAnnotations() : ((Field) member).getAnnotations(), context,descriptor)){
+			((List<WidgetDescriptor>) context.get("widgets")).add(descriptor);
+		}
 		
 		if (getAnnotation(ListFilter.class, member) != null)
 			((List<ListFilterDescriptor>) context.get("listFilters"))
