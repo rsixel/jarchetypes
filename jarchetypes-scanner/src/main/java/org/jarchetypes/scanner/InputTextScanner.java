@@ -152,7 +152,7 @@ public class InputTextScanner extends ArchetypesScanner {
 						.toString(size.min()) : null;
 				maxlength = size != null && size.max() < Integer.MAX_VALUE ? Integer
 						.toString(size.max()) : null;
-			} else {
+			} else { 
 				minlength = null;
 				maxlength = null;
 			}
