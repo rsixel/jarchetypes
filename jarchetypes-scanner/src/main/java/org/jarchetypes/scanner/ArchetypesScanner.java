@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -176,10 +177,11 @@ public abstract class ArchetypesScanner {
 
 			}
 
-			String path = archetype.getSimpleName() + "Search.jsf";
+			String path = getPath(archetype);
 			archetypesDescriptors.add(new ArchetypeDescriptor(archetype
-					.getName(), category, title, path));
+					.getName(), category, title,path ));
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -192,15 +194,16 @@ public abstract class ArchetypesScanner {
 			if (annotation.annotationType().equals(Panel.class)) {
 				boolean found = true;
 				Panel panel = (Panel) annotation;
-				for (String key : ((HashMap<String, ArrayList<WidgetDescriptor>>) context
-						.get("panels")).keySet()) {
+				Object panels = context
+						.get("panels");
+				if(panels==null)
+						return false;
+				for (String key : ((HashMap<String, ArrayList<WidgetDescriptor>>) panels).keySet()) {
 
 					if (key.equals(panel.id())) {
-						ArrayList<WidgetDescriptor> panelDescriptors = ((HashMap<String, ArrayList<WidgetDescriptor>>) context
-								.get("panels")).get(key);
+						ArrayList<WidgetDescriptor> panelDescriptors = ((HashMap<String, ArrayList<WidgetDescriptor>>) panels).get(key);
 						 panelDescriptors.add(descriptor);
-						((HashMap<String, ArrayList<WidgetDescriptor>>) context
-								.get("panels")).put(key, panelDescriptors);
+						((HashMap<String, ArrayList<WidgetDescriptor>>) panels).put(key, panelDescriptors);
 						found = false;
 						break;
 					}
@@ -209,8 +212,7 @@ public abstract class ArchetypesScanner {
 					ArrayList<WidgetDescriptor> descriptors = new ArrayList<WidgetDescriptor>();
 					descriptors.add(descriptor);
 					// panelDescriptors.add(new PanelDescriptor(descriptor));
-					((HashMap<String, ArrayList<WidgetDescriptor>>) context
-							.get("panels")).put(panel.id(), descriptors);
+					((HashMap<String, ArrayList<WidgetDescriptor>>) panels).put(panel.id(), descriptors);
 				}
 				return true;
 			}
@@ -219,4 +221,6 @@ public abstract class ArchetypesScanner {
 
 		return false;
 	}
+	
+	protected abstract String getPath(Class<?> archetype) ;
 }
