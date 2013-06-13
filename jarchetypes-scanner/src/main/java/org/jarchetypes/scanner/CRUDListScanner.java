@@ -52,7 +52,6 @@ public class CRUDListScanner extends BaseCRUDScanner {
 					+ "CRUDListBean", ".java", context);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

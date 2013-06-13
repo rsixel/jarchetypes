@@ -27,6 +27,7 @@ import org.jarchetypes.annotation.ListFilter;
 import org.jarchetypes.annotation.Panel;
 import org.jarchetypes.annotation.SelectItems;
 import org.jarchetypes.annotation.SelectOneMenu;
+import org.jarchetypes.annotation.SelectOneRadio;
 
 @Entity
 @CRUD(title = "Person", generateAll = true,resultFields={"name","nickname","email","phoneNumber"})
@@ -98,7 +99,7 @@ public class Person implements Serializable {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
+	
 	public String getNickname() {
 		return nickname;
 	}
@@ -124,7 +125,7 @@ public class Person implements Serializable {
 		placeReregistrations = new ArrayList<PlaceReregistration>();
 		for (int i = 0; i < 4; i++) {
 			PlaceReregistration placeReregistration = new PlaceReregistration();
-			placeReregistration.setId(i);
+		//	placeReregistration.setId(i);
 			placeReregistration.setName("Cabo Frio " + i);
 			placeReregistrations.add(placeReregistration);
 		}
